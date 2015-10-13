@@ -1,11 +1,13 @@
-import imh.TweetWord;
+import imh.*;
+//import controllers.*;
+//import utils.*;
 
 public class Main {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
 
-        TweetWord tweet = new TweetWord("hello it's arie", 121);
-        System.out.println(tweet.getWord() + " " + tweet.getPonderation());
+        TweetWord tweet = new TweetWord("hello", 121);
+        System.out.println(tweet);
     }
 }

@@ -19,4 +19,12 @@ public class TweetWord {
     public int getPonderation() {
         return this.ponderation;
     }
+
+    @Override
+    public String toString() {
+        return "TweetWord{" +
+                "word='" + word + '\'' +
+                ", ponderation=" + ponderation +
+                '}';
+    }
 }
