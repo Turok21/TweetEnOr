@@ -56,8 +56,6 @@ public class CtrlTweetEnOr {
         ListIterator<TweetWord> listIterator = this._keyWords.getListWords().listIterator();
         while (listIterator.hasNext()) {
             TweetWord next = listIterator.next();
-            // TODO : Arie supprimer le println
-//            System.out.println(next + " " + WordComparator.wordCompare(word, next.getWord()));
             if (WordComparator.wordCompare(word, next.getWord())) {
                 return next;
             }
