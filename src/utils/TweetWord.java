@@ -8,7 +8,7 @@ public class TweetWord {
     private int    _ponderation;
 
     public TweetWord(String word, int ponderation) {
-        if (ponderation < -1 || ponderation > 100)
+        if (ponderation < -3 || ponderation > 100)
             throw new IllegalArgumentException("input error - illegal ponderation value");
         else {
             this._word = word;
