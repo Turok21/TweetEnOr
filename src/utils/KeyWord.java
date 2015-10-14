@@ -1,4 +1,4 @@
-package imh;
+package utils;
 
 import com.sun.org.apache.xpath.internal.compiler.Keywords;
 import java.util.List;
@@ -7,24 +7,24 @@ import java.util.List;
  * Created by Arié on 12/10/2015.
  */
 public class KeyWord extends Keywords {
-    private String word;
-    private List<TweetWord> words;
+    private String _word;
+    private List<TweetWord> _listWords;
 
-    public KeyWord(String word, List<TweetWord> words) {
-        this.word = word;
-        this.words = words;
+    public KeyWord(String word, List<TweetWord> listWords) {
+        this._word = word;
+        this._listWords = listWords;
     }
 
     public String getWord() {
-        return this.word;
+        return this._word;
     }
 
-    public List<TweetWord> getWords() {
-        return words;
+    public List<TweetWord> getListWords() {
+        return _listWords;
     }
 
-    public TweetWord getOneWord(int index) {
-        return this.words.get(index);
+    public TweetWord getOneTweetWord(int index) {
+        return this._listWords.get(index);
     }
 
     public TweetWord isMotValid(String mot) {

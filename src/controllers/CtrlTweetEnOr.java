@@ -1,7 +1,7 @@
 package controllers;
 
-import imh.KeyWord;
-import imh.TweetWord;
+import utils.KeyWord;
+import utils.TweetWord;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -38,14 +38,14 @@ public class CtrlTweetEnOr {
     }
 
     public TweetWord isMotValid(String word) {
-        ListIterator listIterator = this.keyWords.getWords().listIterator();
+        ListIterator listIterator = this.keyWords.getListWords().listIterator();
         // TODO CPE : loop sur l'iterateur et verification de MOT sur chacun des words de tweetWords
         TweetWord ntw = new TweetWord("hello", 100);
         return ntw;
     }
 
     public List<TweetWord> getListWords() {
-        return this.keyWords.getWords();
+        return this.keyWords.getListWords();
     }
 
     public boolean isMotAlreadyUse(String Mot) {
