@@ -1,4 +1,5 @@
 import utils.TweetWord;
+import utils.WordComparator;
 import java.util.ArrayList;
 import java.util.List;
 //import controllers.*;
@@ -9,13 +10,21 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello World!");
 
-        List<TweetWord> myTweetWordList = new ArrayList<TweetWord>();
-        myTweetWordList.add(new TweetWord("alpha", 10));
-        myTweetWordList.add(new TweetWord("beta", 20));
-        myTweetWordList.add(new TweetWord("gamma", 30));
-        myTweetWordList.add(new TweetWord("delta", 40));
+        TweetWord alpha = new TweetWord("alpha", 10);
+        TweetWord beta = new TweetWord("AlPha", 20);
+        TweetWord gamma = new TweetWord("gamma", 30);
+        TweetWord delta = new TweetWord("delta", 40);
 
-        TweetWord tweet = new TweetWord("hello", 121);
+        List<TweetWord> myTweetWordList = new ArrayList<TweetWord>();
+        myTweetWordList.add(alpha);
+        myTweetWordList.add(beta);
+        myTweetWordList.add(gamma);
+        myTweetWordList.add(delta);
+
+        TweetWord tweet = new TweetWord("hello", 85);
         System.out.println(tweet);
+        System.out.println(myTweetWordList);
+
+        System.out.println(WordComparator.wordCompare(alpha.getWord(), beta.getWord()));
     }
 }

@@ -1,12 +1,11 @@
 package utils;
 
-import com.sun.org.apache.xpath.internal.compiler.Keywords;
 import java.util.List;
 
 /**
  * Created by Arié on 12/10/2015.
  */
-public class KeyWord extends Keywords {
+public class KeyWord {
     private String _word;
     private List<TweetWord> _listWords;
 
@@ -17,6 +16,14 @@ public class KeyWord extends Keywords {
 
     public String getWord() {
         return this._word;
+    }
+
+    @Override
+    public String toString() {
+        return "KeyWord{" +
+                "_word='" + _word + '\'' +
+                ", _listWords=" + _listWords +
+                '}';
     }
 
     public List<TweetWord> getListWords() {
