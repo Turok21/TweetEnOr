@@ -1,13 +1,22 @@
-import utils.TweetWord;
-import utils.WordComparator;
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.TweetParser;
+import utils.TweetWord;
+import utils.WordComparator;
 //import controllers.*;
 //import utils.*;
 
 public class Main {
 
     public static void main(String[] args) {
+    	TweetParser.findWords("#ski");
+    	
+    	
+    	
+    	
+    	
+    	
         System.out.println("Hello World!");
 
         TweetWord alpha = new TweetWord("alpha", 10);
