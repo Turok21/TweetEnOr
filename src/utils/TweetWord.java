@@ -5,10 +5,10 @@ package utils;
  */
 public class TweetWord {
     private String _word;
-    private int _ponderation;
+    private int    _ponderation;
 
     public TweetWord(String word, int ponderation) {
-        if (ponderation < 0 || ponderation > 100)
+        if (ponderation < -1 || ponderation > 100)
             throw new IllegalArgumentException("input error - illegal ponderation value");
         else {
             this._word = word;

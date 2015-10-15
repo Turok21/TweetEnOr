@@ -5,7 +5,7 @@ package utils;
  */
 public abstract class WordComparator implements Comparable {
 
-    public boolean wordCompare(String alpha, String beta) {
+    public static boolean wordCompare(String alpha, String beta) {
         return alpha.equalsIgnoreCase(beta);
     }
 }

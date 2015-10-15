@@ -18,6 +18,14 @@ public class KeyWord {
         return this._word;
     }
 
+    @Override
+    public String toString() {
+        return "KeyWord{" +
+                "_word='" + _word + '\'' +
+                ", _listWords=" + _listWords +
+                '}';
+    }
+
     public List<TweetWord> getListWords() {
         return _listWords;
     }

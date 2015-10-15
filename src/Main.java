@@ -1,4 +1,7 @@
+import controllers.CtrlTweetEnOr;
+import utils.KeyWord;
 import utils.TweetWord;
+import utils.WordComparator;
 import java.util.ArrayList;
 import java.util.List;
 //import controllers.*;
@@ -7,15 +10,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        System.out.println("CLASS MAIN IS NOW RUNNING !");
 
-        List<TweetWord> myTweetWordList = new ArrayList<TweetWord>();
-        myTweetWordList.add(new TweetWord("alpha", 10));
-        myTweetWordList.add(new TweetWord("beta", 20));
-        myTweetWordList.add(new TweetWord("gamma", 30));
-        myTweetWordList.add(new TweetWord("delta", 40));
-
-        TweetWord tweet = new TweetWord("hello", 121);
-        System.out.println(tweet);
     }
 }
