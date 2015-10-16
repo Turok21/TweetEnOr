@@ -156,7 +156,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	
 	}
 	
-	public void vérifier(String mots_a_verifier){
+	public void verifier(String mots_a_verifier){
 		
 		if(!mots_a_verifier.isEmpty()){
         	_txt.setText(_tf_saisie.getText());
@@ -192,7 +192,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
         if( e.getSource() == _b_verifier)
-        	vérifier( _tf_saisie.getText());
+        	verifier( _tf_saisie.getText());
 	}
 	
 	
@@ -200,7 +200,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
-        	vérifier(_tf_saisie.getText());
+        	verifier(_tf_saisie.getText());
     }
 	
 	
