@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -19,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -62,13 +65,13 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	
 
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws FontFormatException, IOException{
 		InGame_IHM ingame = new InGame_IHM(MEDIUM);
 	}
 	
 	
 	
-	public InGame_IHM(int Difficulte){
+	public InGame_IHM(int Difficulte) throws FontFormatException, IOException{
 		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
@@ -123,10 +126,16 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box2.setMaximumSize(new Dimension(9999, 50));
 	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
 	    
+	    //Font font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/arista.ttf"));
+	    //font.deriveFont(12f);
+	    
+		   
 	    _hashtag = new JLabel("#test");
 	    _hashtag.setForeground(Color.blue);
 	    Font hash_font = new Font("",Font.BOLD,24 );
 	   _hashtag.setFont(hash_font);
+	   
+	   
 	    
 	    box2.add(Box.createGlue());
 	    box2.add(_hashtag);
@@ -278,7 +287,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
         		add_point(mots.getPonderation(),mots);
         		
         	}
-        	
+        	_tf_saisie.setText("");
     	}else{
     		_txt.setText("veulliez entrer un mots!");
     	}
@@ -300,7 +309,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 		
 		for(JLabel label : _listword_label){
 			if(label.getText().compareTo(mots.getWord()) == 0){
-				System.out.println("la!");
 				label.setForeground(new Color(255,255,255));
 				_fenetre.repaint();
 				break;
