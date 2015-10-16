@@ -70,9 +70,9 @@ public abstract class TweetParser {
     }
     
     private static List<TweetWord> toTweetWord(List<String> words) {
-    	List<TweetWord> tweetWords = new ArrayList<TweetWord>();
+    	List<TweetWord> tweetWords = new ArrayList<>();
     	List<String> cleanedWords = cleanWords(words);
-    	Map<String, Integer> ponderatedWords = new HashMap<String, Integer>();
+    	Map<String, Integer> ponderatedWords = new HashMap<>();
     	// generate map<word, occurences>
     	for (String word : cleanedWords) {
     		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
@@ -109,7 +109,10 @@ public abstract class TweetParser {
         conf.setOAuthAccessTokenSecret("zQn3niHYwOmtgyu0KMOYO5SQjJDZbbu7AbR7TcrpenRfc"); 
         return conf;
    }
-    
-    
+
+
+	public static void main(String argc[]){
+		KeyWord keyw = findWords("ski");
+	}
 }
 
