@@ -2,13 +2,11 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
+import twitter4j.GeoQuery;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -42,21 +40,22 @@ public abstract class TweetParser {
         List<String> listTweets = getTweets(keyWords);
         List<String> words = new ArrayList<String>();
         for (String tweet : listTweets) {
-        	for(String word: tweet.split(" ")){
-        		words.add(word.replace("#", "").replace("@", "").replace(",", ""));
-        	}
+        	words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
         
         List<TweetWord> tweetWords = toTweetWord(words);
         
         return new KeyWord(keyWords, tweetWords);
     }
+
     
     private static List<String> getTweets(String keyWord) {
     	TwitterFactory tf = new TwitterFactory(config().build()); 
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<String>();
+        
         Query query = new Query(keyWord);
+        query.setLang("fr");
         query.count(100);
         QueryResult result = null;
 		try {
@@ -80,10 +79,9 @@ public abstract class TweetParser {
     
     private static List<TweetWord> toTweetWord(List<String> words) {
     	List<TweetWord> tweetWords = new ArrayList<TweetWord>();
-    	List<String> cleanedWords = cleanWords(words);
     	Map<String, Integer> ponderatedWords = new HashMap<String, Integer>();
     	// generate map<word, occurences>
-    	for (String word : cleanedWords) {
+    	for (String word : words) {
     		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
     		ponderatedWords.put(word, count + 1);
         }
@@ -95,14 +93,15 @@ public abstract class TweetParser {
     
     
     
-    private static List<String> cleanWords(List<String> words) {
+    private static List<String> cleanWords(String[] strings, String keyword) {
     	List<String> cleanedWords = new ArrayList<String>();
-    	// Remove useless words
-    	for (String word : words) {
-    		if(!stopwords.contains(word)) {
+    	for(String word: strings){
+        	word = word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
+        	// Remove useless words
+    		if(!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword) && !word.startsWith("http")) {
     			cleanedWords.add(word);
     		}
-        }
+    	}
     	return cleanedWords;
     }
     
