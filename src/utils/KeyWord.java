@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Arié on 12/10/2015.
  */
 public class KeyWord {
-    private String _word;
+    private String          _word;
     private List<TweetWord> _listWords;
 
     public KeyWord(String word, List<TweetWord> listWords) {

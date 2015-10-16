@@ -5,7 +5,7 @@ package utils;
  */
 public class TweetWord {
     private String _word;
-    private int _ponderation;
+    private int    _ponderation;
 
     public TweetWord(String word, int ponderation) {
         if (ponderation < 0 || ponderation > 100)

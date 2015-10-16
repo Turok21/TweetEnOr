@@ -2,7 +2,6 @@ package utils;
 
 import java.util.*;
 
-import twitter4j.GeoQuery;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -15,6 +14,7 @@ import twitter4j.conf.ConfigurationBuilder;
  * Created by Arié on 12/10/2015.
  */
 public abstract class TweetParser {
+
     private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
             "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
             "car", "ce", "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
@@ -27,10 +27,10 @@ public abstract class TweetParser {
             "quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son",
             "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
             "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
-            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de"
+            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de", "une"
     ));
 
-    private static int nbTweetsToGet = 1000;
+    private static int nbTweetsToGet = 2000;
 
     public static KeyWord findWords(String keyWords) {
         List<String> listTweets = getTweets(keyWords);
@@ -38,9 +38,10 @@ public abstract class TweetParser {
         for (String tweet : listTweets) {
             words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
-        List<TweetWord> tweetWords = toTweetWord(words);
+        Map<String, Integer> topWords = toTweetWord(words);
+        printMap(topWords);
         // ponderation
-        tweetWords = editPonderation(tweetWords);
+        List<TweetWord> tweetWords = editPonderation(topWords);
         return new KeyWord(keyWords, tweetWords);
     }
 
@@ -50,7 +51,7 @@ public abstract class TweetParser {
         List<String> listTweets = new ArrayList<>();
 
         Query query = new Query(keyWord);
-        query.setLang("fr");
+        query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
         QueryResult result;
         try {
@@ -72,7 +73,7 @@ public abstract class TweetParser {
         return listTweets;
     }
 
-    private static List<TweetWord> toTweetWord(List<String> words) {
+    private static Map<String, Integer> toTweetWord(List<String> words) {
         List<TweetWord> tweetWords = new ArrayList<>();
         Map<String, Integer> ponderatedWords = new HashMap<>();
         /** generate map<word, occurences> */
@@ -85,42 +86,43 @@ public abstract class TweetParser {
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
 
         /** Recuperation des 10 mots les plus représentatif */
+        Map<String, Integer> topPonderatedWord = new HashMap<>();
         int nbWord = 10;
         for (Map.Entry<String, Integer> entry : sortPonderatedWord.entrySet()) {
             if (nbWord <= 0) break;
-            tweetWords.add(new TweetWord(entry.getKey(), entry.getValue()));
+            topPonderatedWord.put(entry.getKey(), entry.getValue());
             nbWord--;
         }
-        return tweetWords;
+        return topPonderatedWord;
     }
 
-    private static List<TweetWord> editPonderation(List<TweetWord> tweetList) {
-        ListIterator<TweetWord> listIt = tweetList.listIterator();
+    private static List<TweetWord> editPonderation(Map<String, Integer> tweetList) {
         int total = 0;
-        while (listIt.hasNext()) {
-            TweetWord tweetWord = listIt.next();
-            total += tweetWord.getPonderation();
+        List<TweetWord> listTweetWord = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
+            total += entry.getValue();
         }
-        listIt = tweetList.listIterator();
-        while (listIt.hasNext()) {
-            TweetWord tweetWord = listIt.next();
-            int value = tweetWord.getPonderation();
-            tweetWord.setPonderation(tweetWord.getPonderation() * 1000 / total);
-            System.out.println(value + " " + total + " = " + tweetWord.getPonderation());
+        for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
+            TweetWord tweetWord = new TweetWord(entry.getKey(), entry.getValue() * 1000 / total);
+            listTweetWord.add(tweetWord);
         }
-        return tweetList;
+        return listTweetWord;
     }
 
     private static List<String> cleanWords(String[] strings, String keyword) {
-        List<String> cleanedWords = new ArrayList<>();
+        List<String> cleanedWords = new ArrayList<String>();
         for (String word : strings) {
-            word = word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
+            word = cleanWord(word);
             // Remove useless words
             if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword) && !word.startsWith("http")) {
                 cleanedWords.add(word);
             }
         }
         return cleanedWords;
+    }
+
+    public static String cleanWord(String word) {
+        return word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
     }
 
     private static ConfigurationBuilder config() {
@@ -160,7 +162,7 @@ public abstract class TweetParser {
     // TODO CPE : fin to delete
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");
-        System.out.println(keyw);
+//        System.out.println(keyw);
     }
 
 }
