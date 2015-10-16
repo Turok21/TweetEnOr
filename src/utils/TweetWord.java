@@ -26,6 +26,10 @@ public class TweetWord {
 
     @Override
     public String toString() {
-        return "TweetWord{word=" + _word + ", ponderation=" + _ponderation + "}";
+        return "TweetWord{word=" + _word + ", ponderation=" + _ponderation + "}\n";
+    }
+
+    public void setPonderation(int _ponderation) {
+        this._ponderation = _ponderation;
     }
 }

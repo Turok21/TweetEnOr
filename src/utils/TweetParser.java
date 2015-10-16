@@ -1,14 +1,8 @@
 package utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+import java.util.*;
 
+import twitter4j.GeoQuery;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -18,101 +12,156 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 /**
- * Created by Ari� on 12/10/2015.
+ * Created by Arié on 12/10/2015.
  */
 public abstract class TweetParser {
-	private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
-		"alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon", 
-		"car", "ce", "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans", 
-		"des", "du", "dedans", "dehors", "depuis", "devrait", "doit", "donc", "dos", 
-		"début", "elle", "elles", "en", "encore", "essai", "est", "et", "eu", "fait", 
-		"faites", "fois", "font", "hors", "ici", "il", "ils", "je", "juste", "la", "le", 
-		"les", "leur", "là", "ma", "maintenant", "mais", "mes", "mine", "moins", "mon", 
-		"mot", "même", "ni", "nommés", "notre", "nous", "ou", "où", "par", "parce", "pas", 
-		"peut", "peu", "plupart", "pour", "pourquoi", "quand", "que", "quel", "quelle", 
-		"quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son", 
-		"sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton", 
-		"tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu", 
-		"ça", "étaient", "état", "étions", "été", "être", "RT", "via"
-	));
-	
+    private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
+            "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
+            "car", "ce", "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
+            "des", "du", "dedans", "dehors", "depuis", "devrait", "doit", "donc", "dos",
+            "début", "elle", "elles", "en", "encore", "essai", "est", "et", "eu", "fait",
+            "faites", "fois", "font", "hors", "ici", "il", "ils", "je", "juste", "la", "le",
+            "les", "leur", "là", "ma", "maintenant", "mais", "mes", "mine", "moins", "mon",
+            "mot", "même", "ni", "nommés", "notre", "nous", "ou", "où", "par", "parce", "pas",
+            "peut", "peu", "plupart", "pour", "pourquoi", "quand", "que", "quel", "quelle",
+            "quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son",
+            "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
+            "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
+            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de"
+    ));
+
+    private static int nbTweetsToGet = 1000;
+
     public static KeyWord findWords(String keyWords) {
-        List<TweetWord> myTweetWordList = new ArrayList<TweetWord>();
         List<String> listTweets = getTweets(keyWords);
-        List<String> words = new ArrayList<String>();
+        List<String> words = new ArrayList<>();
         for (String tweet : listTweets) {
-        	for(String word: tweet.split(" ")){
-        		words.add(word.replace("#", "").replace("@", "").replace(",", ""));
-        	}
+            words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
-        
         List<TweetWord> tweetWords = toTweetWord(words);
-        
-        return new KeyWord(keyWords, myTweetWordList);
+        // ponderation
+        tweetWords = editPonderation(tweetWords);
+        return new KeyWord(keyWords, tweetWords);
     }
-    
+
     private static List<String> getTweets(String keyWord) {
-    	TwitterFactory tf = new TwitterFactory(config().build()); 
+        TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
+        List<String> listTweets = new ArrayList<>();
+
         Query query = new Query(keyWord);
+        query.setLang("fr");
         query.count(100);
-        QueryResult result = null;
-        List<String> listTweets = new ArrayList<String>();
-		try {
-			result = twitter.search(query);
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
-        for (Status status : result.getTweets()) {
-        	listTweets.add(status.getText());
+        QueryResult result;
+        try {
+            result = twitter.search(query);
+            do {
+                for (Status status : result.getTweets()) {
+                    listTweets.add(status.getText());
+                }
+                query = result.nextQuery();
+                if (query != null) {
+                    result = twitter.search(query);
+                }
+            }
+            while (query != null && listTweets.size() < nbTweetsToGet);
+        } catch (TwitterException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
         return listTweets;
     }
-    
-    private static List<TweetWord> toTweetWord(List<String> words) {
-    	List<TweetWord> tweetWords = new ArrayList<>();
-    	List<String> cleanedWords = cleanWords(words);
-    	Map<String, Integer> ponderatedWords = new HashMap<>();
-    	// generate map<word, occurences>
-    	for (String word : cleanedWords) {
-    		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
-    		ponderatedWords.put(word, count + 1);
-        }
-    	
-    	System.out.println(ponderatedWords);
-    	
-    	return tweetWords;
-    }
-    
 
-    
-    
-    
-    private static List<String> cleanWords(List<String> words) {
-    	List<String> cleanedWords = new ArrayList<String>();
-    	// Remove useless words
-    	for (String word : words) {
-    		if(!stopwords.contains(word)) {
-    			cleanedWords.add(word);
-    		}
+    private static List<TweetWord> toTweetWord(List<String> words) {
+        List<TweetWord> tweetWords = new ArrayList<>();
+        Map<String, Integer> ponderatedWords = new HashMap<>();
+        /** generate map<word, occurences> */
+        for (String word : words) {
+            int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
+            ponderatedWords.put(word, count + 1);
         }
-    	return cleanedWords;
+
+        /** Tri de la map */
+        Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
+
+        /** Recuperation des 10 mots les plus représentatif */
+        int nbWord = 10;
+        for (Map.Entry<String, Integer> entry : sortPonderatedWord.entrySet()) {
+            if (nbWord <= 0) break;
+            tweetWords.add(new TweetWord(entry.getKey(), entry.getValue()));
+            nbWord--;
+        }
+        return tweetWords;
     }
-    
-    
-    private static ConfigurationBuilder config(){
-    	Map<String, String> env = System.getenv();
+
+    private static List<TweetWord> editPonderation(List<TweetWord> tweetList) {
+        ListIterator<TweetWord> listIt = tweetList.listIterator();
+        int total = 0;
+        while (listIt.hasNext()) {
+            TweetWord tweetWord = listIt.next();
+            total += tweetWord.getPonderation();
+        }
+        listIt = tweetList.listIterator();
+        while (listIt.hasNext()) {
+            TweetWord tweetWord = listIt.next();
+            int value = tweetWord.getPonderation();
+            tweetWord.setPonderation(tweetWord.getPonderation() * 1000 / total);
+            System.out.println(value + " " + total + " = " + tweetWord.getPonderation());
+        }
+        return tweetList;
+    }
+
+    private static List<String> cleanWords(String[] strings, String keyword) {
+        List<String> cleanedWords = new ArrayList<>();
+        for (String word : strings) {
+            word = word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
+            // Remove useless words
+            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword) && !word.startsWith("http")) {
+                cleanedWords.add(word);
+            }
+        }
+        return cleanedWords;
+    }
+
+    private static ConfigurationBuilder config() {
+        Map<String, String> env = System.getenv();
         ConfigurationBuilder conf = new ConfigurationBuilder(); // connexion au twitter
         conf.setOAuthConsumerKey(env.get("CONSUMER_KEY"));
-        conf.setOAuthConsumerSecret(env.get("CONSUMER_SECRET")); 
-        conf.setOAuthAccessToken("1215866521-LjqUbYcP7n9zCHctz9pGbUiA8UMYKHUY3eCHOuM"); 
-        conf.setOAuthAccessTokenSecret("zQn3niHYwOmtgyu0KMOYO5SQjJDZbbu7AbR7TcrpenRfc"); 
+        conf.setOAuthConsumerSecret(env.get("CONSUMER_SECRET"));
+        conf.setOAuthAccessToken("1215866521-LjqUbYcP7n9zCHctz9pGbUiA8UMYKHUY3eCHOuM");
+        conf.setOAuthAccessTokenSecret("zQn3niHYwOmtgyu0KMOYO5SQjJDZbbu7AbR7TcrpenRfc");
         return conf;
-   }
+    }
 
+    private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
+        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> o1,
+                               Map.Entry<String, Integer> o2) {
+                return (o2.getValue()).compareTo(o1.getValue());
+            }
+        });
+        Map<String, Integer> sortedMap = new LinkedHashMap<>();
+        for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext(); ) {
+            Map.Entry<String, Integer> entry = it.next();
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
 
-	public static void main(String argc[]){
-		KeyWord keyw = findWords("ski");
-	}
+    // TODO CPE : to delete
+    public static void printMap(Map<String, Integer> map) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println("[Key] : " + entry.getKey()
+                    + " [Value] : " + entry.getValue());
+        }
+    }
+
+    // TODO CPE : fin to delete
+    public static void main(String argc[]) {
+        KeyWord keyw = findWords("ski");
+        System.out.println(keyw);
+    }
+
 }
 
