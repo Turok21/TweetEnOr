@@ -6,7 +6,6 @@ package utils;
 public abstract class WordComparator {
 
     /**
-     *
      * @param alpha {String} Word to compare from the other
      * @param beta  {String} Word to compare from the other
      * @return {boolean} Tell you if the two word are close enouth or not
@@ -20,12 +19,11 @@ public abstract class WordComparator {
     }
 
     /**
-     *
-     * @param alpha {String} Word to compare from the other
-     * @param beta  {String} Word to compare from the other
-     * @param percentage  {double} tell what percentage of resemblance you want
+     * @param alpha      {String} Word to compare from the other
+     * @param beta       {String} Word to compare from the other
+     * @param percentage {double} tell what percentage of resemblance you want
      * @return {boolean} Tell you if the two word are close enouth or not
-     * */
+     */
     public static boolean wordCompare(String alpha, String beta, double percentage) {
         if (similarity(alpha, beta) >= percentage) {
             return true;
