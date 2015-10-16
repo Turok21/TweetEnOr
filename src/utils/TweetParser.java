@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import twitter4j.GeoQuery;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -55,9 +54,9 @@ public abstract class TweetParser {
         List<String> listTweets = new ArrayList<String>();
         
         Query query = new Query(keyWord);
-        query.setLang("fr");
+        query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
-        QueryResult result = null;
+        QueryResult result;
 		try {
 			result = twitter.search(query);
 	        do {
@@ -80,7 +79,7 @@ public abstract class TweetParser {
     private static List<TweetWord> toTweetWord(List<String> words) {
     	List<TweetWord> tweetWords = new ArrayList<TweetWord>();
     	Map<String, Integer> ponderatedWords = new HashMap<String, Integer>();
-    	// generate map<word, occurences>
+
     	for (String word : words) {
     		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
     		ponderatedWords.put(word, count + 1);
