@@ -33,11 +33,12 @@ public abstract class TweetParser {
 		"quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son", 
 		"sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton", 
 		"tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu", 
-		"ça", "étaient", "état", "étions", "été", "être", "RT", "via"
+		"ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de"
 	));
 	
+	private static int nbTweetsToGet = 100;
+	
     public static KeyWord findWords(String keyWords) {
-        List<TweetWord> myTweetWordList = new ArrayList<TweetWord>();
         List<String> listTweets = getTweets(keyWords);
         List<String> words = new ArrayList<String>();
         for (String tweet : listTweets) {
@@ -48,24 +49,32 @@ public abstract class TweetParser {
         
         List<TweetWord> tweetWords = toTweetWord(words);
         
-        return new KeyWord(keyWords, myTweetWordList);
+        return new KeyWord(keyWords, tweetWords);
     }
     
     private static List<String> getTweets(String keyWord) {
     	TwitterFactory tf = new TwitterFactory(config().build()); 
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
+        List<String> listTweets = new ArrayList<String>();
         Query query = new Query(keyWord);
         query.count(100);
         QueryResult result = null;
-        List<String> listTweets = new ArrayList<String>();
 		try {
 			result = twitter.search(query);
-		} catch (TwitterException e) {
-			e.printStackTrace();
+	        do {
+	        	for (Status status : result.getTweets()) {
+	            	listTweets.add(status.getText());
+	            }
+	        	query = result.nextQuery();
+	        	if(query != null){
+					result = twitter.search(query);
+	            }
+	        }
+	        while(query != null && listTweets.size() < nbTweetsToGet);
+		} catch (TwitterException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-        for (Status status : result.getTweets()) {
-        	listTweets.add(status.getText());
-        }
         return listTweets;
     }
     
@@ -78,9 +87,7 @@ public abstract class TweetParser {
     		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
     		ponderatedWords.put(word, count + 1);
         }
-    	
-    	System.out.println(ponderatedWords);
-    	
+
     	return tweetWords;
     }
     

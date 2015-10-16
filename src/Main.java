@@ -10,7 +10,7 @@ import utils.WordComparator;
 public class Main {
 
     public static void main(String[] args) {
-    	TweetParser.findWords("#ski");
+    	TweetParser.findWords("ski");
     	
     	
     	
