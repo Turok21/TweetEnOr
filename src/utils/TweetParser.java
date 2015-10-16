@@ -30,7 +30,7 @@ public abstract class TweetParser {
             "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de", "une"
     ));
 
-    private static int nbTweetsToGet = 2000;
+    private static int nbTweetsToGet = 150;
 
     public static KeyWord findWords(String keyWords) {
         List<String> listTweets = getTweets(keyWords);
@@ -38,10 +38,9 @@ public abstract class TweetParser {
         for (String tweet : listTweets) {
             words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
-        Map<String, Integer> topWords = toTweetWord(words);
-        printMap(topWords);
+        Map<String, Integer> topWords = listWordToPonderatedMap(words);
         // ponderation
-        List<TweetWord> tweetWords = editPonderation(topWords);
+        List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
         return new KeyWord(keyWords, tweetWords);
     }
 
@@ -73,7 +72,7 @@ public abstract class TweetParser {
         return listTweets;
     }
 
-    private static Map<String, Integer> toTweetWord(List<String> words) {
+    private static Map<String, Integer> listWordToPonderatedMap(List<String> words) {
         Map<String, Integer> ponderatedWords = new HashMap<>();
         /** generate map<word, occurences> */
         for (String word : words) {
@@ -95,15 +94,24 @@ public abstract class TweetParser {
         return topPonderatedWord;
     }
 
-    private static List<TweetWord> editPonderation(Map<String, Integer> tweetList) {
-        int total = 0;
+    private static List<TweetWord> mapPonderatedToTweetWord(Map<String, Integer> tweetList) {
+        double total = 0;
         List<TweetWord> listTweetWord = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
             total += entry.getValue();
         }
+        int entier, totalEntier = 0;
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
-            TweetWord tweetWord = new TweetWord(entry.getKey(), entry.getValue() * 100 / total);
+            entier = (int) (entry.getValue() * 100 / total);
+            totalEntier += entier;
+            TweetWord tweetWord = new TweetWord(entry.getKey(), entier);
             listTweetWord.add(tweetWord);
+        }
+        /** Rattrapage du pourcentage lors du produit en croix **/
+        int missing = 100 - totalEntier;
+        for (int i = 0; i < missing; i++) {
+            int rand = (int)(Math.random() * 10);
+            listTweetWord.get(rand).setPonderation(listTweetWord.get(rand).getPonderation() + 1);
         }
         return listTweetWord;
     }
@@ -149,15 +157,6 @@ public abstract class TweetParser {
         }
         return sortedMap;
     }
-
-    // TODO CPE : to delete
-    public static void printMap(Map<String, Integer> map) {
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            System.out.println("[Key] : " + entry.getKey()
-                    + " [Value] : " + entry.getValue());
-        }
-    }
-    // TODO CPE : fin to delete
 
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");

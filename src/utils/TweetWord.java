@@ -28,4 +28,8 @@ public class TweetWord {
     public String toString() {
         return "TweetWord{word=" + _word + ", ponderation=" + _ponderation + "}\n";
     }
+
+    public void setPonderation(int ponderation) {
+        this._ponderation = ponderation;
+    }
 }
