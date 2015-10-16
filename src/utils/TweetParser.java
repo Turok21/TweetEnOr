@@ -74,7 +74,6 @@ public abstract class TweetParser {
     }
 
     private static Map<String, Integer> toTweetWord(List<String> words) {
-        List<TweetWord> tweetWords = new ArrayList<>();
         Map<String, Integer> ponderatedWords = new HashMap<>();
         /** generate map<word, occurences> */
         for (String word : words) {
@@ -103,14 +102,14 @@ public abstract class TweetParser {
             total += entry.getValue();
         }
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
-            TweetWord tweetWord = new TweetWord(entry.getKey(), entry.getValue() * 1000 / total);
+            TweetWord tweetWord = new TweetWord(entry.getKey(), entry.getValue() * 100 / total);
             listTweetWord.add(tweetWord);
         }
         return listTweetWord;
     }
 
     private static List<String> cleanWords(String[] strings, String keyword) {
-        List<String> cleanedWords = new ArrayList<String>();
+        List<String> cleanedWords = new ArrayList<>();
         for (String word : strings) {
             word = cleanWord(word);
             // Remove useless words
@@ -136,7 +135,7 @@ public abstract class TweetParser {
     }
 
     private static Map<String, Integer> sortByComparator(Map<String, Integer> unsortMap) {
-        List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(unsortMap.entrySet());
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortMap.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
             public int compare(Map.Entry<String, Integer> o1,
                                Map.Entry<String, Integer> o2) {
@@ -158,11 +157,11 @@ public abstract class TweetParser {
                     + " [Value] : " + entry.getValue());
         }
     }
-
     // TODO CPE : fin to delete
+
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");
-//        System.out.println(keyw);
+        System.out.println(keyw);
     }
 
 }
