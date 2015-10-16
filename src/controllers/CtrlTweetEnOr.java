@@ -27,6 +27,7 @@ public class CtrlTweetEnOr {
         myTweetList.add(beta);
         myTweetList.add(gamma);
         myTweetList.add(delta);
+        myTweetList.add(new TweetWord("delfskjuqyfudykjdfta", 40));
         // TODO ARIE : Fin delete
 
         this._keyWords = new KeyWord(word, myTweetList);
