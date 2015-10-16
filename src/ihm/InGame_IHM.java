@@ -40,12 +40,24 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	private JFrame _fenetre;
 	
 	private int _nb_point;
+	private int _nb_vie;
+	
+	
+	static int HARD=8;	
+	static int MEDIUM=10;	
+	static int EASY=15;
+	
+
 	
 	public static void main(String[] args){
-		InGame_IHM ingame = new InGame_IHM();
+		InGame_IHM ingame = new InGame_IHM(MEDIUM);
 	}
 	
-	public InGame_IHM(){
+	
+	
+	public InGame_IHM(int Difficulte){
+		
+		_nb_vie = Difficulte;
 		
 		_nb_point = 0;
 	    _verifier = new CtrlTweetEnOr("ski");
@@ -181,6 +193,8 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 		_fenetre.repaint();
 		
 	}
+	
+	
 	
 	public void add_point(int nb_point){
 		_nb_point += nb_point;
