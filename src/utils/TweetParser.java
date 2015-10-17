@@ -1,5 +1,6 @@
 package utils;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.*;
 
 import twitter4j.Query;
@@ -96,23 +97,23 @@ public abstract class TweetParser {
 
     private static List<TweetWord> mapPonderatedToTweetWord(Map<String, Integer> tweetList) {
         double total = 0;
+        /** recuperation du total pour le produit en croix **/
         List<TweetWord> listTweetWord = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
             total += entry.getValue();
         }
-        int entier, totalEntier = 0;
+
+        /** Creation des objects TweetWord, et ajout dans la listTweetWord **/
+        double value;
+        double totalSet = 0;
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
-            entier = (int) (entry.getValue() * 100 / total);
-            totalEntier += entier;
-            TweetWord tweetWord = new TweetWord(entry.getKey(), entier);
+            value = entry.getValue() * 100 / total;
+            value = Math.round(value);
+            totalSet += value;
+            TweetWord tweetWord = new TweetWord(entry.getKey(), (int) value);
             listTweetWord.add(tweetWord);
         }
-        /** Rattrapage du pourcentage lors du produit en croix **/
-        int missing = 100 - totalEntier;
-        for (int i = 0; i < missing; i++) {
-            int rand = (int)(Math.random() * 10);
-            listTweetWord.get(rand).setPonderation(listTweetWord.get(rand).getPonderation() + 1);
-        }
+        if (totalSet != 100) throw new InputMismatchException("Total des points != 100 / care ");
         return listTweetWord;
     }
 
@@ -160,7 +161,7 @@ public abstract class TweetParser {
 
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");
-        System.out.println(keyw);
+//        System.out.println(keyw);
     }
 
 }
