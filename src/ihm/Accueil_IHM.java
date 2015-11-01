@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-public class Config_IHM extends JFrame implements ActionListener{
+public class Accueil_IHM extends JFrame implements ActionListener{
 	
 
 
@@ -45,12 +45,12 @@ public class Config_IHM extends JFrame implements ActionListener{
 
 	
 	public static void main(String[] args) throws FontFormatException, IOException{
-		Config_IHM ci = new Config_IHM();
+		Accueil_IHM ci = new Accueil_IHM();
 	}
 	
 	
 	
-	public Config_IHM() throws FontFormatException, IOException{
+	public Accueil_IHM() throws FontFormatException, IOException{
 		
 
 	    _fenetre = new JFrame();
@@ -276,6 +276,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 		try {
 			new InGame_IHM(_difficulte,_hastag_theme,_fenetre);
 		} catch (FontFormatException e1) {} catch (IOException e1) {}
+
 		
 		this.dispose();
 	}

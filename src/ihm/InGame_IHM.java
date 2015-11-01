@@ -66,21 +66,24 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 
 	
 	public static void main(String[] args) throws FontFormatException, IOException{
-		InGame_IHM ingame = new InGame_IHM(MEDIUM);
+		InGame_IHM ingame = new InGame_IHM(MEDIUM,"test",new JFrame());
 	}
 	
 	
 	
-	public InGame_IHM(int Difficulte) throws FontFormatException, IOException{
+	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
 		_listword_label = new ArrayList();
 		
-	    _verifier = new CtrlTweetEnOr("ski");
+	    _verifier = new CtrlTweetEnOr(hastag_theme);
 		
 		
-	    _fenetre = new JFrame();
+	    _fenetre = fram;
+	    _fenetre.getContentPane().removeAll();
+
+
 		_fenetre.setTitle("Un Tweet en Or ");
 	    
 	    _fenetre.setSize(800, 600);
@@ -130,7 +133,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    //font.deriveFont(12f);
 	    
 		   
-	    _hashtag = new JLabel("#test");
+	    _hashtag = new JLabel("#"+hastag_theme);
 	    _hashtag.setForeground(Color.blue);
 	    Font hash_font = new Font("",Font.BOLD,24 );
 	   _hashtag.setFont(hash_font);
@@ -256,8 +259,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    _jp_principal.add(box6);
 	    
 	    
-    
-	    
+
 	    _fenetre.setVisible(true);
 	    
 	    
