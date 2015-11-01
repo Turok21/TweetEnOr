@@ -63,7 +63,7 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 	    {
 	    	_b_feu = new JButton("");
 	    	_b_feu.addActionListener(this);
-	    	_b_feu.setText("text");
+	    	_b_feu.setText("next");
 
 			GroupLayout panel5Layout = new GroupLayout(panel5);
 			panel5.setLayout(panel5Layout);
