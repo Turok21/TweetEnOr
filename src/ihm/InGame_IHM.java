@@ -3,29 +3,21 @@ package ihm;
 import controllers.*;
 import utils.*;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,11 +25,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.border.Border;
 
 public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField _tf_saisie;
 	private JButton _b_verifier;
 	
@@ -47,8 +41,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	private JLabel _hashtag;
 	
 	private JPanel _jp_principal;
-	private JPanel _paneltxt;
-	
 	private JFrame _fenetre;
 	
 	
@@ -75,7 +67,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
-		_listword_label = new ArrayList();
+		_listword_label = new ArrayList<JLabel>();
 		
 	    _verifier = new CtrlTweetEnOr(hastag_theme);
 		
@@ -98,7 +90,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
 	    
-	    JPanel _jp_principal = new JPanel();
+	    _jp_principal = new JPanel();
 	    _jp_principal.setBackground(Color.ORANGE);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    _fenetre.add(_jp_principal);
@@ -217,12 +209,16 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box6.add(pgl);
 	    box6.add(Box.createGlue());
 	    
-		int i=0;
 		for(TweetWord word : _listword){
 			
 			
 			JPanel p = new JPanel() {
-			     @Override
+			     /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 			     protected void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        Dimension arcs = new Dimension(15,15);
@@ -249,9 +245,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 			txt.setForeground(new Color(29, 202, 255,255));
 			_listword_label.add(txt);
 			p.add(txt);
-
-			
-			i++;
 		}
 		
 		

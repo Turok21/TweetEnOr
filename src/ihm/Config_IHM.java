@@ -21,6 +21,12 @@ public class Config_IHM extends JFrame implements ActionListener{
 	
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	private JTextField _tf_saisie;
 
 	
