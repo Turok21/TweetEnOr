@@ -44,13 +44,13 @@ public class Config_IHM extends JFrame implements ActionListener{
 	
 
 	
-	public static void main(String[] args) throws FontFormatException, IOException{
-		Config_IHM ci = new Config_IHM(new JFrame("test"));
+	public static void main(String[] args) {
+		new Config_IHM(new JFrame("test"));
 	}
 	
 	
 	
-	public Config_IHM(JFrame fram) throws FontFormatException, IOException{
+	public Config_IHM(JFrame fram) {
 		
 		_fenetre = fram;
 	    _fenetre.getContentPane().removeAll();

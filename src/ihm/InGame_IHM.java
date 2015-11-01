@@ -66,7 +66,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 
 	
 	public static void main(String[] args) throws FontFormatException, IOException{
-		InGame_IHM ingame = new InGame_IHM(MEDIUM,"test",new JFrame());
+		new InGame_IHM(MEDIUM,"test",new JFrame());
 	}
 	
 	

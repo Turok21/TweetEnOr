@@ -35,7 +35,7 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 
 	
 	public static void main(String[] args) {
-		Accueil_IHM ci = new Accueil_IHM();
+		new Accueil_IHM();
 	}
 	
 	
@@ -103,16 +103,11 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_feu)
 			lauchconfig();
-		
-	
-        
 	}
 	
 	
 	private void lauchconfig(){
-		try {
-			new Config_IHM(_fenetre);
-		} catch (FontFormatException e1) {} catch (IOException e1) {}
+		new Config_IHM(_fenetre);
 	}
 
 

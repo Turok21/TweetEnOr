@@ -23,11 +23,12 @@ public class End_IHM extends JFrame implements ActionListener{
 	
 	
 	private JFrame _fenetre;
-
+	private JLabel _text;
+	private JButton _b_again;
 
 	
 	public static void main(String[] args){
-		End_IHM ci = new End_IHM(new JFrame(""),1);
+		new End_IHM(new JFrame(""),1);
 	}
 	
 	
@@ -53,25 +54,34 @@ public class End_IHM extends JFrame implements ActionListener{
 	    
 	    
 	    JPanel panel5 = new JPanel();
-		JLabel text = new JLabel(""+fin);
+	    _text = new JLabel();
+		_b_again = new JButton();
+		_b_again.addActionListener(this);
 
 		{
+
+			_text.setText(""+fin);
+			_b_again.setText("Recommencer");
 
 			GroupLayout panel5Layout = new GroupLayout(panel5);
 			panel5.setLayout(panel5Layout);
 			panel5Layout.setHorizontalGroup(
 				panel5Layout.createParallelGroup()
-					.addGroup(GroupLayout.Alignment.TRAILING, panel5Layout.createSequentialGroup()
-						.addContainerGap(371, Short.MAX_VALUE)
-						.addComponent(text, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(345, Short.MAX_VALUE))
+					.addGroup(panel5Layout.createSequentialGroup()
+						.addGap(311, 311, 311)
+						.addGroup(panel5Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+							.addComponent(_b_again)
+							.addComponent(_text, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap(349, Short.MAX_VALUE))
 			);
 			panel5Layout.setVerticalGroup(
 				panel5Layout.createParallelGroup()
 					.addGroup(panel5Layout.createSequentialGroup()
-						.addContainerGap(216, Short.MAX_VALUE)
-						.addComponent(text, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(254, Short.MAX_VALUE))
+						.addContainerGap(212, Short.MAX_VALUE)
+						.addComponent(_text, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+						.addGap(29, 29, 29)
+						.addComponent(_b_again, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(191, Short.MAX_VALUE))
 			);
 		}
 		
@@ -89,7 +99,8 @@ public class End_IHM extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
+		if(e.getSource() == _b_again)
+			new Config_IHM(_fenetre);
         
 	}
 
