@@ -294,6 +294,11 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
     		_txt.setText("veulliez entrer un mots!");
     	}
 		
+		if(_nb_point == 100)
+			new End_IHM(_fenetre, 1);
+		if(_nb_vie == 0)
+			new End_IHM(_fenetre, 0);
+		
 		_fenetre.repaint();
 		
 	}

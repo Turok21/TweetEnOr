@@ -45,15 +45,16 @@ public class Config_IHM extends JFrame implements ActionListener{
 
 	
 	public static void main(String[] args) throws FontFormatException, IOException{
-		Config_IHM ci = new Config_IHM();
+		Config_IHM ci = new Config_IHM(new JFrame("test"));
 	}
 	
 	
 	
-	public Config_IHM() throws FontFormatException, IOException{
+	public Config_IHM(JFrame fram) throws FontFormatException, IOException{
 		
+		_fenetre = fram;
+	    _fenetre.getContentPane().removeAll();
 
-	    _fenetre = new JFrame();
 		_fenetre.setTitle("Un Tweet en Or - Setting ");
 	    
 	    _fenetre.setSize(800, 600);
@@ -277,7 +278,6 @@ public class Config_IHM extends JFrame implements ActionListener{
 			new InGame_IHM(_difficulte,_hastag_theme,_fenetre);
 		} catch (FontFormatException e1) {} catch (IOException e1) {}
 		
-		this.dispose();
 	}
 
 

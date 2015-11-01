@@ -1,5 +1,6 @@
 
 import controllers.CtrlTweetEnOr;
+import ihm.Accueil_IHM;
 import utils.KeyWord;
 import utils.TweetWord;
 import utils.WordComparator;
@@ -12,6 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("CLASS MAIN IS NOW RUNNING !");
+        Accueil_IHM ac = new Accueil_IHM();
 
     }
 }
