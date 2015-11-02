@@ -1,11 +1,14 @@
 package utils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by Arié on 12/10/2015.
+ * Created by AriÃ© on 12/10/2015.
  */
-public class KeyWord {
+public class KeyWord implements Serializable {
+	private static final long serialVersionUID = 1350092881346723535L;
+	
     private String          _word;
     private List<TweetWord> _listWords;
 

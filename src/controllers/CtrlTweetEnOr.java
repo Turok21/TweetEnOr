@@ -1,8 +1,14 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import utils.KeyWord;
 import utils.TweetParser;
@@ -19,7 +25,37 @@ public class CtrlTweetEnOr {
     private List<String> _validWords;
     
     public CtrlTweetEnOr(String word) {
-        this._keyWords = TweetParser.findWords(word);
+    	File file =  new File("cache/" + word + ".ser");
+    	if(file.exists()) { // TODO: check last modified date too*
+			try {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+				this._keyWords = (KeyWord)ois.readObject();
+				ois.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		this._keyWords = TweetParser.findWords(word);
+			try {
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+				oos.writeObject(this._keyWords) ;
+				oos.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
         this._invalidWords = new ArrayList<>();
         this._validWords = new ArrayList<>();
     }
