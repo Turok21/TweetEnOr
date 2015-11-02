@@ -99,7 +99,6 @@ public abstract class TweetParser {
             int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
             ponderatedWords.put(word, count + 1);
         }
-        System.out.println(ponderatedWords);
 
         /** Tri de la map */
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
