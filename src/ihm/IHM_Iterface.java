@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.RenderingHints.Key;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class IHM_Iterface extends JFrame {
+public class IHM_Iterface extends JFrame implements KeyListener{
 	
 	/**
 	 * 
@@ -34,28 +38,30 @@ public class IHM_Iterface extends JFrame {
 		
 		_fenetre = fram;
 		_fenetre.setTitle(title);
+		_fenetre.addKeyListener(this);
+		_fenetre.setFocusable(true);
 	    
-	    //_fenetre.setSize(800, 600);
-	    _fenetre.setMinimumSize(new Dimension(1000, 700));
+	   
+		if(_fenetre.getExtendedState() != JFrame.MAXIMIZED_BOTH){
+			_fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			_fenetre.setUndecorated(true);
+		}
+	    //_fenetre.setSize(600, 600);
 	    
 	    _fenetre.setLocationRelativeTo(null);
 	    
 	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
 		 JPanel _jp_principal = new JPanel();
+		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
 	    JPanel panel_fond = null;
 		try {
 			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
 		} catch (IOException e) {e.printStackTrace();}
-	  /*  
-	    ImageIcon ic = new ImageIcon("./data/images/"+fond);
-	    Image image = ic.getImage();
-	   
-	    JPanel panel_fond = new TestImagePanel( image.getScaledInstance(_fenetre.getWidth(), _fenetre.getHeight(), Image.SCALE_SMOOTH));
-	    panel_fond.setOpaque(true);
-		*/
+
+		panel_fond.addKeyListener(this);
 		_jp_principal.setLayout(new BorderLayout());
 		_jp_principal.setOpaque(false);
 	    
@@ -81,10 +87,29 @@ public class IHM_Iterface extends JFrame {
 				g.drawImage(buf.getScaledInstance( _fenetre.getWidth(), _fenetre.getHeight(), buf.SCALE_SMOOTH), 0,0, null);
 			}
 		};
-		
+
 		frame.setContentPane(panel);
 		
 		return panel;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {	
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			_fenetre.dispose();
+			_fenetre.setVisible(false);
+			this.dispose();
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

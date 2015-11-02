@@ -7,6 +7,7 @@ import java.awt.FontFormatException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-public class Config_IHM extends IHM_Iterface implements ActionListener{
+public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 
 
@@ -59,6 +60,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 		
 		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
 		_fenetre.getContentPane().setVisible(false);
+		_fenetre.addKeyListener(this);
 		
 		JPanel jp_sec = new JPanel();
 		jp_sec.setOpaque(false);
@@ -147,7 +149,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    _list_theme.add(new JToggleButton("apple"));
 	    _list_theme.add(new JToggleButton("Playsation"));
 	    _list_theme.add(new JToggleButton("XBOX"));
-	    _list_theme.add(new JToggleButton("réaliteraugmenter"));
+	    _list_theme.add(new JToggleButton("rÃ©aliteraugmenter"));
 	    _list_theme.add(new JToggleButton("lepain"));
 	    _list_theme.add(new JToggleButton("BLABLA"));
 	    _list_theme.add(new JToggleButton("ETCETC"));
@@ -155,7 +157,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    _list_theme.add(new JToggleButton("ETCETC"));
 	   
 
-	    _title_hastag = new JLabel("Thèmes :");
+	    _title_hastag = new JLabel("ThÃ¨mes :");
 	    Box box_theme = new Box(BoxLayout.X_AXIS);
 	    box_theme.setMaximumSize(new Dimension(_fenetre.getSize().width, 50));
 	    box_theme.setMinimumSize(new Dimension(_fenetre.getSize().width, 10));

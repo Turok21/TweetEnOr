@@ -70,6 +70,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",fram);
+	    _fenetre.addKeyListener(this);
 
 	    JPanel jp_sec = new JPanel();
 		jp_sec.setOpaque(false);
@@ -83,6 +84,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nb_point = 0;
 		_listword_label = new ArrayList<JLabel>();
 	    _verifier = new CtrlTweetEnOr(hastag_theme);
+	   
 
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
@@ -178,7 +180,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	    
 	    _listword = _verifier.getListWords();
-
+	    System.out.println(_listword.size());
 	    
 	    Box box6 = new Box(BoxLayout.X_AXIS);
 	    JPanel pgl = new JPanel(new FlowLayout());
@@ -189,9 +191,24 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    box6.add(pgl);
 	    box6.add(Box.createGlue());
 	    
-	    
+	    int i = 0;
 		for(TweetWord word : _listword){
-			
+			i++;
+	    	if(i == 4){
+	    		i=0;
+	    		jp_sec.add(box6);
+	    		
+	    		box6 = new Box(BoxLayout.X_AXIS);
+	    	    pgl = new JPanel(new FlowLayout());
+	    	    pgl.setBackground(new Color(0, 0, 0, 0));
+	    	    pgl.setMaximumSize(new Dimension(900, 900));
+	    	    
+	    	    box6.add(Box.createGlue());
+	    	    box6.add(pgl);
+	    	    box6.add(Box.createGlue());
+	    		
+	    	}
+	    	
 			JPanel p = new JPanel() {
 			     /**
 				 * 
@@ -226,11 +243,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			_listword_label.add(txt);
 			p.add(txt);
 		}
-
+		if(i != 0)
+			jp_sec.add(box6);
 		
-		
-	    
-	    jp_sec.add(box6);
 	    _fenetre.setVisible(true);
 
 	}
@@ -304,10 +319,4 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
     }
 	
 	
-
-	@Override
-	public void keyTyped(KeyEvent e) {}
-	@Override
-	public void keyReleased(KeyEvent e) {}
-
 }

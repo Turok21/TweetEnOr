@@ -1,14 +1,27 @@
 package ihm;
 
+
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.KeyListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Accueil_IHM extends IHM_Iterface implements ActionListener{
+public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 
 
@@ -20,6 +33,9 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 
 
 	private JButton _b_next;
+	private Component _spacer;
+	private Box _box_spacer_dif;
+	private JPanel _jp_principal;
 	
 	public static void main(String[] args) {
 		new Accueil_IHM();
@@ -29,67 +45,37 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 	
 	public Accueil_IHM(){
 		
+		
   
-	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
+	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
+	    _fenetre.addKeyListener(this);
 	    
-	  
-	    JPanel panel2 = new JPanel();
-	    JPanel panel5 = new JPanel();
-	    _b_next = new JButton();	
+	    
+	    _b_next = new JButton("next");
 	    _b_next.addActionListener(this);
-
-	  //======== panel5 ========
-	  		{
-	  			panel5.setMaximumSize(new Dimension(_fenetre.getHeight(), _fenetre.getWidth()));
-
-	  			//======== panel2 ========
-	  			{
-
-	  				//---- _b_next ----
-	  				_b_next.setText("next");
-
-	  				GroupLayout panel2Layout = new GroupLayout(panel2);
-	  				panel2.setLayout(panel2Layout);
-	  				panel2Layout.setHorizontalGroup(
-	  					panel2Layout.createParallelGroup()
-	  						.addGroup(panel2Layout.createSequentialGroup()
-	  							.addContainerGap()
-	  							.addComponent(_b_next, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-	  							.addContainerGap())
-	  				);
-	  				panel2Layout.setVerticalGroup(
-	  					panel2Layout.createParallelGroup()
-	  						.addGroup(panel2Layout.createSequentialGroup()
-	  							.addContainerGap()
-	  							.addComponent(_b_next, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-	  							.addContainerGap())
-	  				);
-	  			}
-
-	  			GroupLayout panel5Layout = new GroupLayout(panel5);
-	  			panel5.setLayout(panel5Layout);
-	  			panel5Layout.setHorizontalGroup(
-	  				panel5Layout.createParallelGroup()
-	  					.addGroup(GroupLayout.Alignment.TRAILING, panel5Layout.createSequentialGroup()
-	  						.addGap(0, 672, Short.MAX_VALUE)
-	  						.addComponent(panel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-	  			);
-	  			panel5Layout.setVerticalGroup(
-	  				panel5Layout.createParallelGroup()
-	  					.addGroup(GroupLayout.Alignment.TRAILING, panel5Layout.createSequentialGroup()
-	  						.addContainerGap(816, Short.MAX_VALUE)
-	  						.addComponent(panel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-	  						.addGap(0, 0, 0))
-	  			);
-	  		}
-	  		add(panel5, BorderLayout.CENTER);
-
 	    
+	   
+	   
+	    _box_spacer_dif = new Box(BoxLayout.Y_AXIS);
+		 _box_spacer_dif.setMaximumSize(new Dimension(9999, 50));
+		 _box_spacer_dif.setMinimumSize(new Dimension(_fenetre.getSize().width, _fenetre.getSize().height));
+		_spacer = Box.createVerticalStrut(Toolkit.getDefaultToolkit().getScreenSize().height-_b_next.getHeight()-100);
+		_box_spacer_dif.add(_spacer);
+		System.out.println(""+_fenetre.getHeight());
+		_box_spacer_dif.add(_b_next);
+		 _jp_principal.add(_box_spacer_dif);
+			
+
+
     
 		_fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
 	}
 
+
+	
+
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_next)
@@ -99,5 +85,12 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 	private void lauchconfig(){
 		new Config_IHM(_fenetre);
 	}
+
+
+	
+
+
+	
+
 }
 

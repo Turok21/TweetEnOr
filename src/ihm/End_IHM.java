@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -22,7 +23,7 @@ import javax.swing.JPanel;
 import controllers.CtrlTweetEnOr;
 import utils.TweetWord;
 
-public class End_IHM extends IHM_Iterface implements ActionListener{
+public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 	
 	/**
@@ -46,6 +47,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener{
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram);
 		else
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram);
+		
+		_fenetre.addKeyListener(this);
 			
 		JPanel jp_sec = new JPanel();
 		jp_sec.setOpaque(false);
@@ -114,7 +117,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener{
 
 		//_text.setText(""+fin);
 		_b_again.setText("Recommencer");
-
+		jp_sec.add(_b_again);
 		jp_sec.add(panel5, BorderLayout.CENTER);
 		
     
