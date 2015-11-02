@@ -18,14 +18,6 @@ public class KeyWord {
         return this._word;
     }
 
-    @Override
-    public String toString() {
-        return "KeyWord{" +
-                "_word='" + _word + '\'' +
-                ", _listWords=" + _listWords +
-                '}';
-    }
-
     public List<TweetWord> getListWords() {
         return _listWords;
     }
@@ -37,5 +29,13 @@ public class KeyWord {
     public TweetWord isMotValid(String mot) {
         TweetWord wordToReturn = new TweetWord("hello", 100); // TODO CPE : a modifier apres code;
         return wordToReturn;
+    }
+
+    @Override
+    public String toString() {
+        return "KeyWord{" +
+                "_word='" + _word + '\'' +
+                ", _listWords=" + _listWords +
+                '}';
     }
 }

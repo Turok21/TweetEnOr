@@ -1,7 +1,15 @@
 package utils;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -39,6 +47,7 @@ public abstract class TweetParser {
         for (String tweet : listTweets) {
             words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
+
         Map<String, Integer> topWords = listWordToPonderatedMap(words);
         // ponderation
         List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
@@ -113,7 +122,7 @@ public abstract class TweetParser {
             TweetWord tweetWord = new TweetWord(entry.getKey(), (int) value);
             listTweetWord.add(tweetWord);
         }
-        if (totalSet != 100) throw new InputMismatchException("Total des points != 100 / care ");
+        if (totalSet != 100) System.out.println("Total des points != 100 / care ");
         return listTweetWord;
     }
 
@@ -163,6 +172,5 @@ public abstract class TweetParser {
         KeyWord keyw = findWords("ski");
 //        System.out.println(keyw);
     }
-
 }
 
