@@ -78,7 +78,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    _jp_principal.add(box);
 	    
 	    
-	    _title_dif = new JLabel("Dificult� :");
+	    _title_dif = new JLabel("Difficulté :");
 	    Box box_title_dif = new Box(BoxLayout.X_AXIS);
 	    box_title_dif.setMaximumSize(new Dimension(9999, 50));
 	    box_title_dif.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
@@ -117,7 +117,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    
 	    _jp_principal.add(boxdif);
 	    
-	    _title_hastag = new JLabel("Th�mes :");
+	    _title_hastag = new JLabel("Thèmes :");
 	    Box box_title_theme = new Box(BoxLayout.X_AXIS);
 	    box_title_theme.setMaximumSize(new Dimension(9999, 50));
 	    box_title_theme.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
@@ -143,7 +143,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    _list_theme.add(new JToggleButton("apple"));
 	    _list_theme.add(new JToggleButton("Playsation"));
 	    _list_theme.add(new JToggleButton("XBOX"));
-	    _list_theme.add(new JToggleButton("r�aliteraugmenter"));
+	    _list_theme.add(new JToggleButton("réaliteraugmenter"));
 	    _list_theme.add(new JToggleButton("lepain"));
 	    _list_theme.add(new JToggleButton("BLABLA"));
 	    _list_theme.add(new JToggleButton("ETCETC"));
@@ -151,7 +151,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    _list_theme.add(new JToggleButton("ETCETC"));
 	   
 
-	    _title_hastag = new JLabel("Th�mes :");
+	    _title_hastag = new JLabel("Thèmes :");
 	    Box box_theme = new Box(BoxLayout.X_AXIS);
 	    box_theme.setMaximumSize(new Dimension(_fenetre.getSize().width, 50));
 	    box_theme.setMinimumSize(new Dimension(_fenetre.getSize().width, 10));

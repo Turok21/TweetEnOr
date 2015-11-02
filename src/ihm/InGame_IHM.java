@@ -28,7 +28,6 @@ import utils.TweetWord;
 import controllers.CtrlTweetEnOr;
 
 public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
-	
 	private JTextField _tf_saisie;
 	private JButton _b_verifier;
 	
@@ -55,15 +54,12 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	static int EASY=15;
 	
 
-	
 	public static void main(String[] args) throws FontFormatException, IOException{
 		InGame_IHM ingame = new InGame_IHM(MEDIUM,"test",new JFrame());
 	}
 	
-	
-	
+
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
-		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
 		_listword_label = new ArrayList();
@@ -84,8 +80,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    
 	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	           
-	    
-	    
+
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
 	    
@@ -113,9 +108,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 
 	    _jp_principal.add(box);
 	    
-	    
-	    
-	    
+  
 	    Box box2 = new Box(BoxLayout.X_AXIS);
 	    box2.setMaximumSize(new Dimension(9999, 50));
 	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
@@ -129,16 +122,14 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    Font hash_font = new Font("",Font.BOLD,24 );
 	   _hashtag.setFont(hash_font);
 	   
-	   
-	    
+
 	    box2.add(Box.createGlue());
 	    box2.add(_hashtag);
 	    box2.add(Box.createGlue());
 	    
 	    _jp_principal.add(box2);
 	    
-	    
-	    
+
 	    Box box3 = new Box(BoxLayout.X_AXIS);
 	    box3.setMaximumSize(new Dimension(9999, 40));
 	    box3.setMinimumSize(new Dimension(_fenetre.getSize().width, 40));
@@ -153,10 +144,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box3.add(Box.createRigidArea(new Dimension(20,40)));
 	    
 	    _jp_principal.add(box3);
-	    
-	    
-	    
-	    
+
 	    
 	    Box box4 = new Box(BoxLayout.X_AXIS);
 	    box4.setMaximumSize(new Dimension(9999, 0));
@@ -169,18 +157,13 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box4.add(Box.createGlue());
 	    
 	    _jp_principal.add(box4);
-	    
-	    
-	    
-	    
-	    
-	    
+
 	    Box box5 = new Box(BoxLayout.X_AXIS);
 	    box5.setMaximumSize(new Dimension(9999, 50));
 	    box5.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
 	    
 	    
-	    _b_verifier = new JButton("v�rifier");
+	    _b_verifier = new JButton("vérifier");
 		_b_verifier.addActionListener(this);
 	    
 	    box5.add(Box.createGlue());
@@ -188,16 +171,10 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box5.add(Box.createGlue());
 	    
 	    _jp_principal.add(box5);
-	    
-	    
-	    
-	    
-	    
-	    
+
 	    
 	    _listword = _verifier.getListWords();
-	    
-	    
+
 	    
 	    Box box6 = new Box(BoxLayout.X_AXIS);
 	    JPanel pgl = new JPanel(new FlowLayout());
@@ -210,8 +187,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    
 		int i=0;
 		for(TweetWord word : _listword){
-			
-			
 			JPanel p = new JPanel() {
 			     @Override
 			     protected void paintComponent(Graphics g) {
@@ -244,23 +219,11 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 			
 			i++;
 		}
-		
-		
-	    
+
 	    _jp_principal.add(box6);
-	    
-	    
 
-	    _fenetre.setVisible(true);
-	    
-	    
-	    
-	    
-	    
-	    
+	    _fenetre.setVisible(true);    
 	}
-
-	
 	
 	public void verifier(String mots_a_verifier){
 		
@@ -272,9 +235,9 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
         		_txt.setText("Mots incorect !");
         		loose_vie();
         	}else if(mots.getPonderation() == -3)
-        		_txt.setText("Mots d�ja rentr� !");
+        		_txt.setText("Mots déja rentré !");
         	else if(mots.getPonderation() == -2)
-        		_txt.setText("Mots d�ja rentr� et coresspond � "+mots.getWord()+" !");
+        		_txt.setText("Mots déja rentré et coresspond é "+mots.getWord()+" !");
         	else if(mots.getPonderation() > 0){
         		_txt.setText("Mots "+mots.getWord()+" correct ! plus "+mots.getPonderation()+" points.");
         		add_point(mots.getPonderation(),mots);
@@ -311,14 +274,11 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 				_fenetre.repaint();
 				break;
 			}
-			
 		}
-		
 		_nb_point += nb_point;
 		_compteur_de_point.setText("Points "+_nb_point);
 	}
 	
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -333,7 +293,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
     }
-	
 	
 	
 

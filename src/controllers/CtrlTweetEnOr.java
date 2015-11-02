@@ -10,7 +10,7 @@ import utils.TweetWord;
 import utils.WordComparator;
 
 /**
- * Created by Ari� on 12/10/2015.
+ * Created by Arié on 12/10/2015.
  */
 
 public class CtrlTweetEnOr {
@@ -18,9 +18,7 @@ public class CtrlTweetEnOr {
     private List<String> _proposedWords;
 
     public CtrlTweetEnOr(String word) {
-    	System.out.println("HEREEEEE?????????????");
         this._keyWords = TweetParser.findWords(word);
-        System.out.println(this._keyWords);
         this._proposedWords = new ArrayList<>();
     }
 
@@ -45,28 +43,28 @@ public class CtrlTweetEnOr {
     }
 
     /**
-     * @param word {String} Mot propos� par l'utilisateur et � verifier
-     * @return {TweetWord} <code>true</code> Mot trouv� {TrueWord, ponderation}
-     * <code>false</code> Mot trouv� {null, -1}
-     * <code>false + alreadyProposed</code> Mot trouv� {null, -2}
-     * <code>true + alreadyProposed</code> Mot trouv� {TrueWord, -3}
+     * @param word {String} Mot proposé par l'utilisateur et à verifier
+     * @return {TweetWord} <code>true</code> Mot trouvé {TrueWord, ponderation}
+     * <code>false</code> Mot trouvé {null, -1}
+     * <code>false + alreadyProposed</code> Mot trouvé {null, -2}
+     * <code>true + alreadyProposed</code> Mot trouvé {TrueWord, -3}
      */
     public TweetWord isMotValid(String word) {
         for (TweetWord nextTrue : this._keyWords.getListWords()) {
             if (WordComparator.wordCompare(word, nextTrue.getWord())) { /** Si le mot est juste **/
                 for (String nextProposed : this._proposedWords) {
-                    if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et d�ja propos� **/
+                    if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et déja proposé **/
                         return new TweetWord(nextTrue.getWord(), -3);
                     }
                 }
-                /** Si juste, et jamais propos� **/
+                /** Si juste, et jamais proposé **/
                 this._proposedWords.add(nextTrue.getWord());
                 return nextTrue;
             }
         }
         /** Si le mot est faux **/
         for (String nextProposed : this._proposedWords) {
-            if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et d�ja propos� **/
+            if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et déja proposé **/
                 return new TweetWord(null, -2);
             }
         }
