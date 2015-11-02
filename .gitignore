@@ -5,6 +5,7 @@
 .settings/*
 .classpath
 .project
+TweetEnOr.iml
 
 
 # Mobile Tools for Java (J2ME)

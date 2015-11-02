@@ -3,38 +3,24 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.Box;
+
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 
 public class End_IHM extends JFrame implements ActionListener{
-	
-	
+
 	private JFrame _fenetre;
 
-
-	
 	public static void main(String[] args){
 		End_IHM ci = new End_IHM(new JFrame(""),1);
 	}
-	
-	
-	
-	public End_IHM(JFrame fram,int fin) {
-		
 
+	public End_IHM(JFrame fram,int fin) {
 		_fenetre = fram;
 	    _fenetre.getContentPane().removeAll();
 		_fenetre.setTitle("Un Tweet en Or - Fin de partie ");
@@ -56,7 +42,6 @@ public class End_IHM extends JFrame implements ActionListener{
 		JLabel text = new JLabel(""+fin);
 
 		{
-
 			GroupLayout panel5Layout = new GroupLayout(panel5);
 			panel5.setLayout(panel5Layout);
 			panel5Layout.setHorizontalGroup(
@@ -76,12 +61,8 @@ public class End_IHM extends JFrame implements ActionListener{
 		}
 		
 		_jp_principal.add(panel5, BorderLayout.CENTER);
-		
-    
-	    
-	    _fenetre.setVisible(true);
-	    
 
+	    _fenetre.setVisible(true);
 	}
 
 	
@@ -89,9 +70,5 @@ public class End_IHM extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
-        
 	}
-
-
 }

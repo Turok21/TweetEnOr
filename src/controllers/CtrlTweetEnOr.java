@@ -1,14 +1,16 @@
 package controllers;
 
-import utils.KeyWord;
-import utils.TweetWord;
-import utils.WordComparator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import utils.KeyWord;
+import utils.TweetParser;
+import utils.TweetWord;
+import utils.WordComparator;
+
 /**
- * Created by Arié on 12/10/2015.
+ * Created by AriÃ© on 12/10/2015.
  */
 
 public class CtrlTweetEnOr {
@@ -16,21 +18,7 @@ public class CtrlTweetEnOr {
     private List<String> _proposedWords;
 
     public CtrlTweetEnOr(String word) {
-        // TODO ARIE : DELETE
-        TweetWord alpha = new TweetWord("alpha", 10);
-        TweetWord beta = new TweetWord("beta", 20);
-        TweetWord gamma = new TweetWord("gamma", 30);
-        TweetWord delta = new TweetWord("delta", 40);
-
-        List<TweetWord> myTweetList = new ArrayList<>();
-        myTweetList.add(alpha);
-        myTweetList.add(beta);
-        myTweetList.add(gamma);
-        myTweetList.add(delta);
-        //myTweetList.add(new TweetWord("delfskjuqyfudykjdfta", 40));
-        // TODO ARIE : Fin delete
-
-        this._keyWords = new KeyWord(word, myTweetList);
+        this._keyWords = TweetParser.findWords(word);
         this._proposedWords = new ArrayList<>();
     }
 
@@ -55,32 +43,32 @@ public class CtrlTweetEnOr {
     }
 
     /**
-     * @param word {String} Mot proposé par l'utilisateur et à verifier
-     * @return {TweetWord} <code>true</code> Mot trouvé {TrueWord, ponderation}
-     * <code>false</code> Mot trouvé {null, -1}
-     * <code>false + alreadyProposed</code> Mot trouvé {null, -2}
-     * <code>true + alreadyProposed</code> Mot trouvé {TrueWord, -3}
+     * @param word {String} Mot proposÃ© par l'utilisateur et Ã  verifier
+     * @return {TweetWord} <code>true</code> Mot trouvÃ© {TrueWord, ponderation}
+     * <code>false</code> Mot trouvÃ© {null, -1}
+     * <code>false + alreadyProposed</code> Mot trouvÃ© {null, -2}
+     * <code>true + alreadyProposed</code> Mot trouvÃ© {TrueWord, -3}
      */
     public TweetWord isMotValid(String word) {
         for (TweetWord nextTrue : this._keyWords.getListWords()) {
             if (WordComparator.wordCompare(word, nextTrue.getWord())) { /** Si le mot est juste **/
                 for (String nextProposed : this._proposedWords) {
-                    if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et déja proposé **/
+                    if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et dÃ©ja proposÃ© **/
                         return new TweetWord(nextTrue.getWord(), -3);
                     }
                 }
-                /** Si juste, et jamais proposé **/
+                /** Si juste, et jamais proposÃ© **/
                 this._proposedWords.add(nextTrue.getWord());
                 return nextTrue;
             }
         }
         /** Si le mot est faux **/
         for (String nextProposed : this._proposedWords) {
-            if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et déja proposé **/
+            if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et dÃ©ja proposÃ© **/
                 return new TweetWord(null, -2);
             }
         }
-        /** Si faux et jamais proposé **/
+        /** Si faux et jamais proposÃ© **/
         this._proposedWords.add(word);
         return new TweetWord(null, -1);
     }
