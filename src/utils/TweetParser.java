@@ -41,6 +41,7 @@ public abstract class TweetParser {
         for (String tweet : listTweets) {
         	words.addAll(cleanWords(tweet.split(" "), keyWords));
         }
+        System.out.println(words);
         
         List<TweetWord> tweetWords = toTweetWord(words);
         
@@ -77,22 +78,18 @@ public abstract class TweetParser {
     }
     
     private static List<TweetWord> toTweetWord(List<String> words) {
-    	List<TweetWord> tweetWords = new ArrayList<TweetWord>();
     	Map<String, Integer> ponderatedWords = new HashMap<String, Integer>();
 
     	for (String word : words) {
     		int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
     		ponderatedWords.put(word, count + 1);
         }
-
-    	return tweetWords;
+    	System.out.println(ponderatedWords);
+    	return ponderatedWords;
     }
     
-
-    
-    
-    
     private static List<String> cleanWords(String[] strings, String keyword) {
+    	keyword = keyword.toLowerCase();
     	List<String> cleanedWords = new ArrayList<String>();
     	for(String word: strings){
         	word = cleanWord(word);
@@ -118,7 +115,5 @@ public abstract class TweetParser {
         conf.setOAuthAccessTokenSecret("zQn3niHYwOmtgyu0KMOYO5SQjJDZbbu7AbR7TcrpenRfc"); 
         return conf;
    }
-    
-    
 }
 

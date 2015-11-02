@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Arié on 12/10/2015.
  */
 public class KeyWord {
-    private String _word;
+    private String          _word;
     private List<TweetWord> _listWords;
 
     public KeyWord(String word, List<TweetWord> listWords) {
@@ -16,14 +16,6 @@ public class KeyWord {
 
     public String getWord() {
         return this._word;
-    }
-
-    @Override
-    public String toString() {
-        return "KeyWord{" +
-                "_word='" + _word + '\'' +
-                ", _listWords=" + _listWords +
-                '}';
     }
 
     public List<TweetWord> getListWords() {
@@ -37,5 +29,13 @@ public class KeyWord {
     public TweetWord isMotValid(String mot) {
         TweetWord wordToReturn = new TweetWord("hello", 100); // TODO CPE : a modifier apres code;
         return wordToReturn;
+    }
+
+    @Override
+    public String toString() {
+        return "KeyWord{" +
+                "_word='" + _word + '\'' +
+                ", _listWords=" + _listWords +
+                '}';
     }
 }
