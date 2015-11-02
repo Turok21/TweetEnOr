@@ -102,7 +102,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    _b_easy = new JToggleButton("EASY");
 	    _b_easy.addActionListener(this);
 	    
-	    _b_medium = new JToggleButton("MEDUIM");
+	    _b_medium = new JToggleButton("MEDIUM");
 	    _b_medium.setSelected(true);
 	    _b_medium.addActionListener(this);
 	    _difficulte = InGame_IHM.MEDIUM;

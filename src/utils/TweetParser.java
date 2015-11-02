@@ -161,7 +161,7 @@ public abstract class TweetParser {
 
     public static String cleanWord(String word) {
     	word = Normalizer.normalize(word, Normalizer.Form.NFD);
-        return word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
+        return word.toLowerCase().replaceAll("[^a-z]|^-", "").replace("\n", "").replace("\r", "");
     }
 
     private static ConfigurationBuilder config() {
