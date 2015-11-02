@@ -36,7 +36,7 @@ public class IHM_Iterface extends JFrame {
 		_fenetre.setTitle(title);
 	    
 	    //_fenetre.setSize(800, 600);
-	    //_fenetre.setMinimumSize(new Dimension(800, 600));
+	    _fenetre.setMinimumSize(new Dimension(1000, 700));
 	    
 	    _fenetre.setLocationRelativeTo(null);
 	    
