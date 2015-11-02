@@ -1,5 +1,6 @@
 package utils;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public abstract class TweetParser {
             "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
             "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
             "ça", "étaient", "étions", "été", "être", "RT", "via", "de", "une", "jai",
-            "the"
+            "the", "suis", "cest"
     ));
 
     private static int nbTweetsToGet = 100;
@@ -141,6 +142,7 @@ public abstract class TweetParser {
     }
 
     public static String cleanWord(String word) {
+    	word = Normalizer.normalize(word, Normalizer.Form.NFD);
         return word.toLowerCase().replaceAll("[^a-z]", "").replace("\n", "").replace("\r", "");
     }
 
