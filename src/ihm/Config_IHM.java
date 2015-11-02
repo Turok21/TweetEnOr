@@ -134,7 +134,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    jp_sec.add(box_title_theme);
 	    
 	    _list_theme = new ArrayList<>();
-	    _list_theme.add(new JToggleButton("SKI"));
+	    _list_theme.add(new JToggleButton("ski"));
 	    _list_theme.add(new JToggleButton("Pomme"));
 	    _list_theme.add(new JToggleButton("grec"));
 	    _list_theme.add(new JToggleButton("russie"));
@@ -146,13 +146,11 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    _list_theme.add(new JToggleButton("Microsoft"));
 	    _list_theme.add(new JToggleButton("apple"));
 	    _list_theme.add(new JToggleButton("Playsation"));
-	    _list_theme.add(new JToggleButton("XBOX"));
-	    _list_theme.add(new JToggleButton("réaliteraugmenter"));
-	    _list_theme.add(new JToggleButton("lepain"));
-	    _list_theme.add(new JToggleButton("BLABLA"));
-	    _list_theme.add(new JToggleButton("ETCETC"));
-	    _list_theme.add(new JToggleButton("ETCETC"));
-	    _list_theme.add(new JToggleButton("ETCETC"));
+	    _list_theme.add(new JToggleButton("Xbox"));
+	    _list_theme.add(new JToggleButton("réalité augmentée"));
+	    _list_theme.add(new JToggleButton("pollution"));
+	    _list_theme.add(new JToggleButton("aircocaine"));
+
 	   
 
 	    _title_hastag = new JLabel("Thèmes :");

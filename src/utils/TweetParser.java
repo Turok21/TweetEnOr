@@ -26,28 +26,36 @@ import twitter4j.conf.ConfigurationBuilder;
 public abstract class TweetParser {
 
     private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
-            "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
-            "car", "ce", "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
-            "des", "du", "dedans", "dehors", "depuis", "devrait", "doit", "donc", "dos",
-            "début", "elle", "elles", "en", "encore", "essai", "est", "et", "eu", "fait",
-            "faites", "fois", "font", "hors", "ici", "il", "ils", "je", "juste", "la", "le",
-            "les", "leur", "là", "ma", "maintenant", "mais", "mes", "mine", "moins", "mon",
-            "mot", "même", "ni", "nommés", "notre", "nous", "ou", "où", "par", "parce", "pas",
-            "peut", "peu", "plupart", "pour", "pourquoi", "quand", "que", "quel", "quelle",
-            "quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son",
-            "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
-            "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
-            "ça", "étaient", "étions", "été", "être", "RT", "via", "de", "une", "jai",
-            "the", "suis", "cest"
-    ));
+    	      "le", "la", "les",
+    	      "ma", "mon", "mes", "tes", "ses", "sa", "son", "leurs", "leur", "laquelle", "lesquelles",
+    	      "qui", "que", "quoi", "dont", "ou", "quel", "quels", "quelle", "quelles",
+    	      "mais", "ou", "et", "donc", "or", "ni", "car",
+    	      "se", "ca", "ce",
+    	      "je", "tu", "il", "elle", "on", "nous", "vous", "ils", "elles",
+    	      "lui", "eux",
+    	      "aux", "cet", "cette",
+    	      "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
+    	      "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
+    	      "des", "du", "depuis", "devrait", "doit", "dos",
+    	      "en", "encore", "essai", "et", "eu", "fait",
+    	      "faites", "fois", "font", "hors", "ici", "juste", "maintenant", "moins",
+    	      "mot", "même", "notre", "par", "parce", "pas",
+    	      "peut", "peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
+    	      "sans", "seulement", "si", "sien",
+    	      "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
+    	      "tous", "tout", "trop", "tres", "voient", "vont", "votre", "vu",
+    	      "etaient", "etions", "ete", "etre", "RT", "via", "de", "une", "the",
+    	      "suis", "es", "est", "etes", "sommes", "sont", 
+    	      "ai", "as", "a", "avons", "avez", "ont"
+    	));
 
-    private static int nbTweetsToGet = 100;
+    private static int nbTweetsToGet = 4000;
 
     public static KeyWord findWords(String keyWords) {
         List<String> listTweets = getTweets(keyWords);
         List<String> words = new ArrayList<>();
         for (String tweet : listTweets) {
-            words.addAll(cleanWords(tweet.split(" "), keyWords));
+            words.addAll(cleanWords(tweet.split(" |'"), keyWords));
         }
 
         Map<String, Integer> topWords = listWordToPonderatedMap(words);
@@ -91,6 +99,7 @@ public abstract class TweetParser {
             int count = ponderatedWords.containsKey(word) ? ponderatedWords.get(word) : 0;
             ponderatedWords.put(word, count + 1);
         }
+        System.out.println(ponderatedWords);
 
         /** Tri de la map */
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
@@ -134,7 +143,7 @@ public abstract class TweetParser {
         for (String word : strings) {
             word = cleanWord(word);
             // Remove useless words
-            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword.toLowerCase()) && !word.startsWith("http")) {
+            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword.toLowerCase()) && !word.startsWith("http") && !word.contains("httpstco")) {
                 cleanedWords.add(word);
             }
         }
