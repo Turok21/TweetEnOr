@@ -125,7 +125,7 @@ public abstract class TweetParser {
 
         /** Creation des objects TweetWord, et ajout dans la listTweetWord **/
         double value;
-        double totalSet = 0;
+        int totalSet = 0;
         for (Map.Entry<String, Integer> entry : tweetList.entrySet()) {
             value = entry.getValue() * 100 / total;
             value = Math.round(value);
@@ -133,7 +133,16 @@ public abstract class TweetParser {
             TweetWord tweetWord = new TweetWord(entry.getKey(), (int) value);
             listTweetWord.add(tweetWord);
         }
-        if (totalSet != 100) System.out.println("Total des points != 100 / care ");
+
+        if (totalSet != 100) {
+            int difference = 100 - totalSet;
+            Iterator<TweetWord> iMap = listTweetWord.iterator();
+            while (iMap.hasNext() && difference != 0) {
+                TweetWord word = iMap.next();
+                word.setPonderation(word.getPonderation() + 1);
+                difference--;
+            }
+        }
 
         return listTweetWord;
     }
@@ -183,6 +192,7 @@ public abstract class TweetParser {
 
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");
+        System.out.println(keyw);
 //        System.out.println(keyw);
     }
 }
