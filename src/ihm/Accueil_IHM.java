@@ -36,10 +36,11 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 	    JPanel panel2 = new JPanel();
 	    JPanel panel5 = new JPanel();
 	    _b_next = new JButton();	
+	    _b_next.addActionListener(this);
 
 	  //======== panel5 ========
 	  		{
-	  			panel5.setMaximumSize(new Dimension(1920, 1080));
+	  			panel5.setMaximumSize(new Dimension(_fenetre.getHeight(), _fenetre.getWidth()));
 
 	  			//======== panel2 ========
 	  			{
