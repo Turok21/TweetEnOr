@@ -29,7 +29,8 @@ public class CtrlTweetEnOr {
     	
     	
     	File file =  new File("cache/" + word + ".ser");
-    	if(file.exists()) { // TODO: check last modified date too*
+    	long threeDays = 260000000L;
+    	if(file.exists() && file.lastModified() > new java.util.Date().getTime() - threeDays) {
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				this._keyWords = (KeyWord)ois.readObject();
