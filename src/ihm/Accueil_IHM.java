@@ -3,15 +3,24 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Accueil_IHM extends JFrame implements ActionListener{
+public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 	
 
 
@@ -22,11 +31,7 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 
 
 
-	private JButton _b_feu;
-
-	
-	
-	private JFrame _fenetre;
+	private JButton _b_next;
 	
 
 	
@@ -36,34 +41,19 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 	
 	
 	
+	
 	public Accueil_IHM(){
 		
-
-	    _fenetre = new JFrame();
-		_fenetre.setTitle("Un Tweet en Or - Accueil ");
+  
+	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
 	    
-	    _fenetre.setSize(800, 600);
-	    _fenetre.setMinimumSize(new Dimension(800, 600));
-	    
-	    _fenetre.setLocationRelativeTo(null);
-	    
-	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	           
-	    
-	    JPanel _jp_principal = new JPanel();
-	    _jp_principal.setBackground(Color.ORANGE);
-	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
-	    
-
-		_jp_principal.setLayout(new BorderLayout());
-	    
-	    _fenetre.add(_jp_principal);
 	    
 	    JPanel panel5 = new JPanel();
+	    panel5.setOpaque(false);
 	    {
-	    	_b_feu = new JButton("");
-	    	_b_feu.addActionListener(this);
-	    	_b_feu.setText("next");
+	    	_b_next = new JButton("");
+	    	_b_next.addActionListener(this);
+	    	_b_next.setText("next");
 
 			GroupLayout panel5Layout = new GroupLayout(panel5);
 			panel5.setLayout(panel5Layout);
@@ -71,14 +61,14 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 				panel5Layout.createParallelGroup()
 					.addGroup(panel5Layout.createSequentialGroup()
 						.addContainerGap(710, Short.MAX_VALUE)
-						.addComponent(_b_feu)
+						.addComponent(_b_next)
 						.addContainerGap())
 			);
 			panel5Layout.setVerticalGroup(
 				panel5Layout.createParallelGroup()
 					.addGroup(GroupLayout.Alignment.TRAILING, panel5Layout.createSequentialGroup()
 						.addContainerGap(497, Short.MAX_VALUE)
-						.addComponent(_b_feu)
+						.addComponent(_b_next)
 						.addContainerGap())
 			);
 		}
@@ -86,7 +76,7 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 	    
 	    
     
-	    
+		_fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
 	    
 
@@ -97,7 +87,7 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == _b_feu)
+		if(e.getSource() == _b_next)
 			lauchconfig();
 	}
 	
@@ -108,3 +98,4 @@ public class Accueil_IHM extends JFrame implements ActionListener{
 
 
 }
+

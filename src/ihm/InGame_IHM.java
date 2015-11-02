@@ -3,6 +3,7 @@ package ihm;
 import controllers.*;
 import utils.*;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -10,6 +11,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,13 +22,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
+public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 	/**
 	 * 
@@ -41,7 +45,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	private JLabel _hashtag;
 	
 	private JPanel _jp_principal;
-	private JFrame _fenetre;
 	
 	
 	private CtrlTweetEnOr _verifier;
@@ -63,7 +66,18 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	
 	
 	
+	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+		
+		
+	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",fram);
+
+	    JPanel jp_sec = new JPanel();
+		jp_sec.setOpaque(false);
+		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
+		
+		_jp_principal.add(jp_sec);
+		
 		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
@@ -72,28 +86,12 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    _verifier = new CtrlTweetEnOr(hastag_theme);
 		
 		
-	    _fenetre = fram;
-	    _fenetre.getContentPane().removeAll();
-
-
-		_fenetre.setTitle("Un Tweet en Or ");
-	    
-	    _fenetre.setSize(800, 600);
-	    _fenetre.setMinimumSize(new Dimension(800, 600));
-	    
-	    _fenetre.setLocationRelativeTo(null);
-	    
-	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  
 	           
 	    
 	    
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
-	    
-	    _jp_principal = new JPanel();
-	    _jp_principal.setBackground(Color.ORANGE);
-	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
-	    _fenetre.add(_jp_principal);
 	    
 	    
 	    
@@ -107,12 +105,12 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
 	    
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
-	    box.add(_compteur_de_point);
-	    box.add(Box.createGlue());
 	    box.add(_compteur_de_vie);
+	    box.add(Box.createGlue());
+	    box.add(_compteur_de_point);
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
 
-	    _jp_principal.add(box);
+	    jp_sec.add(box);
 	    
 	    
 	    
@@ -120,9 +118,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    Box box2 = new Box(BoxLayout.X_AXIS);
 	    box2.setMaximumSize(new Dimension(9999, 50));
 	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
-	    
-	    //Font font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/arista.ttf"));
-	    //font.deriveFont(12f);
+
 	    
 		   
 	    _hashtag = new JLabel("#"+hastag_theme);
@@ -136,7 +132,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box2.add(_hashtag);
 	    box2.add(Box.createGlue());
 	    
-	    _jp_principal.add(box2);
+	    jp_sec.add(box2);
 	    
 	    
 	    
@@ -153,7 +149,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box3.add(Box.createGlue());
 	    box3.add(Box.createRigidArea(new Dimension(20,40)));
 	    
-	    _jp_principal.add(box3);
+	    jp_sec.add(box3);
 	    
 	    
 	    
@@ -169,7 +165,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box4.add(_txt);
 	    box4.add(Box.createGlue());
 	    
-	    _jp_principal.add(box4);
+	    jp_sec.add(box4);
 	    
 	    
 	    
@@ -188,7 +184,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box5.add(_b_verifier);
 	    box5.add(Box.createGlue());
 	    
-	    _jp_principal.add(box5);
+	    jp_sec.add(box5);
 	    
 	    
 	    
@@ -249,17 +245,13 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 		
 		
 	    
-	    _jp_principal.add(box6);
+	    jp_sec.add(box6);
+	    
 	    
 	    
 
 	    _fenetre.setVisible(true);
-	    
-	    
-	    
-	    
-	    
-	    
+
 	}
 
 	
@@ -287,11 +279,12 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
     		_txt.setText("veulliez entrer un mots!");
     	}
 		
-		if(_nb_point == 100)
-			new End_IHM(_fenetre, 1);
-		if(_nb_vie == 0)
-			new End_IHM(_fenetre, 0);
-		
+		if(_nb_point == 100){
+			new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+		}
+		if(_nb_vie == 0){
+			new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+		}
 		_fenetre.repaint();
 		
 	}
@@ -302,8 +295,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 			_nb_vie--;
 			_compteur_de_vie.setText("vie :"+_nb_vie);
 		}
-		if(_nb_vie == 0)
-			javax.swing.JOptionPane.showMessageDialog(null,"Fin de partie : you loose !"); 
 	}
 	private void add_point(int nb_point,TweetWord mots){
 		

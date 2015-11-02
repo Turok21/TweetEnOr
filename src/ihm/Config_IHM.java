@@ -1,8 +1,10 @@
 package ihm;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-public class Config_IHM extends JFrame implements ActionListener{
+public class Config_IHM extends IHM_Iterface implements ActionListener{
 	
 
 
@@ -27,8 +30,6 @@ public class Config_IHM extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 
 
-	private JTextField _tf_saisie;
-
 	
 	private JToggleButton _b_easy, _b_medium, _b_hard;
 	private JButton _b_play;
@@ -37,7 +38,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	private List<JToggleButton> _list_theme;
 	
 	
-	private JFrame _fenetre;
+	
 	
 	
 	int _difficulte;
@@ -56,33 +57,17 @@ public class Config_IHM extends JFrame implements ActionListener{
 	
 	
 	
+	
 	public Config_IHM(JFrame fram) {
+		 
 		
-		_fenetre = fram;
-	    _fenetre.getContentPane().removeAll();
-
-		_fenetre.setTitle("Un Tweet en Or - Setting ");
-	    
-	    _fenetre.setSize(800, 600);
-	    _fenetre.setMinimumSize(new Dimension(800, 600));
-	    
-	    _fenetre.setLocationRelativeTo(null);
-	    
-	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	           
-	    
-	    
-	    _tf_saisie = new JTextField(50);
-	    _tf_saisie.setVisible(true);
-	    
-	    JPanel _jp_principal = new JPanel();
-	    _jp_principal.setBackground(Color.ORANGE);
-	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
-	    _fenetre.add(_jp_principal);
-	    
-	    
-	    
-	    
+		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
+		_fenetre.getContentPane().setVisible(false);
+		
+		JPanel jp_sec = new JPanel();
+		jp_sec.setOpaque(false);
+		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
+		_jp_principal.add(jp_sec);
 	    
 	    _title_fram = new JLabel("Setting");	    
 	    
@@ -96,7 +81,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    box.add(Box.createGlue());
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
 
-	    _jp_principal.add(box);
+	    jp_sec.add(box);
 	    
 	    
 	    _title_dif = new JLabel("Dificulté :");
@@ -109,7 +94,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    box_title_dif.add(Box.createGlue());
 	    box_title_dif.add(Box.createRigidArea(new Dimension(20,58)));
 
-	    _jp_principal.add(box_title_dif);
+	    jp_sec.add(box_title_dif);
 	    
 	    
 	    
@@ -138,7 +123,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    boxdif.add(_b_hard);
 	    boxdif.add(Box.createGlue());
 	    
-	    _jp_principal.add(boxdif);
+	    jp_sec.add(boxdif);
 	    
 	    
 	    
@@ -160,7 +145,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    box_title_theme.add(Box.createGlue());
 	    box_title_theme.add(Box.createRigidArea(new Dimension(20,58)));
 
-	    _jp_principal.add(box_title_theme);
+	    jp_sec.add(box_title_theme);
 	    
 	    
 	    _list_theme = new ArrayList<>();
@@ -198,7 +183,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    	if(i == 7){
 	    		i=0;
 	    		
-	    		_jp_principal.add(box_theme);
+	    		jp_sec.add(box_theme);
 	    		box_theme = new Box(BoxLayout.X_AXIS);
 	    		box_theme.setMaximumSize(new Dimension(_fenetre.getSize().width, 50));
 	    	    box_theme.setMinimumSize(new Dimension(_fenetre.getSize().width, 10));
@@ -211,7 +196,7 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    	
 	    }
 	    if(i != 0)
-	    	_jp_principal.add(box_theme);
+	    	jp_sec.add(box_theme);
 	    
 	    
 	    
@@ -231,10 +216,10 @@ public class Config_IHM extends JFrame implements ActionListener{
 	    
 	    
 
-	    _jp_principal.add(box_go);
+	    jp_sec.add(box_go);
 	    
     
-	    
+	    _fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
 	    
 
