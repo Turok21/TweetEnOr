@@ -123,14 +123,12 @@ public abstract class TweetParser {
             listTweetWord.add(tweetWord);
         }
 //        if (totalSet != 100) System.out.println("Total des points != 100 / care ");
-        System.out.println(totalSet);
         if (totalSet != 100) {
             int difference = 100 - totalSet;
             Iterator<TweetWord> iMap = listTweetWord.iterator();
             while (iMap.hasNext() && difference != 0) {
                 TweetWord word = iMap.next();
                 word.setPonderation(word.getPonderation() + 1);
-                System.out.println(difference);
                 difference--;
             }
         }
