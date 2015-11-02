@@ -36,10 +36,10 @@ public abstract class TweetParser {
             "quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son",
             "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
             "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
-            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de", "une"
+            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de", "une", "jai"
     ));
 
-    private static int nbTweetsToGet = 150;
+    private static int nbTweetsToGet = 2000;
 
     public static KeyWord findWords(String keyWords) {
         List<String> listTweets = getTweets(keyWords);
@@ -131,7 +131,7 @@ public abstract class TweetParser {
         for (String word : strings) {
             word = cleanWord(word);
             // Remove useless words
-            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword) && !word.startsWith("http")) {
+            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword.toLowerCase()) && !word.startsWith("http")) {
                 cleanedWords.add(word);
             }
         }
