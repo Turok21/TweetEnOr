@@ -237,7 +237,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
         	}else if(mots.getPonderation() == -3)
         		_txt.setText("Mots déja rentré !");
         	else if(mots.getPonderation() == -2)
-        		_txt.setText("Mots déja rentré et coresspond é "+mots.getWord()+" !");
+        		_txt.setText("Mots déja rentré et coresspond à "+mots.getWord()+" !");
         	else if(mots.getPonderation() > 0){
         		_txt.setText("Mots "+mots.getWord()+" correct ! plus "+mots.getPonderation()+" points.");
         		add_point(mots.getPonderation(),mots);
