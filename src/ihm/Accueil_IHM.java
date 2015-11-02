@@ -1,23 +1,10 @@
 package ihm;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Accueil_IHM extends IHM_Iterface implements ActionListener{
@@ -33,13 +20,10 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 
 	private JButton _b_next;
 	
-
-	
 	public static void main(String[] args) {
 		new Accueil_IHM();
 	}
-	
-	
+
 	
 	
 	public Accueil_IHM(){
@@ -72,30 +56,21 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener{
 						.addContainerGap())
 			);
 		}
-		_jp_principal.add(panel5, BorderLayout.CENTER);
-	    
+		_jp_principal.add(panel5, BorderLayout.CENTER); 
 	    
     
 		_fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
-	    
-
 	}
-
-	
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_next)
 			lauchconfig();
 	}
-	
-	
+
 	private void lauchconfig(){
 		new Config_IHM(_fenetre);
 	}
-
-
 }
 

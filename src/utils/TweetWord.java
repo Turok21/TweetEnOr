@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Created by Arié on 12/10/2015.
+ * Created by AriÃ© on 12/10/2015.
  */
 public class TweetWord {
     private String _word;
@@ -31,6 +31,10 @@ public class TweetWord {
 
     @Override
     public String toString() {
-        return "TweetWord{word=" + _word + ", ponderation=" + _ponderation + "}";
+        return "TweetWord{word=" + _word + ", ponderation=" + _ponderation + "}\n";
+    }
+
+    public void setPonderation(int ponderation) {
+        this._ponderation = ponderation;
     }
 }

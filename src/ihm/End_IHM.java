@@ -3,12 +3,11 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.List;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,14 +15,10 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-
 import controllers.CtrlTweetEnOr;
 import utils.TweetWord;
 
@@ -37,9 +32,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener{
 	private JLabel _text;
 	private JButton _b_again;
 
-	
-	public static void main(String[] args){
-		
+
+	public static void main(String[] args){		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),0,listword);
@@ -117,39 +111,15 @@ public class End_IHM extends IHM_Iterface implements ActionListener{
 		_b_again = new JButton();
 		_b_again.addActionListener(this);
 
-		{
 
-			//_text.setText(""+fin);
-			_b_again.setText("Recommencer");
+		//_text.setText(""+fin);
+		_b_again.setText("Recommencer");
 
-			GroupLayout panel5Layout = new GroupLayout(panel5);
-			panel5.setLayout(panel5Layout);
-			panel5Layout.setHorizontalGroup(
-				panel5Layout.createParallelGroup()
-					.addGroup(panel5Layout.createSequentialGroup()
-						.addGap(311, 311, 311)
-						.addGroup(panel5Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-							.addComponent(_b_again)
-							.addComponent(_text, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(349, Short.MAX_VALUE))
-			);
-			panel5Layout.setVerticalGroup(
-				panel5Layout.createParallelGroup()
-					.addGroup(panel5Layout.createSequentialGroup()
-						.addContainerGap(212, Short.MAX_VALUE)
-						.addComponent(_text, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-						.addGap(29, 29, 29)
-						.addComponent(_b_again, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(191, Short.MAX_VALUE))
-			);
-		}
-		
 		jp_sec.add(panel5, BorderLayout.CENTER);
 		
     
 	    
 	    _fenetre.setVisible(true);
-	    
 
 	}
 
@@ -160,8 +130,5 @@ public class End_IHM extends IHM_Iterface implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_again)
 			new Config_IHM(_fenetre);
-        
 	}
-
-
 }
