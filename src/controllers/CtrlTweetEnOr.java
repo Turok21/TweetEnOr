@@ -68,7 +68,7 @@ public class CtrlTweetEnOr {
                 return new TweetWord(null, -2);
             }
         }
-        /** Si faux et jamais propos� **/
+        /** Si faux et jamais proposé **/
         this._proposedWords.add(word);
         return new TweetWord(null, -1);
     }
