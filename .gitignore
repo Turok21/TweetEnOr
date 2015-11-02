@@ -7,6 +7,7 @@
 .project
 TweetEnOr.iml
 
+cache/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

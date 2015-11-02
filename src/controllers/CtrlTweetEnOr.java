@@ -1,8 +1,12 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import utils.KeyWord;
 import utils.TweetParser;
@@ -15,31 +19,44 @@ import utils.WordComparator;
 
 public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
-    private List<String> _proposedWords;
-
+    private List<String> _invalidWords;
+    private List<String> _validWords;
+    
     public CtrlTweetEnOr(String word) {
-        this._keyWords = TweetParser.findWords(word);
-        this._proposedWords = new ArrayList<>();
+    	// Create "cache" directory if does not exist
+    	File directory = new File("cache");
+    	directory.mkdirs();
+    	
+    	
+    	File file =  new File("cache/" + word + ".ser");
+    	long threeDays = 260000000L;
+    	if(file.exists() && file.lastModified() > new java.util.Date().getTime() - threeDays) {
+			try {
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+				this._keyWords = (KeyWord)ois.readObject();
+				ois.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	else {
+    		this._keyWords = TweetParser.findWords(word);
+			try {
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+				oos.writeObject(this._keyWords) ;
+				oos.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+        this._invalidWords = new ArrayList<>();
+        this._validWords = new ArrayList<>();
     }
 
     public KeyWord getKeyWords() {
         return _keyWords;
-    }
-
-    public List<String> getProposedWords() {
-        return _proposedWords;
-    }
-
-    public String getOneProposedWords(int index) {
-        return this._proposedWords.get(index);
-    }
-
-    public void addWordsToList(String newWord) {
-        _proposedWords.add(newWord);
-    }
-
-    public void foundWords() {
-        // TODO CPE : trouver les mots pour le this.keyWords
     }
 
     /**
@@ -52,24 +69,24 @@ public class CtrlTweetEnOr {
     public TweetWord isMotValid(String word) {
         for (TweetWord nextTrue : this._keyWords.getListWords()) {
             if (WordComparator.wordCompare(word, nextTrue.getWord())) { /** Si le mot est juste **/
-                for (String nextProposed : this._proposedWords) {
+                for (String nextProposed : this._validWords) {
                     if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et déja proposé **/
                         return new TweetWord(nextTrue.getWord(), -3);
                     }
                 }
                 /** Si juste, et jamais proposé **/
-                this._proposedWords.add(nextTrue.getWord());
+                this._validWords.add(nextTrue.getWord());
                 return nextTrue;
             }
         }
         /** Si le mot est faux **/
-        for (String nextProposed : this._proposedWords) {
+        for (String nextProposed : this._invalidWords) {
             if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et déja proposé **/
                 return new TweetWord(null, -2);
             }
         }
-        /** Si faux et jamais propos� **/
-        this._proposedWords.add(word);
+        /** Si faux et jamais proposé **/
+        this._invalidWords.add(word);
         return new TweetWord(null, -1);
     }
 
@@ -78,7 +95,6 @@ public class CtrlTweetEnOr {
     }
 
     public boolean isMotAlreadyUse(String Mot) {
-        ListIterator listIterator = this._proposedWords.listIterator();
         // TODO CPE : loop sur l'iterateur et verification de MOT sur chacun des words de proposedWord
         return false;
     }

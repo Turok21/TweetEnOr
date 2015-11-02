@@ -1,9 +1,13 @@
 package utils;
 
+import java.io.Serializable;
+
 /**
- * Created by Arié on 12/10/2015.
+ * Created by AriÃ© on 12/10/2015.
  */
-public class TweetWord {
+public class TweetWord implements Serializable {
+	private static final long serialVersionUID = 1350092881346723536L;
+	
     private String _word;
     private int    _ponderation;
 

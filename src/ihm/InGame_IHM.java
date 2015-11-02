@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
+import java.awt.Image;
+
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,18 +19,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import utils.TweetWord;
 import controllers.CtrlTweetEnOr;
+import utils.TweetParser;
+import utils.TweetWord;
 
-public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
+
+public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
+
 	private JTextField _tf_saisie;
 	private JButton _b_verifier;
 	
@@ -36,10 +45,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	private JLabel _compteur_de_vie;
 	private JLabel _hashtag;
 	
-	private JPanel _jp_principal;
-	private JPanel _paneltxt;
-	
-	private JFrame _fenetre;
 	
 	
 	private CtrlTweetEnOr _verifier;
@@ -55,39 +60,33 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	
 
 	public static void main(String[] args) throws FontFormatException, IOException{
-		InGame_IHM ingame = new InGame_IHM(MEDIUM,"test",new JFrame());
+		new InGame_IHM(MEDIUM,"test",new JFrame());
 	}
 	
 
+	
+	
+	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+		
+		
+	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",fram);
+
+	    JPanel jp_sec = new JPanel();
+		jp_sec.setOpaque(false);
+		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
+		
+		_jp_principal.add(jp_sec);
+		
+	           
+		
 		_nb_vie = Difficulte;
 		_nb_point = 0;
-		_listword_label = new ArrayList();
-		
+		_listword_label = new ArrayList<JLabel>();
 	    _verifier = new CtrlTweetEnOr(hastag_theme);
-		
-		
-	    _fenetre = fram;
-	    _fenetre.getContentPane().removeAll();
-
-
-		_fenetre.setTitle("Un Tweet en Or ");
-	    
-	    _fenetre.setSize(800, 600);
-	    _fenetre.setMinimumSize(new Dimension(800, 600));
-	    
-	    _fenetre.setLocationRelativeTo(null);
-	    
-	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	           
 
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
-	    
-	    JPanel _jp_principal = new JPanel();
-	    _jp_principal.setBackground(Color.ORANGE);
-	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
-	    _fenetre.add(_jp_principal);
 	    
 	    
 	    
@@ -101,20 +100,18 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
 	    
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
-	    box.add(_compteur_de_point);
-	    box.add(Box.createGlue());
 	    box.add(_compteur_de_vie);
+	    box.add(Box.createGlue());
+	    box.add(_compteur_de_point);
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
 
-	    _jp_principal.add(box);
+	    jp_sec.add(box);
 	    
   
 	    Box box2 = new Box(BoxLayout.X_AXIS);
 	    box2.setMaximumSize(new Dimension(9999, 50));
 	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
-	    
-	    //Font font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/arista.ttf"));
-	    //font.deriveFont(12f);
+
 	    
 		   
 	    _hashtag = new JLabel("#"+hastag_theme);
@@ -127,7 +124,7 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box2.add(_hashtag);
 	    box2.add(Box.createGlue());
 	    
-	    _jp_principal.add(box2);
+	    jp_sec.add(box2);
 	    
 
 	    Box box3 = new Box(BoxLayout.X_AXIS);
@@ -143,7 +140,9 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box3.add(Box.createGlue());
 	    box3.add(Box.createRigidArea(new Dimension(20,40)));
 	    
-	    _jp_principal.add(box3);
+
+	    jp_sec.add(box3);
+	    
 
 	    
 	    Box box4 = new Box(BoxLayout.X_AXIS);
@@ -155,8 +154,12 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box4.add(Box.createGlue());
 	    box4.add(_txt);
 	    box4.add(Box.createGlue());
+
+	    jp_sec.add(box4);
 	    
-	    _jp_principal.add(box4);
+	    
+	    
+	    
 
 	    Box box5 = new Box(BoxLayout.X_AXIS);
 	    box5.setMaximumSize(new Dimension(9999, 50));
@@ -170,7 +173,9 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box5.add(_b_verifier);
 	    box5.add(Box.createGlue());
 	    
-	    _jp_principal.add(box5);
+
+	    jp_sec.add(box5);
+	    
 
 	    
 	    _listword = _verifier.getListWords();
@@ -185,10 +190,16 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 	    box6.add(pgl);
 	    box6.add(Box.createGlue());
 	    
-		int i=0;
+	    
 		for(TweetWord word : _listword){
+			
 			JPanel p = new JPanel() {
-			     @Override
+			     /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 			     protected void paintComponent(Graphics g) {
 			        super.paintComponent(g);
 			        Dimension arcs = new Dimension(15,15);
@@ -215,44 +226,45 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 			txt.setForeground(new Color(29, 202, 255,255));
 			_listword_label.add(txt);
 			p.add(txt);
-
-			
-			i++;
 		}
 
-	    _jp_principal.add(box6);
+		
+		
+	    
+	    jp_sec.add(box6);
+	    _fenetre.setVisible(true);
 
-	    _fenetre.setVisible(true);    
 	}
 	
 	public void verifier(String mots_a_verifier){
-		
+		mots_a_verifier = TweetParser.cleanWord(mots_a_verifier);
 		if(!mots_a_verifier.isEmpty()){
         	_txt.setText(_tf_saisie.getText());
         	TweetWord mots = _verifier.isMotValid(mots_a_verifier);
         	
         	if(mots.getPonderation() == -1){
-        		_txt.setText("Mots incorect !");
+        		_txt.setText("Mot incorrect !");
         		loose_vie();
-        	}else if(mots.getPonderation() == -3)
-        		_txt.setText("Mots déja rentré !");
-        	else if(mots.getPonderation() == -2)
-        		_txt.setText("Mots déja rentré et coresspond é "+mots.getWord()+" !");
+        	}else if(mots.getPonderation() == -2)
+        		_txt.setText("Mot déja rentré !");
+        	else if(mots.getPonderation() == -3)
+        		_txt.setText("Mot déja rentré et correspond à "+mots.getWord()+" !");
         	else if(mots.getPonderation() > 0){
-        		_txt.setText("Mots "+mots.getWord()+" correct ! plus "+mots.getPonderation()+" points.");
+        		_txt.setText("Mot "+mots.getWord()+" correct ! Plus "+mots.getPonderation()+" points.");
         		add_point(mots.getPonderation(),mots);
         		
         	}
         	_tf_saisie.setText("");
     	}else{
-    		_txt.setText("veulliez entrer un mots!");
+    		_txt.setText("Veuillez entrer un mot valide !");
     	}
 		
-		if(_nb_point == 100)
-			new End_IHM(_fenetre, 1);
-		if(_nb_vie == 0)
-			new End_IHM(_fenetre, 0);
-		
+		if(_nb_point == 100){
+			new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+		}
+		if(_nb_vie == 0){
+			new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+		}
 		_fenetre.repaint();
 		
 	}
@@ -263,8 +275,6 @@ public class InGame_IHM extends JFrame implements ActionListener,KeyListener{
 			_nb_vie--;
 			_compteur_de_vie.setText("vie :"+_nb_vie);
 		}
-		if(_nb_vie == 0)
-			javax.swing.JOptionPane.showMessageDialog(null,"Fin de partie : you loose !"); 
 	}
 	private void add_point(int nb_point,TweetWord mots){
 		
