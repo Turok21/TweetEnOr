@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Created by Arié on 12/10/2015.
+ * Created by AriÃ© on 12/10/2015.
  */
 public class TweetWord {
     private String _word;

@@ -15,31 +15,17 @@ import utils.WordComparator;
 
 public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
-    private List<String> _proposedWords;
-
+    private List<String> _invalidWords;
+    private List<String> _validWords;
+    
     public CtrlTweetEnOr(String word) {
         this._keyWords = TweetParser.findWords(word);
-        this._proposedWords = new ArrayList<>();
+        this._invalidWords = new ArrayList<>();
+        this._validWords = new ArrayList<>();
     }
 
     public KeyWord getKeyWords() {
         return _keyWords;
-    }
-
-    public List<String> getProposedWords() {
-        return _proposedWords;
-    }
-
-    public String getOneProposedWords(int index) {
-        return this._proposedWords.get(index);
-    }
-
-    public void addWordsToList(String newWord) {
-        _proposedWords.add(newWord);
-    }
-
-    public void foundWords() {
-        // TODO CPE : trouver les mots pour le this.keyWords
     }
 
     /**
@@ -52,24 +38,24 @@ public class CtrlTweetEnOr {
     public TweetWord isMotValid(String word) {
         for (TweetWord nextTrue : this._keyWords.getListWords()) {
             if (WordComparator.wordCompare(word, nextTrue.getWord())) { /** Si le mot est juste **/
-                for (String nextProposed : this._proposedWords) {
+                for (String nextProposed : this._validWords) {
                     if (WordComparator.wordCompare(word, nextProposed)) { /** Si juste et déja proposé **/
                         return new TweetWord(nextTrue.getWord(), -3);
                     }
                 }
                 /** Si juste, et jamais proposé **/
-                this._proposedWords.add(nextTrue.getWord());
+                this._validWords.add(nextTrue.getWord());
                 return nextTrue;
             }
         }
         /** Si le mot est faux **/
-        for (String nextProposed : this._proposedWords) {
+        for (String nextProposed : this._invalidWords) {
             if (WordComparator.wordCompare(word, nextProposed)) { /** Si faux et déja proposé **/
                 return new TweetWord(null, -2);
             }
         }
         /** Si faux et jamais proposé **/
-        this._proposedWords.add(word);
+        this._invalidWords.add(word);
         return new TweetWord(null, -1);
     }
 
@@ -78,7 +64,6 @@ public class CtrlTweetEnOr {
     }
 
     public boolean isMotAlreadyUse(String Mot) {
-        ListIterator listIterator = this._proposedWords.listIterator();
         // TODO CPE : loop sur l'iterateur et verification de MOT sur chacun des words de proposedWord
         return false;
     }
