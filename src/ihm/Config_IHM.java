@@ -150,6 +150,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    _list_theme.add(new JToggleButton("réalité augmentée"));
 	    _list_theme.add(new JToggleButton("pollution"));
 	    _list_theme.add(new JToggleButton("aircocaine"));
+	    _list_theme.add(new JToggleButton("volkswagen"));
 
 	   
 
