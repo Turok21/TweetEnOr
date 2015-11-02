@@ -44,9 +44,10 @@ public abstract class TweetParser {
     	      "sans", "seulement", "si", "sien",
     	      "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
     	      "tous", "tout", "trop", "tres", "voient", "vont", "votre", "vu",
-    	      "etaient", "etions", "ete", "etre", "RT", "via", "de", "une", "the",
+    	      "etaient", "etions", "ete", "etre", "de", "des", "une", "the",
     	      "suis", "es", "est", "etes", "sommes", "sont", 
-    	      "ai", "as", "a", "avons", "avez", "ont"
+    	      "ai", "as", "a", "avons", "avez", "ont",
+    	      "jui", "RT", "via"
     	));
 
     private static int nbTweetsToGet = 4000;

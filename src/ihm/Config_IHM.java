@@ -135,7 +135,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener{
 	    
 	    _list_theme = new ArrayList<>();
 	    _list_theme.add(new JToggleButton("ski"));
-	    _list_theme.add(new JToggleButton("Pomme"));
+	    _list_theme.add(new JToggleButton("Politique"));
 	    _list_theme.add(new JToggleButton("grec"));
 	    _list_theme.add(new JToggleButton("russie"));
 	    _list_theme.add(new JToggleButton("GOT"));
