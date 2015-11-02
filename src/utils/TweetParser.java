@@ -36,7 +36,8 @@ public abstract class TweetParser {
             "quelles", "quels", "qui", "sa", "sans", "ses", "seulement", "si", "sien", "son",
             "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
             "tous", "tout", "trop", "très", "tu", "voient", "vont", "votre", "vous", "vu",
-            "ça", "étaient", "état", "étions", "été", "être", "RT", "via", "de", "une", "jai"
+            "ça", "étaient", "étions", "été", "être", "RT", "via", "de", "une", "jai",
+            "the"
     ));
 
     private static int nbTweetsToGet = 2000;
@@ -123,6 +124,7 @@ public abstract class TweetParser {
             listTweetWord.add(tweetWord);
         }
         if (totalSet != 100) System.out.println("Total des points != 100 / care ");
+
         return listTweetWord;
     }
 
