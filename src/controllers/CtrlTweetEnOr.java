@@ -2,9 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -25,19 +23,18 @@ public class CtrlTweetEnOr {
     private List<String> _validWords;
     
     public CtrlTweetEnOr(String word) {
+    	// Create "cache" directory if does not exist
+    	File directory = new File("cache");
+    	directory.mkdirs();
+    	
+    	
     	File file =  new File("cache/" + word + ".ser");
     	if(file.exists()) { // TODO: check last modified date too*
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				this._keyWords = (KeyWord)ois.readObject();
 				ois.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -48,10 +45,7 @@ public class CtrlTweetEnOr {
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 				oos.writeObject(this._keyWords) ;
 				oos.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
