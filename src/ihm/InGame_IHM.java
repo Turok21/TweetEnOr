@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.CtrlTweetEnOr;
+import utils.TweetParser;
 import utils.TweetWord;
 
 
@@ -251,26 +252,26 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	}
 	
 	public void verifier(String mots_a_verifier){
-		
+		mots_a_verifier = TweetParser.cleanWord(mots_a_verifier);
 		if(!mots_a_verifier.isEmpty()){
         	_txt.setText(_tf_saisie.getText());
         	TweetWord mots = _verifier.isMotValid(mots_a_verifier);
         	
         	if(mots.getPonderation() == -1){
-        		_txt.setText("Mots incorect !");
+        		_txt.setText("Mot incorrect !");
         		loose_vie();
-        	}else if(mots.getPonderation() == -3)
-        		_txt.setText("Mots déja rentré !");
-        	else if(mots.getPonderation() == -2)
-        		_txt.setText("Mots déja rentré et coresspond à "+mots.getWord()+" !");
+        	}else if(mots.getPonderation() == -2)
+        		_txt.setText("Mot déja rentré !");
+        	else if(mots.getPonderation() == -3)
+        		_txt.setText("Mot déja rentré et correspond à "+mots.getWord()+" !");
         	else if(mots.getPonderation() > 0){
-        		_txt.setText("Mots "+mots.getWord()+" correct ! plus "+mots.getPonderation()+" points.");
+        		_txt.setText("Mot "+mots.getWord()+" correct ! Plus "+mots.getPonderation()+" points.");
         		add_point(mots.getPonderation(),mots);
         		
         	}
         	_tf_saisie.setText("");
     	}else{
-    		_txt.setText("veulliez entrer un mots!");
+    		_txt.setText("Veuillez entrer un mot valide !");
     	}
 		
 		if(_nb_point == 100){
