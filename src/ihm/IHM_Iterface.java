@@ -26,15 +26,17 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	protected JFrame _fenetre;
-	
+
+	protected JPanel _jp_principal;
+		
 	public IHM_Iterface() {
 		
 	}
 	
 	protected JPanel load_fenetre_and_panel_principale(String title,String fond,JFrame fram){
 		
-		
-		fram.getContentPane().removeAll();
+		if(fram != null)
+			fram.getContentPane().removeAll();
 		
 		_fenetre = fram;
 		_fenetre.setTitle(title);
@@ -46,13 +48,12 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 			_fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			_fenetre.setUndecorated(true);
 		}
-	    //_fenetre.setSize(600, 600);
 	    
 	    _fenetre.setLocationRelativeTo(null);
 	    
 	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
-		 JPanel _jp_principal = new JPanel();
+	    _jp_principal = new JPanel();
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
