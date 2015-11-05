@@ -42,10 +42,11 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
   
 	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
 	    _fenetre.addKeyListener(this);
+	    _jp_principal.setLayout(null);
 	    
 	    JButton b1 = new JButton("v,cxbvjcsbn,vbcxnc");
 		b1.setBounds(300,100,500,500);
-		//_jp_principal.add(b1);
+		_jp_principal.add(b1);
 		
 		
 		_b_next = new JButton("next");
@@ -54,10 +55,11 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	    _b_next.setBounds(300,100,500,500);
 	    
 	    Box box_button = new Box(BoxLayout.X_AXIS);
-	    box_button.setPreferredSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().height * 0.9)-50)
+	    box_button.setMinimumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width))
 	    									   , ((int) (Toolkit.getDefaultToolkit().getScreenSize().height))));
 		box_button.add(_b_next);
 		_jp_principal.add( box_button);
+		
 		
 	   /* _b_next.setBounds((int) ((Toolkit.getDefaultToolkit().getScreenSize().height * 0.9)-50)
 	    		, ((int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2)-75)

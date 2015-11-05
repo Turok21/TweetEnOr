@@ -53,7 +53,7 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		
 		try {
             //create the font to use. Specify the size!
-            arista_btn = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(16f);
+            arista_btn = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             //register the font
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
