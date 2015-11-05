@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -345,39 +346,47 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		    }
 		 _fenetre.repaint();
 	}
-	
-	
-	
-	
-	public void verifier(String mots_a_verifier){
-		mots_a_verifier = TweetParser.cleanWord(mots_a_verifier);
-		if(!mots_a_verifier.isEmpty()){
-        	_txt.setText(_tf_saisie.getText());
-        	TweetWord mots = _verifier.isMotValid(mots_a_verifier);
-        	
-        	if(mots.getPonderation() == -1){
-        		_txt.setText("Mot incorrect !");
-        		loose_vie();
-        	}else if(mots.getPonderation() == -2)
-        		_txt.setText("Mot déja rentré !");
-        	else if(mots.getPonderation() == -3)
-        		_txt.setText("Mot déja rentré et correspond à "+mots.getWord()+" !");
-        	else if(mots.getPonderation() > 0){
-        		_txt.setText("Mot "+mots.getWord()+" correct ! Plus "+mots.getPonderation()+" points.");
-        		add_point(mots.getPonderation(),mots);
-        		
-        	}
-        	_tf_saisie.setText("");
-    	}else{
-    		_txt.setText("Veuillez entrer un mot valide !");
-    	}
-		
-		if(_nb_point == 100){
-			new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+
+	public void verifier(String mot_a_verifier){
+		mot_a_verifier = mot_a_verifier.trim();
+		if(mot_a_verifier.isEmpty()){
+			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
 		}
-		if(_nb_vie == 0){
-			new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+		else {
+			List<String> mots_a_verifier = Arrays.asList(mot_a_verifier.split(" "));
+			String affichage  = "";
+			for(String mot: mots_a_verifier) {
+				mot = TweetParser.cleanWord(mot);
+				if(mot.isEmpty()) {
+					affichage += "Un des mots proposé est invalide, il a été ignoré ! ";
+					continue;
+				}
+	        	TweetWord motVerifie = _verifier.isMotValid(mot);
+	        	
+	        	if(motVerifie.getPonderation() == -1){
+	        		affichage += "Le mot " + mot + " est incorrect ! ";
+	        		loose_vie();
+	        	}else if(motVerifie.getPonderation() == -2)
+	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
+	        	else if(motVerifie.getPonderation() == -3)
+	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
+	        	else if(motVerifie.getPonderation() > 0){
+	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
+	        		add_point(motVerifie.getPonderation(), motVerifie);
+	        	}
+	        	_txt.setText(affichage);
+	        	if(_nb_point == 100){
+					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+					break;
+				}
+				if(_nb_vie == 0){
+					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+					break;
+				}
+	        	_tf_saisie.setText("");
+			}
 		}
+
 		_fenetre.repaint();
 		
 	}
@@ -416,6 +425,4 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
     }
-	
-	
 }
