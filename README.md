@@ -13,8 +13,9 @@
 
 * Suivre les instructions ici : http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
 * Ou si vous êtes sous Linux: télécharger le fichier (http://amoki.fr/tree-tagger.tar.gz) et décompressez le
+* Ou si vous êtes sous Windows, téléchager le fichier (http://amoki.fr/TreeTaggerWidnows.zip) et décompressez le
 * Installer le jar : http://mvnrepository.com/artifact/org.annolab.tt4j/org.annolab.tt4j/1.2.1
-* Définir le chemin du répertoire de tree-tagger via la variable d'environnement TREE_TAGGER_PATH  (ex: /usr/share/tree-tagger/)
+* Définir le chemin du répertoire de tree-tagger via la variable d'environnement TREE_TAGGER_PATH  (ex: /usr/share/tree-tagger/ ou C:\workspace\TreeTagger)
 
 
 # Configuration des identifiants Twitter
