@@ -31,23 +31,20 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public abstract class TweetParser {
     private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
-		"laquelle", "lesquelles",
+		"laquelle", "lesquelles", "depuis", "toujours",
 		"qui", "que", "quoi", "dont", "ou", "quel", "quels", "quelle", "quelles",
-		"aux", "cet", "cette",
 		"alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
 		"cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
-		"depuis", "toujours",
-		"en", "encore",
+		"en", "encore", "aux", "cet", "cette",
 		"fois", "hors", "ici", "juste", "maintenant", "moins",
 		"même", "notre", "par", "parce", "pas",
 		"peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
 		"sans", "seulement", "si", "sien",
 		"sous", "sur", "tandis", "tellement", "tels",
 		"tous", "tout", "trop", "tres", "vu",
-		"the",
-		"jui", "RT", "via",
-		"francais", "france",
-		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj"
+		"jui", "RT", "via", "the", // Specific Twitter words
+		"francais", "france", // As we search in french tweet only, these words appear too much
+		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj" // Spoil too much tweet with their hashtag
     ));
 
     private static int nbTweetsToGet = 1000;
