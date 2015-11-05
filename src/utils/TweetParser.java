@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.annolab.tt4j.TokenHandler;
+import org.annolab.tt4j.TreeTaggerWrapper;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -24,46 +30,74 @@ import twitter4j.conf.ConfigurationBuilder;
  * Created by Arié on 12/10/2015.
  */
 public abstract class TweetParser {
-
     private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
-    	      "le", "la", "les",
-    	      "ma", "mon", "mes", "tes", "ses", "sa", "son", "leurs", "leur", "laquelle", "lesquelles",
-    	      "qui", "que", "quoi", "dont", "ou", "quel", "quels", "quelle", "quelles",
-    	      "mais", "ou", "et", "donc", "or", "ni", "car",
-    	      "se", "ca", "ce",
-    	      "je", "tu", "il", "elle", "on", "nous", "vous", "ils", "elles",
-    	      "lui", "eux",
-    	      "aux", "cet", "cette",
-    	      "alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
-    	      "cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
-    	      "des", "du", "depuis", "devrait", "doit", "dos",
-    	      "en", "encore", "essai", "et", "eu", "fait",
-    	      "faites", "fois", "font", "hors", "ici", "juste", "maintenant", "moins",
-    	      "mot", "même", "notre", "par", "parce", "pas",
-    	      "peut", "peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
-    	      "sans", "seulement", "si", "sien",
-    	      "sont", "sous", "soyez", "sur", "ta", "tandis", "tellement", "tels", "tes", "ton",
-    	      "tous", "tout", "trop", "tres", "voient", "vont", "votre", "vu",
-    	      "etaient", "etions", "ete", "etre", "de", "des", "une", "the",
-    	      "suis", "es", "est", "etes", "sommes", "sont", 
-    	      "ai", "as", "a", "avons", "avez", "ont",
-    	      "jui", "RT", "via",
-    	      "francais", "france"
-    	));
+		"laquelle", "lesquelles",
+		"qui", "que", "quoi", "dont", "ou", "quel", "quels", "quelle", "quelles",
+		"aux", "cet", "cette",
+		"alors", "au", "aucuns", "aussi", "autre", "avant", "avec", "avoir", "bon",
+		"cela", "ces", "ceux", "chaque", "ci", "comme", "comment", "dans",
+		"depuis", "toujours",
+		"en", "encore",
+		"fois", "hors", "ici", "juste", "maintenant", "moins",
+		"même", "notre", "par", "parce", "pas",
+		"peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
+		"sans", "seulement", "si", "sien",
+		"sous", "sur", "tandis", "tellement", "tels",
+		"tous", "tout", "trop", "tres", "vu",
+		"the",
+		"jui", "RT", "via",
+		"francais", "france",
+		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj"
+    ));
 
-    private static int nbTweetsToGet = 4000;
+    private static int nbTweetsToGet = 1000;
+    private static String urlToken = "urltoken";
+    
+    private static List<String> excludedTypes = new ArrayList<String>(Arrays.asList(
+    		"PRP", "NUM", "PUN", "SENT", "DET", "VER", "KON", "PRO"
+    ));
 
-    public static KeyWord findWords(String keyWords) {
-        List<String> listTweets = getTweets(keyWords);
-        List<String> words = new ArrayList<>();
-        for (String tweet : listTweets) {
-            words.addAll(cleanWords(tweet.split(" |'"), keyWords));
-        }
+    public static KeyWord findWords(String keyWord) {
+    	// Récupération des tweets
+    	List<String> listTweets = getTweets(keyWord);
+    	
+    	final List<String> words = new ArrayList<>();
+    	
+    	
+    	// Démarrage du moteur d'analyse des mots
+    	String treeTaggerPath = System.getenv().get("TREE_TAGGER_PATH");
+		System.setProperty("treetagger.home", treeTaggerPath);
+		TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<String>();
+		try {
+		    tt.setModel("french-utf8.par");
+		    tt.setHandler(new TokenHandler<String>() {
+		      // Fonction appelée pour chaque mot du tweet
+		      public void token(String token, String pos, String lemma) {
+		    	  if(!excludedTypes.contains(pos.split(":")[0])) {
+		    		  words.add(token);
+		    	  }
+		      }
+		    });
+		    for (String tweet : listTweets) {
+		    	tweet = cleanTweet(tweet);
+		    	tt.process(tweet.split("'|\\s+"));
+	        }
+		  }
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+		  tt.destroy();
+		}
+		
+		
+		List<String> cleanedWords = cleanWords(words, keyWord);
 
-        Map<String, Integer> topWords = listWordToPonderatedMap(words);
+        Map<String, Integer> topWords = listWordToPonderatedMap(cleanedWords);
         // ponderation
         List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
-        return new KeyWord(keyWords, tweetWords);
+        
+        return new KeyWord(keyWord, tweetWords);
     }
 
     private static List<String> getTweets(String keyWord) {
@@ -148,21 +182,22 @@ public abstract class TweetParser {
         return listTweetWord;
     }
 
-    private static List<String> cleanWords(String[] strings, String keyword) {
+    private static List<String> cleanWords(List<String> strings, String keyWord) {
         List<String> cleanedWords = new ArrayList<>();
         for (String word : strings) {
             word = cleanWord(word);
             // Remove useless words
-            if (!stopwords.contains(word) && word.length() > 2 && !word.equals(keyword.toLowerCase()) && !word.startsWith("http") && !word.contains("httpstco")) {
-                cleanedWords.add(word);
+            if (stopwords.contains(word) || word.length() <= 2 || word.equals(keyWord.toLowerCase()) || word.equals(urlToken)) {
+                continue;
             }
+            cleanedWords.add(word);
         }
         return cleanedWords;
     }
 
     public static String cleanWord(String word) {
     	word = Normalizer.normalize(word, Normalizer.Form.NFD);
-        return word.toLowerCase().replaceAll("[^a-z]|^-", "").replace("\n", "").replace("\r", "");
+        return word.toLowerCase().replaceAll("[^a-z]|^-", "");
     }
 
     private static ConfigurationBuilder config() {
@@ -191,10 +226,44 @@ public abstract class TweetParser {
         return sortedMap;
     }
 
+    
+    private static String cleanTweet(String tweet) {
+    	String cleanedTweet = removeEmojiAndSymbolFromString(tweet);
+    	cleanedTweet = cleanedTweet
+    			.replaceAll("http(s)?://[^ ]+", urlToken)
+    			.replaceAll("#", "")
+    			.replaceAll("\n", " ")
+    			.replaceAll("\r", " ")
+    			.replaceAll("\"", "")
+    			.replaceAll("@[^ ]+", "")
+    			.replaceAll("…", "");
+    	return cleanedTweet;
+    }
+    
+    private static String removeEmojiAndSymbolFromString(String content) {
+        String utf8tweet = "";
+        try {
+            byte[] utf8Bytes = content.getBytes("UTF-8");
+
+            utf8tweet = new String(utf8Bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Pattern unicodeOutliers = Pattern.compile(
+            "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+            Pattern.UNICODE_CASE |
+            Pattern.CANON_EQ |
+            Pattern.CASE_INSENSITIVE
+        );
+        Matcher unicodeOutlierMatcher = unicodeOutliers.matcher(utf8tweet);
+
+        utf8tweet = unicodeOutlierMatcher.replaceAll(" ");
+        return utf8tweet;
+    }
+    
+    
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski");
-        System.out.println(keyw);
-//        System.out.println(keyw);
     }
 }
 
