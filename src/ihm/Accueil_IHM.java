@@ -49,23 +49,13 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	
 	
 	public Accueil_IHM(){
-		
+		super();
 		
   
 	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
 	    _fenetre.addKeyListener(this);
 	    
-	    Font arista_light;
-	    try {
-            //create the font to use. Specify the size!
-            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-            arista_light = new Font("Arial", Font.BOLD, 12);
-        }
+
 	    
 	    _b_next = new JButton("next");
 	    _b_next.setFont(arista_light.deriveFont(55));

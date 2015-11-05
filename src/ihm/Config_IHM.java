@@ -41,9 +41,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private JLabel _title_fram,_title_dif,_title_hastag;
 	private List<JToggleButton> _list_theme;
-	private Font arista_light;
-	private Font arista_btn;
-	private Font arista;
 	
 	private Dimension screen;
 	
@@ -64,6 +61,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	public Config_IHM(JFrame fram) {
+		super();
 		 
 		screen = Toolkit.getDefaultToolkit().getScreenSize();
 		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
@@ -82,48 +80,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    boxH.add(Box.createGlue());
 	    jp_sec.add(boxH);
 		
-		try {
-            //create the font to use. Specify the size!
-            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch(FontFormatException e)
-        {
-            e.printStackTrace();
-            Font font = new Font("Arial", Font.BOLD, 12);
-        }
-		try {
-            //create the font to use. Specify the size!
-            arista_btn = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(16f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch(FontFormatException e)
-        {
-            e.printStackTrace();
-            Font font = new Font("Arial", Font.BOLD, 12);
-        }
-		try {
-            //create the font to use. Specify the size!
-            arista = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")).deriveFont(38f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch(FontFormatException e)
-        {
-            e.printStackTrace();
-            Font font = new Font("Arial", Font.BOLD, 24);
-        }
+		
+		
 	    
 	    _title_fram = new JLabel("Paramètrage");
 	    _title_fram.setFont(arista);
@@ -276,7 +234,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    jp_sec.add(box_H);
 	    
 	    _b_play = new JButton("#Jouer !");
-	    _b_play.setFont(arista_light);
+	    _b_play.setFont(arista_light.deriveFont(Font.BOLD, 32));
 	    _b_play.setEnabled(false);
 	    _b_play.addActionListener(this);
 	    Box box_go = new Box(BoxLayout.X_AXIS);

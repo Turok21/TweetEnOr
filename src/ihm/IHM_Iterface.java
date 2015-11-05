@@ -1,7 +1,10 @@
 package ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,8 +30,50 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	protected JFrame _fenetre;
 
 	protected JPanel _jp_principal;
+	
+	protected Font arista_light;
+	protected Font arista_btn;
+	protected Font arista;
 		
 	public IHM_Iterface() {
+		
+		try {
+            //create the font to use. Specify the size!
+            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
+        } 
+        catch(FontFormatException | IOException e)
+        {
+            e.printStackTrace();
+            arista_light = new Font("Arial", Font.BOLD, 12);
+        }
+		
+		
+		try {
+            //create the font to use. Specify the size!
+            arista_btn = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(16f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
+        } catch (IOException | FontFormatException e)
+        {
+        	 e.printStackTrace();
+        	 arista_btn = new Font("Arial", Font.BOLD, 12);
+        }
+		try {
+            //create the font to use. Specify the size!
+            arista = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")).deriveFont(38f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
+        } catch (IOException | FontFormatException e)
+        {
+        	 e.printStackTrace();
+        	 arista = new Font("Arial", Font.BOLD, 12);
+        }
+		
 		
 	}
 	
