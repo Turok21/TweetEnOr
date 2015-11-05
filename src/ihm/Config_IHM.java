@@ -75,12 +75,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
 		_jp_principal.add(jp_sec);
 		
-		Box boxH = new Box(BoxLayout.X_AXIS);
-	    boxH.setMaximumSize(new Dimension(9999, screen.height/20));
-	    boxH.setMinimumSize(new Dimension(screen.width, screen.height/20));
-	    boxH.add(Box.createRigidArea(new Dimension(5,screen.height/20)));
-	    boxH.add(Box.createGlue());
-	    jp_sec.add(boxH);
+		
 		
 		try {
             //create the font to use. Specify the size!
@@ -128,6 +123,11 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _title_fram = new JLabel("Paramètrage");
 	    _title_fram.setFont(arista);
 	    
+	    Box space1 = new Box(BoxLayout.X_AXIS);
+	    space1.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space1.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space1.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    jp_sec.add(space1);
 	    
 	    Box box = new Box(BoxLayout.X_AXIS);
 	    box.setMaximumSize(new Dimension(9999, screen.height/15));
@@ -142,9 +142,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    jp_sec.add(box);
 	    
 	    Box space = new Box(BoxLayout.X_AXIS);
-	    space.setPreferredSize(new Dimension(screen.width, screen.height/15));
-	    box.add(Box.createRigidArea(new Dimension(20,screen.height/15)));
-	    box.add(Box.createGlue());
+	    space.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
 	    jp_sec.add(space);
 	    
 	    _title_dif = new JLabel("Difficulté :");
@@ -159,8 +159,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    box_title_dif.add(Box.createRigidArea(new Dimension(20,screen.height/50)));
 
 	    jp_sec.add(box_title_dif);
-	    
-	   
 	    
 
 	    Box boxdif = new Box(BoxLayout.X_AXIS);
@@ -191,6 +189,16 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    boxdif.add(Box.createGlue());
 	    
 	    jp_sec.add(boxdif);
+	    
+
+	    Box space2 = new Box(BoxLayout.X_AXIS);
+	    space2.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
+	    space2.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
+	    space2.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
+	    jp_sec.add(space2);
+	    
+	   
+	   
 	    
 	    _title_hastag = new JLabel("Thèmes :");
 	    _title_hastag.setFont(arista_light);
@@ -267,17 +275,19 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_play.setFont(arista_light);
 	    _b_play.setEnabled(false);
 	    _b_play.addActionListener(this);
-	    Box box_H = new Box(BoxLayout.X_AXIS);
-	    box_H.setMaximumSize(new Dimension(9999, 90));
-	    box_H.setMinimumSize(new Dimension(screen.width, 90));
-
-	    box_H.add(Box.createRigidArea(new Dimension(20,150)));
-	    box_H.add(Box.createGlue());
-	    jp_sec.add(box_H);
+	    
+	    Box space3 = new Box(BoxLayout.X_AXIS);
+	    space3.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
+	    space3.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
+	    space3.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
+	    jp_sec.add(space3);
+	    
 	    
 	    _b_play = new JButton("#Jouer !");
 	    _b_play.setFont(arista_light);
 	    _b_play.setEnabled(false);
+	    _b_play.setMinimumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
+	    _b_play.setMaximumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
 	    _b_play.addActionListener(this);
 	    Box box_go = new Box(BoxLayout.X_AXIS);
 	    box_go.setMaximumSize(new Dimension(screen.width, 100));
