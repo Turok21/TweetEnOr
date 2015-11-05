@@ -230,9 +230,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_play.addActionListener(this);
 	    
 	    Box space3 = new Box(BoxLayout.X_AXIS);
-	    space3.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
-	    space3.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
-	    space3.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.09)));
+	    space3.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
+	    space3.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
+	    space3.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
 	    jp_sec.add(space3);
 	    
 	    
