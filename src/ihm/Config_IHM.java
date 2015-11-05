@@ -74,6 +74,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    _title_fram = new JLabel("Paramètrage");
 	    _title_fram.setFont(arista);
+	    _title_fram.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 42));
 	    
 	    Box space1 = new Box(BoxLayout.X_AXIS);
 	    space1.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
@@ -100,7 +101,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    jp_sec.add(space);
 	    
 	    _title_dif = new JLabel("Difficulté :");
-	    _title_dif.setFont(arista_light);
+	    _title_dif.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
 	    Box box_title_dif = new Box(BoxLayout.X_AXIS);
 	    box_title_dif.setMaximumSize(new Dimension(9999, screen.height/25));
 	    box_title_dif.setMinimumSize(new Dimension(screen.width, screen.height/25));
@@ -153,7 +154,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	   
 	    
 	    _title_hastag = new JLabel("Thèmes :");
-	    _title_hastag.setFont(arista_light);
+	    _title_hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
 	    Box box_title_theme = new Box(BoxLayout.X_AXIS);
 	    box_title_theme.setMaximumSize(new Dimension(9999, 50));
 	    box_title_theme.setMinimumSize(new Dimension(screen.width, 50));
@@ -224,7 +225,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	jp_sec.add(box_theme);
 	    
 	    _b_play = new JButton("#Jouer !");
-	    _b_play.setFont(arista_light);
+	    _b_play.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
 	    _b_play.setEnabled(false);
 	    _b_play.addActionListener(this);
 	    
@@ -236,7 +237,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    _b_play = new JButton("#Jouer !");
-	    _b_play.setFont(arista_light);
+	    _b_play.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 26));
 	    _b_play.setEnabled(false);
 	    _b_play.setMinimumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
 	    _b_play.setMaximumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
