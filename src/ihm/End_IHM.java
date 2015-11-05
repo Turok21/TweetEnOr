@@ -6,13 +6,17 @@ import java.awt.Dimension;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -42,6 +46,9 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
+		super();
+		
+		
 		
 		if(fin == 0)
 			loose_screen(fram, fin, listword);
@@ -69,7 +76,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		
 		Box spacer3 = new Box(BoxLayout.X_AXIS);
-	    spacer3.setPreferredSize(new Dimension(40, 400));
+	    spacer3.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().height*0.09)));
 	    jp_sec.add(spacer3);
  
 	  
@@ -89,9 +96,14 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		for(TweetWord word : listword){		
 					    
 		    if(k%2 != 0){
+		    	if(k != 0){
+		    		Box spacer2 = new Box(BoxLayout.X_AXIS);
+				    spacer2.setPreferredSize(new Dimension(40, 100));
+				    jp_sec.add(spacer2);
+		    	}
 		    	box3 = new Box(BoxLayout.X_AXIS);
 		    	System.out.println(""+(int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)-(k*100)));
-		    	box3.setMaximumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)),
+		    	box3.setMaximumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.9)),
 												  (int) (Toolkit.getDefaultToolkit().getScreenSize().height*0.05) ));
 		    	//box3.setOpaque(true);
 		    }
@@ -121,7 +133,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			  p.setBounds(10,10,100,30);
 			  p.setOpaque(false);
 			
-			 p.setBackground(new Color(29, 202, 255,255));
+			 p.setBackground(new Color(200, 200, 200,255));
 			
 			pgl.add(p);
 			
@@ -129,7 +141,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			
 			JLabel txt = new JLabel(""+word.getWord());
 			txt.setFont(new Font("",Font.BOLD,24 ));
-			txt.setForeground(new Color(242, 209, 0 ,255));
+			txt.setForeground(new Color(242, 40, 0 ,255));
 			p.add(txt);
 			
 			Box box4 = new Box(BoxLayout.X_AXIS);
@@ -140,16 +152,13 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			if(k%2 == 0){
 							    
 				Box spacer4 = new Box(BoxLayout.X_AXIS);
-				spacer4.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.8), 0));
+				spacer4.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().width*1), 0));
 				jp_sec.add(spacer4);
 				box3.add(spacer4);
 				box3.add(box4);
 				jp_sec.add(box3);
 			}else{
 				box3.add(box4);
-				Box spacer2 = new Box(BoxLayout.X_AXIS);
-			    spacer2.setPreferredSize(new Dimension(40, 100));
-			    jp_sec.add(spacer2);
 			}
 			
 			
@@ -163,17 +172,27 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	    
 	    _text = new JLabel();
 		_b_again = new JButton();
-		_b_again.setPreferredSize(new Dimension(150, 50));
+		_b_again.setPreferredSize(new Dimension(200, 75));
+		_b_again.setMinimumSize(new Dimension(200, 75));
+		_b_again.setMaximumSize(new Dimension(200, 75));
 		_b_again.addActionListener(this);
-
+		_b_again.setText("Recommencer");
+		
+	    Box again = new Box(BoxLayout.X_AXIS);
+	    again.setPreferredSize(new Dimension( (int) (Toolkit.getDefaultToolkit().getScreenSize().width),200));
+	    again.add(Box.createGlue());
+	    again.add(_b_again);
+	    again.add(Box.createGlue());	    
+		jp_sec.add(again);
+	    
 
 		Box spacer = new Box(BoxLayout.X_AXIS);
 		spacer.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.08)));
-		jp_sec.add(spacer);
+		//jp_sec.add(spacer);
 		    
 		   
-		_b_again.setText("Recommencer");
-		jp_sec.add(_b_again);
+		
+		//jp_sec.add(_b_again);
 		
 	}
 

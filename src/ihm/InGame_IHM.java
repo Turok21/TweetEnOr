@@ -55,9 +55,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JFrame _fram_given;
 	
 	private JPanel jp_sec;
-	
-	private Font arista_light;
-	
+		
 	private BufferedImage _image_mort,_image_vie;
 	
 	
@@ -87,6 +85,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+		super();
+		
 		_vie = new ArrayList<>();
 		
 		_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
@@ -140,21 +140,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    Box box = new Box(BoxLayout.X_AXIS);
 	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 50));
 
-	    
-	    try {
-            //create the font to use. Specify the size!
-            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch(FontFormatException e)
-        {
-            e.printStackTrace();
-            Font font = new Font("Arial", Font.BOLD, 12);
-        }
+
 	    _compteur_de_point = new JLabel("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
