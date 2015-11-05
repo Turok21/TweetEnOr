@@ -51,9 +51,10 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	    _jp_principal.setLayout(null);
 	    
 
-		Icon myImgIcon = new ImageIcon("./data/images/gif.gif");
+		Icon myImgIcon = new ImageIcon("./data/images/gif3.gif");
 		JLabel imageLbl = new JLabel(myImgIcon);
-		imageLbl.setBounds(0, 0, 400, 400);
+		imageLbl.setBounds(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+		
 		_jp_principal.add(imageLbl, BorderLayout.CENTER);
 		
 	    

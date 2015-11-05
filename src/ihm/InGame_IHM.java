@@ -57,7 +57,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private JPanel jp_sec;
 		
-	private BufferedImage _image_mort,_image_vie;
+	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	
+	private Image _image_mort,_image_vie;
 	
 	
 	private CtrlTweetEnOr _verifier;
@@ -90,8 +92,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		_vie = new ArrayList<>();
 		
-		_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
-		_image_vie = ImageIO.read(new File("./data/images/vie.png"));
+		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
+		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
+		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
 	    
 		_fram_given = fram;
 	    hasttag = hastag_theme;
@@ -118,9 +122,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",_fenetre);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre);
 		}else{
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",_fram_given);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given);
 		}
 	    _fenetre.addKeyListener(this);
 		jp_sec = new JPanel();
@@ -135,42 +139,46 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    Box spacer0 = new Box(BoxLayout.X_AXIS);
-	    spacer0.setPreferredSize(new Dimension(40, 20));
+	    spacer0.setPreferredSize(new Dimension(40, 50));
 	    jp_sec.add(spacer0);
 	    
 	    Box box = new Box(BoxLayout.X_AXIS);
-	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 50));
-
+	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 94));
+	   // box.setOpaque(true);
 
 	    _compteur_de_point = new JLabel("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
 	    
-	    box.add(Box.createRigidArea(new Dimension(20,58)));
+	    box.add(Box.createRigidArea(new Dimension(20,100)));
 	    
 	    Box vie_box = new Box(BoxLayout.X_AXIS);
+	    vie_box.setMinimumSize(new Dimension(800, 94));
+	    vie_box.setMaximumSize(new Dimension(800, 94));
+	    vie_box.setPreferredSize(new Dimension(800, 94));
 	   
 	    for(int i = 0;i<_nb_vie_total;i++){
-	    	BufferedImage myPicture = null;
+	    	Image myPicture = null;
 	    	if(i < _nb_vie){
 	    		myPicture = _image_vie;
 	    	}else{
 	    		myPicture = _image_mort;	    		    		
 	    	}
-	    	_vie.add(new JLabel(new ImageIcon(myPicture.getScaledInstance(45, 55, Image.SCALE_SMOOTH))));
+	    	_vie.add(new JLabel(new ImageIcon(myPicture)));
+	    	_vie.get(_vie.size()-1).setLocation(_vie.get(_vie.size()-1).getLocation().x, 0);
 	    	vie_box.add(_vie.get(_vie.size()-1));
 	    }
 	    box.add(vie_box);
 	    box.add(Box.createGlue());
 	    box.add(_compteur_de_point);
-	    box.add(Box.createRigidArea(new Dimension(20,58)));
+	    box.add(Box.createRigidArea(new Dimension(20,100)));
 
 	    jp_sec.add(box);
 	    
 	    
 	    
 	    Box spacer1 = new Box(BoxLayout.X_AXIS);
-	    spacer1.setPreferredSize(new Dimension(40, 200));
+	    spacer1.setPreferredSize(new Dimension(40, 150));
 	    jp_sec.add(spacer1);
 	    
 	    
@@ -336,13 +344,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private void redraw_vie(){
 		 for(int i = 0;i<_nb_vie_total;i++){
-		    	BufferedImage myPicture = null;
+			 Image myPicture = null;
 		    	if(i < _nb_vie){
 		    		myPicture = _image_vie;
 		    	}else{
 		    		myPicture = _image_mort;	    		    		
 		    	}
-		    	_vie.get(i).setIcon(new ImageIcon(myPicture.getScaledInstance(45, 55, Image.SCALE_SMOOTH)));
+
+		    	_vie.get(i).setIcon(new ImageIcon(myPicture));
 		    }
 		 _fenetre.repaint();
 	}
