@@ -1,11 +1,8 @@
 package ihm;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -15,7 +12,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
@@ -112,8 +111,23 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public static JButton getTooltip() {
+	    JButton b = new JButton("?");
+	    b.setToolTipText(("<html><p width=\"500\">"
+	    		+ "<strong>1 - Choisir un thème d'actualité</strong> <br />"
+	    		+ "<strong>2 - Trouver les dix mots en rapport avec le thème</strong>"
+	    		+ "<ul>"
+	    		+ "<li>Tu perds une vie si le mot n'est pas present</li>"
+	    		+ "<li>Tu gagnes les points correspondant au mot s'il est present</li>"
+	    		+ "</ul>"
+	    		+ "<strong>Ton nombre de vie dépends du niveau de difficulté</strong>"
+	    		+ "<br /><strong>/Bonne partie !</strong>"
+	    		+ "</p></html>"));
+	    
+	    return b;
 
-
+	  }
 }
 
 
