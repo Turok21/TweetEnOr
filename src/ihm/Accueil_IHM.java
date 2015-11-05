@@ -1,15 +1,21 @@
 package ihm;
 
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.net.URL;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListener{
@@ -44,21 +50,25 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	    _fenetre.addKeyListener(this);
 	    _jp_principal.setLayout(null);
 	    
+
+		Icon myImgIcon = new ImageIcon("./data/images/gif.gif");
+		JLabel imageLbl = new JLabel(myImgIcon);
+		imageLbl.setBounds(0, 0, 400, 400);
+		_jp_principal.add(imageLbl, BorderLayout.CENTER);
+		
+	    
 	    JButton b1 = new JButton("v,cxbvjcsbn,vbcxnc");
 		b1.setBounds(300,100,500,500);
 		_jp_principal.add(b1);
 		
 		
+		
 		_b_next = new JButton("next");
 	    _b_next.setFont(arista_light.deriveFont(55));
 	    _b_next.addActionListener(this);
-	    _b_next.setBounds(300,100,500,500);
-	    
-	    Box box_button = new Box(BoxLayout.X_AXIS);
-	    box_button.setMinimumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width))
-	    									   , ((int) (Toolkit.getDefaultToolkit().getScreenSize().height))));
-		box_button.add(_b_next);
-		_jp_principal.add( box_button);
+	    _b_next.setBounds(000,100,150,50);
+	
+		_jp_principal.add( _b_next);
 		
 		
 	   /* _b_next.setBounds((int) ((Toolkit.getDefaultToolkit().getScreenSize().height * 0.9)-50)
