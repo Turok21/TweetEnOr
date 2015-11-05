@@ -38,16 +38,149 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	public static void main(String[] args){		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),1,listword);
+		new End_IHM(new JFrame(""),0,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
 		
-		JPanel _jp_principal;
 		if(fin == 0)
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram);
+			loose_screen(fram, fin, listword);
 		else
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram);
+			win_screen(fram, fin, listword);
+		
+    
+	    
+	    _fenetre.setVisible(true);
+
+	}
+	
+
+	private void loose_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
+		
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram);
+		
+		_fenetre.addKeyListener(this);
+			
+		JPanel jp_sec = new JPanel();
+		jp_sec.setOpaque(false);
+		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
+		_jp_principal.add(jp_sec);
+	    
+		
+		
+		Box spacer3 = new Box(BoxLayout.X_AXIS);
+	    spacer3.setPreferredSize(new Dimension(40, 400));
+	    jp_sec.add(spacer3);
+ 
+	  
+	    Box box6 = new Box(BoxLayout.X_AXIS);
+	    JPanel pgl = new JPanel(new FlowLayout());
+	    pgl.setBackground(new Color(0, 0, 0, 0));
+	    pgl.setMaximumSize(new Dimension(900, 900));
+	    
+	    box6.add(Box.createGlue());
+	    box6.add(pgl);
+	    box6.add(Box.createGlue());
+	    
+	   
+	   
+	    Box box3 = null;
+	    int k = 1;
+		for(TweetWord word : listword){		
+					    
+		    if(k%2 != 0){
+		    	box3 = new Box(BoxLayout.X_AXIS);
+		    	System.out.println(""+(int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)-(k*100)));
+		    	box3.setMaximumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)),
+												  (int) (Toolkit.getDefaultToolkit().getScreenSize().height*0.05) ));
+		    	//box3.setOpaque(true);
+		    }
+			
+			JPanel p = new JPanel() {
+			     /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+			     protected void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        Dimension arcs = new Dimension(15,15);
+			        int width = getWidth();
+			        int height = getHeight();
+			        Graphics2D graphics = (Graphics2D) g;
+			        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+			        graphics.setColor(getBackground());
+			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
+			        graphics.setColor(getForeground());
+			       // graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			     }
+			  };
+			  p.setBounds(10,10,100,30);
+			  p.setOpaque(false);
+			
+			 p.setBackground(new Color(29, 202, 255,255));
+			
+			pgl.add(p);
+			
+			
+			
+			JLabel txt = new JLabel(""+word.getWord());
+			txt.setFont(new Font("",Font.BOLD,24 ));
+			txt.setForeground(new Color(242, 209, 0 ,255));
+			p.add(txt);
+			
+			Box box4 = new Box(BoxLayout.X_AXIS);
+			box4.add(Box.createGlue());
+			box4.add(p);
+			box4.add(Box.createGlue());
+			
+			if(k%2 == 0){
+							    
+				Box spacer4 = new Box(BoxLayout.X_AXIS);
+				spacer4.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.8), 0));
+				jp_sec.add(spacer4);
+				box3.add(spacer4);
+				box3.add(box4);
+				jp_sec.add(box3);
+			}else{
+				box3.add(box4);
+				Box spacer2 = new Box(BoxLayout.X_AXIS);
+			    spacer2.setPreferredSize(new Dimension(40, 100));
+			    jp_sec.add(spacer2);
+			}
+			
+			
+			k++;
+		}
+		
+		
+	    
+	    jp_sec.add(box6);
+	    
+	    
+	    _text = new JLabel();
+		_b_again = new JButton();
+		_b_again.setPreferredSize(new Dimension(150, 50));
+		_b_again.addActionListener(this);
+
+
+		Box spacer = new Box(BoxLayout.X_AXIS);
+		spacer.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.08)));
+		jp_sec.add(spacer);
+		    
+		   
+		_b_again.setText("Recommencer");
+		jp_sec.add(_b_again);
+		
+	}
+
+	
+	private void win_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
+		
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram);
 		
 		_fenetre.addKeyListener(this);
 			
@@ -161,14 +294,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.setText("Recommencer");
 		jp_sec.add(_b_again);
 		
-    
-	    
-	    _fenetre.setVisible(true);
-
 	}
-
-	
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
