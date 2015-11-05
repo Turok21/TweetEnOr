@@ -59,9 +59,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	
-	
 	public Config_IHM(JFrame fram) {
-		super();
 		 
 		screen = Toolkit.getDefaultToolkit().getScreenSize();
 		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
@@ -72,10 +70,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		jp_sec.setOpaque(false);
 		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
 		_jp_principal.add(jp_sec);
-		
-		
-		
-		
 		
 	    
 	    _title_fram = new JLabel("Paramètrage");
@@ -242,7 +236,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    _b_play = new JButton("#Jouer !");
-	    _b_play.setFont(arista_light.deriveFont(Font.BOLD, 32));
+	    _b_play.setFont(arista_light);
 	    _b_play.setEnabled(false);
 	    _b_play.setMinimumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
 	    _b_play.setMaximumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
