@@ -102,7 +102,7 @@ public abstract class TweetParser {
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
 
-        Query query = new Query(keyWord);
+        Query query = new Query(keyWord + "exclude:retweets");
         query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
         QueryResult result;
