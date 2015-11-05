@@ -109,10 +109,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
             Font font = new Font("Arial", Font.BOLD, 12);
         }
 		try {
-            //create the font to use. Specify the size!
             arista = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")).deriveFont(38f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            //register the font
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
         } catch (IOException e) {
             e.printStackTrace();

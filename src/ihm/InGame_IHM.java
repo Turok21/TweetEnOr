@@ -56,7 +56,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private JPanel jp_sec;
 	
-	
+	private Font arista_light;
 	
 	private BufferedImage _image_mort,_image_vie;
 	
@@ -141,8 +141,22 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 50));
 
 	    
+	    try {
+            //create the font to use. Specify the size!
+            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch(FontFormatException e)
+        {
+            e.printStackTrace();
+            Font font = new Font("Arial", Font.BOLD, 12);
+        }
 	    _compteur_de_point = new JLabel("Points :"+_nb_point);	 
-	    _compteur_de_point.setFont(new Font("./data/font/arista.ttf",Font.BOLD,32 ));
+	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
 	    
 	    box.add(Box.createRigidArea(new Dimension(20,58)));
@@ -156,7 +170,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	}else{
 	    		myPicture = _image_mort;	    		    		
 	    	}
-	    	_vie.add(new JLabel(new ImageIcon(myPicture.getScaledInstance(30, 30, Image.SCALE_SMOOTH))));
+	    	_vie.add(new JLabel(new ImageIcon(myPicture.getScaledInstance(45, 55, Image.SCALE_SMOOTH))));
 	    	vie_box.add(_vie.get(_vie.size()-1));
 	    }
 	    box.add(vie_box);
@@ -181,8 +195,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    _hashtag = new JLabel("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
-	    Font hash_font = new Font("",Font.BOLD,72 );
-	   _hashtag.setFont(hash_font);
+	   _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	   
 
 	    box2.add(Box.createGlue());
@@ -242,6 +255,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    _b_verifier = new JButton("vérifier");
+	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
 	    _b_verifier.setPreferredSize(new Dimension(150, 75));
 		_b_verifier.addActionListener(this);
 	    
@@ -341,7 +355,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		    	}else{
 		    		myPicture = _image_mort;	    		    		
 		    	}
-		    	_vie.get(i).setIcon(new ImageIcon(myPicture.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+		    	_vie.get(i).setIcon(new ImageIcon(myPicture.getScaledInstance(45, 55, Image.SCALE_SMOOTH)));
 		    }
 		 _fenetre.repaint();
 	}

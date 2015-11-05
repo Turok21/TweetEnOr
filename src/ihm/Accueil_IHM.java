@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -13,6 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -50,20 +55,35 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
 	    _fenetre.addKeyListener(this);
 	    
+	    Font arista_light;
+	    try {
+            //create the font to use. Specify the size!
+            arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            //register the font
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista.ttf")));
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            arista_light = new Font("Arial", Font.BOLD, 12);
+        }
 	    
 	    _b_next = new JButton("next");
+	    _b_next.setFont(arista_light.deriveFont(55));
 	    _b_next.addActionListener(this);
+	    _b_next.setMinimumSize(new Dimension(150, 75));
+	    _b_next.setMaximumSize(new Dimension(150, 50));
+	    _b_next.setPreferredSize(new Dimension(150, 75));
 	    
 	   
 	   
 	    _box_spacer_dif = new Box(BoxLayout.Y_AXIS);
-		 _box_spacer_dif.setMaximumSize(new Dimension(9999, 50));
-		 _box_spacer_dif.setMinimumSize(new Dimension(_fenetre.getSize().width, _fenetre.getSize().height));
-		_spacer = Box.createVerticalStrut(Toolkit.getDefaultToolkit().getScreenSize().height-_b_next.getHeight()-100);
+		_box_spacer_dif.setMaximumSize(new Dimension(9999, 200));
+		_box_spacer_dif.setMinimumSize(new Dimension(_fenetre.getSize().width, _fenetre.getSize().height));
+		_spacer = Box.createVerticalStrut(Toolkit.getDefaultToolkit().getScreenSize().height-_b_next.getHeight()-150);
 		_box_spacer_dif.add(_spacer);
 		System.out.println(""+_fenetre.getHeight());
 		_box_spacer_dif.add(_b_next);
-		 _jp_principal.add(_box_spacer_dif);
+		_jp_principal.add(_box_spacer_dif);
 			
 
 
