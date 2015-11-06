@@ -3,6 +3,7 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Font;
@@ -26,6 +27,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+import ihm.components.Bt;
+import ihm.components.Tbt;
+import ihm.components.Txt;
+
 public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 
@@ -36,10 +41,10 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private static final long serialVersionUID = 1L;
 
 
-	private JToggleButton _b_easy, _b_medium, _b_hard;
-	private JButton _b_play;
+	private Tbt _b_easy, _b_medium, _b_hard;
+	private Bt _b_play;
 	
-	private JLabel _title_fram,_title_dif,_title_hastag;
+	private Txt _title_fram,_title_dif,_title_hastag;
 	private List<JToggleButton> _list_theme;
 	
 
@@ -61,20 +66,76 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public Config_IHM(JFrame fram) {
 
-		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
-		_fenetre.getContentPane().setVisible(false);
-		_fenetre.addKeyListener(this);
+
+		load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
+				
+
 		
-		JPanel jp_sec = new JPanel();
-		jp_sec.setOpaque(false);
-		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
-		_jp_principal.add(jp_sec);
 		
 	    
-	    _title_fram = new JLabel("Paramètrage");
-	    _title_fram.setFont(arista);
+	    _title_fram = new Txt("Paramètrage");
 	    _title_fram.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 42));
+	    //_title_fram.setSize(_screen.width,_title_fram.getFont().getSize());
+	    _jp_principal.add(_title_fram);
+
 	    
+	    
+	    _title_dif = new Txt("Difficulté :");
+	    _title_dif.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
+	    _title_dif.setxy(20, 20);
+	    _jp_principal.add(_title_dif);
+	    
+	    _b_easy = new Tbt("Facile");
+	    _b_easy.setFont(arista_btn);
+	    _b_easy.addActionListener(this);
+	    _b_easy.setGravity(Bt.TOP_RIGHT);
+	    _b_easy.setxy(100, 0);
+	    _jp_principal.add(_b_easy);
+	    
+	    
+	    _b_medium = new Tbt("Moyen");
+	    _b_medium.setFont(arista_btn);
+	    _b_medium.setSelected(true);
+	    _b_medium.addActionListener(this);
+	    _b_medium.setxy(50, 20);
+	    _difficulte = InGame_IHM.MEDIUM;
+	    _jp_principal.add(_b_medium);
+	    
+	    _b_hard = new Tbt("Difficile");
+	    _b_hard.setFont(arista_btn);
+	    _b_hard.addActionListener(this);
+	    _b_hard.setxy(60, 20);
+	    _jp_principal.add(_b_hard);
+	    
+	    
+	  /*
+	   *   
+	   
+	    _b_easy = new JToggleButton("Facile");
+	    _b_easy.setFont(arista_btn);
+	    _b_easy.addActionListener(this);
+	    /*_b_easy.setBounds((int) (_screen.getWidth()*0.1)
+	    		, (int) (_screen.getHeight()*0.1)
+	    		, _b_easy.
+	    		, _b_easy.getFont().getSize());
+	    	
+	    _jp_principal.add(_b_easy);
+	    
+	    
+	    _b_medium = new JToggleButton("Moyen");
+	    _b_medium.setFont(arista_btn);
+	    _b_medium.setSelected(true);
+	    _b_medium.addActionListener(this);
+	    _difficulte = InGame_IHM.MEDIUM;
+	    _jp_principal.add(_b_medium);
+	    
+	    _b_hard = new JToggleButton("Difficile");
+	    _b_hard.setFont(arista_btn);
+	    _b_hard.addActionListener(this);
+	    _jp_principal.add(_b_hard);
+	    */
+	    
+	  /*  
 	    Box space1 = new Box(BoxLayout.X_AXIS);
 	    space1.setPreferredSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
 	    space1.setMinimumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
@@ -251,12 +312,11 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    box_go.add(Box.createRigidArea(new Dimension(20,108)));
 
 	    jp_sec.add(box_go);
+	    */
+
 	    
-
-    
-	    _fenetre.getContentPane().setVisible(true);
-	    _fenetre.setVisible(true);
-
+	    show_windows();	
+	    
 	}
 
 	@Override

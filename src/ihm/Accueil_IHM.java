@@ -47,10 +47,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 		super();
 
 	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
-	    _jp_principal.setPreferredSize(_screen);
-	    _fenetre.getContentPane().setVisible(true);
-	    _fenetre.setVisible(true);
-	    _jp_principal.setLayout(null);
+	    
 	    
  
 	    
@@ -64,14 +61,9 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 		_jp_principal.add( _b_next);
 		
 		
-	
-		JLabel image = new JLabel(
-			new ImageIcon(
-				new ImageIcon( "./data/images/fond_Accueil.jpg").getImage().getScaledInstance(_screen.width, _screen.height, Image.SCALE_SMOOTH)
-			)
-		);
-		image.setBounds(0, 0, _screen.width, _screen.height);
-		_jp_principal.add(image,null);
+		
+		show_windows();
+		
 		
 		
 		
@@ -107,7 +99,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	    	 
 	    }
 	    
-	    //applique_fond();
+	   
 	}
 
 

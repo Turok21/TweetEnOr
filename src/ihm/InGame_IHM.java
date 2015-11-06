@@ -132,6 +132,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
 		
 		_jp_principal.add(jp_sec);
+		_jp_principal.addKeyListener(this);
 		
 		
 	    _tf_saisie = new JTextField(50);
