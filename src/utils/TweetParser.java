@@ -41,10 +41,10 @@ public abstract class TweetParser {
 		"peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
 		"sans", "seulement", "si", "sien",
 		"sous", "sur", "tandis", "tellement", "tels",
-		"tous", "tout", "trop", "tres", "vu",
-		"jui", "RT", "via", "the", // Specific Twitter words
+		"tous", "tout", "trop", "tres", "vu", "sinon",
+		"jui", "RT", "via", "the", "tweet", "jsuis", "dun", // Specific Twitter words
 		"francais", "france", // As we search in french tweet only, these words appear too much
-		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj" // Spoil too much tweet with their hashtag
+		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj", "lesechos" // Spoil too much tweet with their hashtag
     ));
 
     private static int nbTweetsToGet = 1000;
@@ -251,7 +251,7 @@ public abstract class TweetParser {
     private static String cleanTweet(String tweet) {
     	String cleanedTweet = removeEmojiAndSymbolFromString(tweet);
     	cleanedTweet = cleanedTweet
-    			.replaceAll("http(s)?://[^ ]+", urlToken)
+    			.replaceAll("http(s)?://[^ ]+", " " + urlToken) // add a space cause twitter can concat a word and an url without problem
     			.replaceAll("#", "")
     			.replaceAll("\n", " ")
     			.replaceAll("\r", " ")
