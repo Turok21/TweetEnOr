@@ -317,6 +317,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if(e.getSource() == _b_again)
 			new Config_IHM(_fenetre);
 	}

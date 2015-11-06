@@ -337,6 +337,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
         if( e.getSource() == _b_verifier)
         	verifier( _tf_saisie.getText());
 	}

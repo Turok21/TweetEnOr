@@ -108,6 +108,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if(e.getSource() == _b_next)
 			lauchconfig();
 	}
