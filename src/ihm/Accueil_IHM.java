@@ -34,6 +34,8 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	private Box _box_spacer_dif;
 	private JPanel _jp_principal;
 	
+	
+	
 	public static void main(String[] args) {
 		new Accueil_IHM();
 	}
@@ -53,54 +55,55 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 
 		Icon myImgIcon = new ImageIcon("./data/images/gif3.gif");
 		JLabel imageLbl = new JLabel(myImgIcon);
-		imageLbl.setBounds(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
+		imageLbl.setBounds(0, 0,_screen.width,_screen.height);
 		
 		_jp_principal.add(imageLbl, BorderLayout.CENTER);
 		
-	    
-	    JButton b1 = new JButton("v,cxbvjcsbn,vbcxnc");
-		b1.setBounds(300,100,500,500);
-		_jp_principal.add(b1);
 		
 		
 		
-		_b_next = new JButton("next");
-	    _b_next.setFont(arista_light.deriveFont(55));
+		_b_next = new JButton("#NEXT");
+	    _b_next.setFont(arista.deriveFont(55));
 	    _b_next.addActionListener(this);
-	    _b_next.setBounds(000,100,150,50);
+	    _b_next.setSize(150,50);
+	    _b_next.setLocation((int) ((_screen.width/2)-(_b_next.getWidth()/2))
+	    				   ,(int) (_screen.height-_b_next.getHeight()-(int)(_screen.height*0.1)));
 	
 		_jp_principal.add( _b_next);
 		
-		
-	   /* _b_next.setBounds((int) ((Toolkit.getDefaultToolkit().getScreenSize().height * 0.9)-50)
-	    		, ((int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2)-75)
-	    		,150, 75);
-	    */
-	   // _jp_principal.add(_b_next);
-	    
 	    
 		_jp_principal.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
 
-
-	    
-	    
-	   
-	   /*
-	    _box_spacer_dif = new Box(BoxLayout.Y_AXIS);
-		_box_spacer_dif.setMaximumSize(new Dimension(9999, 200));
-		_box_spacer_dif.setMinimumSize(new Dimension(_fenetre.getSize().width, _fenetre.getSize().height));
-		_spacer = Box.createVerticalStrut(Toolkit.getDefaultToolkit().getScreenSize().height-_b_next.getHeight()-150);
-		_box_spacer_dif.add(_spacer);
-		System.out.println(""+_fenetre.getHeight());
-		_box_spacer_dif.add(_b_next);
-		_jp_principal.add(_box_spacer_dif);
-		*/
-			
 
 
     
 		_fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
+	    
+	    int vx=1,vy=1;
+	    while(true){
+	    	
+	    	if(_b_next.getLocation().x < 0)
+	    		vx = 1;
+	    	else if(_b_next.getLocation().x > _screen.width)
+	    		vx = -1;
+	    	
+	    	if(_b_next.getLocation().y < 0)
+	    		vy = 1;
+	    	else if(_b_next.getLocation().y > _screen.height)
+	    		vy = -1;
+	    	
+	    	
+	    	_b_next.setLocation(_b_next.getLocation().x+vx, _b_next.getLocation().y+vy);
+	    	_fenetre.repaint();
+	    	try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    
+	    }
 	}
 
 

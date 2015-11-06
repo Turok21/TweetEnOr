@@ -42,7 +42,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	public static void main(String[] args){		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),1,listword);
+		new End_IHM(new JFrame(""),0,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
@@ -140,7 +140,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			
 			
 			JLabel txt = new JLabel(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,24 ));
+			txt.setFont(new Font("",Font.BOLD,40 ));
 			txt.setForeground(new Color(242, 40, 0 ,255));
 			p.add(txt);
 			

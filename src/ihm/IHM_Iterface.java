@@ -1,11 +1,13 @@
 package ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -27,16 +29,19 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	protected JFrame _fenetre;
 
 	protected JPanel _jp_principal;
+	
+	protected Dimension _screen;
 	
 	protected Font arista_light;
 	protected Font arista_btn;
 	protected Font arista;
 		
 	public IHM_Iterface() {
-		
+		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		try {
             //create the font to use. Specify the size!
             arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
