@@ -60,7 +60,6 @@ public abstract class TweetParser {
     	List<String> listTweets = getTweets(keyWord);
     	final List<String> words = new ArrayList<>();
     	
-    	
     	// Démarrage du moteur d'analyse des mots
     	String treeTaggerPath = System.getenv().get("TREE_TAGGER_PATH");
 		System.setProperty("treetagger.home", treeTaggerPath);
@@ -77,7 +76,7 @@ public abstract class TweetParser {
 		    });
 		    for (String tweet : listTweets) {
 		    	tweet = cleanTweet(tweet);
-		    	tt.process(tweet.split("'|\\s+"));
+		    	tt.process(tweet.split("'|\\s+")); // Convertion de la phrase en une liste de mots
 	        }
 		  }
 		catch (Exception e) {
