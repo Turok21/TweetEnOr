@@ -48,6 +48,7 @@ public abstract class TweetParser {
     ));
 
     private static int nbTweetsToGet = 1000;
+
     private static String urlToken = "urltoken";
     
     private static List<String> excludedTypes = new ArrayList<String>(Arrays.asList(
@@ -57,7 +58,6 @@ public abstract class TweetParser {
     public static KeyWord findWords(String keyWord) {
     	// Récupération des tweets
     	List<String> listTweets = getTweets(keyWord);
-    	
     	final List<String> words = new ArrayList<>();
     	
     	
@@ -93,7 +93,6 @@ public abstract class TweetParser {
         Map<String, Integer> topWords = listWordToPonderatedMap(cleanedWords);
         // ponderation
         List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
-        
         return new KeyWord(keyWord, tweetWords);
     }
 
@@ -102,7 +101,7 @@ public abstract class TweetParser {
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
 
-        Query query = new Query(keyWord + "exclude:retweets");
+        Query query = new Query(keyWord + " exclude:retweets");
         query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
         QueryResult result;
