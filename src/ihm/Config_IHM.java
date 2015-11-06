@@ -42,7 +42,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JLabel _title_fram,_title_dif,_title_hastag;
 	private List<JToggleButton> _list_theme;
 	
-	private Dimension screen;
+
 	
 	int _difficulte;
 	String _hastag_theme;  
@@ -60,8 +60,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	public Config_IHM(JFrame fram) {
-		 
-		screen = Toolkit.getDefaultToolkit().getScreenSize();
+
 		JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
 		_fenetre.getContentPane().setVisible(false);
 		_fenetre.addKeyListener(this);
@@ -77,46 +76,46 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _title_fram.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 42));
 	    
 	    Box space1 = new Box(BoxLayout.X_AXIS);
-	    space1.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
-	    space1.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
-	    space1.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space1.setPreferredSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
+	    space1.setMinimumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
+	    space1.setMaximumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
 	    jp_sec.add(space1);
 	    
 	    Box box = new Box(BoxLayout.X_AXIS);
-	    box.setMaximumSize(new Dimension(9999, screen.height/15));
-	    box.setMinimumSize(new Dimension(screen.width, screen.height/15));
+	    box.setMaximumSize(new Dimension(9999, _screen.height/15));
+	    box.setMinimumSize(new Dimension(_screen.width, _screen.height/15));
 
-	    box.add(Box.createRigidArea(new Dimension(20,screen.height/30)));
+	    box.add(Box.createRigidArea(new Dimension(20,_screen.height/30)));
 	    box.add(Box.createGlue());
 	    box.add(_title_fram);
 	    box.add(Box.createGlue());
-	    box.add(Box.createRigidArea(new Dimension(20,screen.height/5)));
+	    box.add(Box.createRigidArea(new Dimension(20,_screen.height/5)));
 
 	    jp_sec.add(box);
 	    
 	    Box space = new Box(BoxLayout.X_AXIS);
-	    space.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
-	    space.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
-	    space.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.05)));
+	    space.setPreferredSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
+	    space.setMinimumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
+	    space.setMaximumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.05)));
 	    jp_sec.add(space);
 	    
 	    _title_dif = new JLabel("Difficulté :");
 	    _title_dif.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
 	    Box box_title_dif = new Box(BoxLayout.X_AXIS);
-	    box_title_dif.setMaximumSize(new Dimension(9999, screen.height/25));
-	    box_title_dif.setMinimumSize(new Dimension(screen.width, screen.height/25));
+	    box_title_dif.setMaximumSize(new Dimension(9999, _screen.height/25));
+	    box_title_dif.setMinimumSize(new Dimension(_screen.width, _screen.height/25));
 
-	    box_title_dif.add(Box.createRigidArea(new Dimension(20,screen.height/20)));
+	    box_title_dif.add(Box.createRigidArea(new Dimension(20,_screen.height/20)));
 	    box_title_dif.add(_title_dif);
 	    box_title_dif.add(Box.createGlue());
-	    box_title_dif.add(Box.createRigidArea(new Dimension(20,screen.height/50)));
+	    box_title_dif.add(Box.createRigidArea(new Dimension(20,_screen.height/50)));
 
 	    jp_sec.add(box_title_dif);
 	    
 
 	    Box boxdif = new Box(BoxLayout.X_AXIS);
 	    boxdif.setMaximumSize(new Dimension(9999, 50));
-	    boxdif.setMinimumSize(new Dimension(screen.width, 50));
+	    boxdif.setMinimumSize(new Dimension(_screen.width, 50));
 	    
 	    _b_easy = new JToggleButton("Facile");
 	    _b_easy.setFont(arista_btn);
@@ -145,9 +144,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 
 	    Box space2 = new Box(BoxLayout.X_AXIS);
-	    space2.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
-	    space2.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
-	    space2.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.03)));
+	    space2.setPreferredSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.03)));
+	    space2.setMinimumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.03)));
+	    space2.setMaximumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.03)));
 	    jp_sec.add(space2);
 	    
 	   
@@ -157,7 +156,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _title_hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 24));
 	    Box box_title_theme = new Box(BoxLayout.X_AXIS);
 	    box_title_theme.setMaximumSize(new Dimension(9999, 50));
-	    box_title_theme.setMinimumSize(new Dimension(screen.width, 50));
+	    box_title_theme.setMinimumSize(new Dimension(_screen.width, 50));
 
 	    box_title_theme.add(Box.createRigidArea(new Dimension(20,70)));
 	    box_title_theme.add(_title_hastag);
@@ -197,8 +196,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _title_hastag = new JLabel("Thèmes :");
 	    _title_hastag.setFont(arista_light);
 	    Box box_theme = new Box(BoxLayout.X_AXIS);
-	    box_theme.setMaximumSize(new Dimension(screen.width, 50));
-	    box_theme.setMinimumSize(new Dimension(screen.width, 10));
+	    box_theme.setMaximumSize(new Dimension(_screen.width, 50));
+	    box_theme.setMinimumSize(new Dimension(_screen.width, 10));
 	    
 	    box_theme.add(Box.createGlue());
 	    int i=0;
@@ -211,8 +210,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		
 	    		jp_sec.add(box_theme);
 	    		box_theme = new Box(BoxLayout.X_AXIS);
-	    		box_theme.setMaximumSize(new Dimension(screen.width, 50));
-	    	    box_theme.setMinimumSize(new Dimension(screen.width, 10));
+	    		box_theme.setMaximumSize(new Dimension(_screen.width, 50));
+	    	    box_theme.setMinimumSize(new Dimension(_screen.width, 10));
 	    	    box_theme.add(Box.createGlue());
 	    		
 	    	}
@@ -230,21 +229,21 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_play.addActionListener(this);
 	    
 	    Box space3 = new Box(BoxLayout.X_AXIS);
-	    space3.setPreferredSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
-	    space3.setMinimumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
-	    space3.setMaximumSize(new Dimension((int) (screen.width*0.9), (int) (screen.height*0.17)));
+	    space3.setPreferredSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.17)));
+	    space3.setMinimumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.17)));
+	    space3.setMaximumSize(new Dimension((int) (_screen.width*0.9), (int) (_screen.height*0.17)));
 	    jp_sec.add(space3);
 	    
 	    
 	    _b_play = new JButton("#Jouer !");
 	    _b_play.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 26));
 	    _b_play.setEnabled(false);
-	    _b_play.setMinimumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
-	    _b_play.setMaximumSize(new Dimension((int) (screen.width*0.12), (int) (screen.height*0.07)));
+	    _b_play.setMinimumSize(new Dimension((int) (_screen.width*0.12), (int) (_screen.height*0.07)));
+	    _b_play.setMaximumSize(new Dimension((int) (_screen.width*0.12), (int) (_screen.height*0.07)));
 	    _b_play.addActionListener(this);
 	    Box box_go = new Box(BoxLayout.X_AXIS);
-	    box_go.setMaximumSize(new Dimension(screen.width, 100));
-	    box_go.setMinimumSize(new Dimension(screen.width, 100));
+	    box_go.setMaximumSize(new Dimension(_screen.width, 100));
+	    box_go.setMinimumSize(new Dimension(_screen.width, 100));
 
 	    box_go.add(Box.createRigidArea(new Dimension(100, 300)));
 	    box_go.add(Box.createGlue());

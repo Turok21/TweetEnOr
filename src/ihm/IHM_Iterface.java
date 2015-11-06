@@ -41,7 +41,12 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	protected Font arista;
 		
 	public IHM_Iterface() {
+		
+		
+		
 		_screen = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		
 		try {
             //create the font to use. Specify the size!
             arista_light = Font.createFont(Font.TRUETYPE_FONT, new File("./data/font/arista-light.ttf")).deriveFont(20f);
@@ -88,6 +93,9 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 			fram.getContentPane().removeAll();
 		
 		_fenetre = fram;
+		
+		_fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		_fenetre.setTitle(title);
 		_fenetre.addKeyListener(this);
 		_fenetre.setFocusable(true);
@@ -106,16 +114,16 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
-	    JPanel panel_fond = null;
+	 /*   JPanel panel_fond = null;
 		try {
 			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
 		} catch (IOException e) {e.printStackTrace();}
-
-		panel_fond.addKeyListener(this);
+*/
+	//	panel_fond.addKeyListener(this);
 		_jp_principal.setLayout(new BorderLayout());
 		_jp_principal.setOpaque(false);
 	    
-		_fenetre.setContentPane(panel_fond);
+	//	_fenetre.setContentPane(panel_fond);
 	    _fenetre.add(_jp_principal);
 	    
 	    return _jp_principal;
@@ -153,6 +161,7 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 			_fenetre.dispose();
 			_fenetre.setVisible(false);
 			this.dispose();
+			System.exit(0);
 		}
 	}
 
