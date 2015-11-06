@@ -5,21 +5,26 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -29,6 +34,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.omg.CORBA.portable.InputStream;
 
 import controllers.CtrlTweetEnOr;
 import utils.TweetParser;
@@ -44,15 +51,28 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JLabel _compteur_de_point;
 	private JLabel _compteur_de_vie;
 	private JLabel _hashtag;
+	private ArrayList<JLabel> _vie;
 	
+	private JFrame _fram_given;
+	
+	private JPanel jp_sec;
+		
+	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	
+	private Image _image_mort,_image_vie;
 	
 	
 	private CtrlTweetEnOr _verifier;
 	private  List<TweetWord> _listword;
 	private  List<JLabel> _listword_label;
 	
+	
+	private String hasttag;
+	
 	private int _nb_point;
 	private int _nb_vie;
+	private int _nb_vie_total;
+	
 	
 	static int HARD=8;	
 	static int MEDIUM=10;	
@@ -60,7 +80,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 
 	public static void main(String[] args) throws FontFormatException, IOException{
-		new InGame_IHM(MEDIUM,"test",new JFrame());
+		new InGame_IHM(10,"test",new JFrame());
 	}
 	
 
@@ -68,46 +88,99 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+		super();
+		
+		_vie = new ArrayList<>();
+		
+		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
+		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
+		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+	    
+		_fram_given = fram;
+	    hasttag = hastag_theme;
+	    _nb_vie = Difficulte;
+		_nb_vie_total = Difficulte;
+		_nb_point = 0;
+		
+		_listword_label = new ArrayList<JLabel>();
+	    _verifier = new CtrlTweetEnOr(hastag_theme);
+		
+		draw(0);
 		
 		
-	    JPanel _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_inGame.jpg",fram);
-	    _fenetre.addKeyListener(this);
+		
+	    
+	    
+	    
+		
+	    _fenetre.setVisible(true);
 
-	    JPanel jp_sec = new JPanel();
+	}
+	
+	public void draw(int redraw){
+		
+		if(redraw == 1){
+			_fenetre.remove(_jp_principal);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre);
+		}else{
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given);
+		}
+	    _fenetre.addKeyListener(this);
+		jp_sec = new JPanel();
 		jp_sec.setOpaque(false);
 		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
 		
 		_jp_principal.add(jp_sec);
 		
-	           
 		
-		_nb_vie = Difficulte;
-		_nb_point = 0;
-		_listword_label = new ArrayList<JLabel>();
-	    _verifier = new CtrlTweetEnOr(hastag_theme);
-	   
-
 	    _tf_saisie = new JTextField(50);
 	    _tf_saisie.setVisible(true);
 	    
 	    
+	    Box spacer0 = new Box(BoxLayout.X_AXIS);
+	    spacer0.setPreferredSize(new Dimension(40, 50));
+	    jp_sec.add(spacer0);
 	    
 	    Box box = new Box(BoxLayout.X_AXIS);
-	    box.setMaximumSize(new Dimension(9999, 50));
-	    box.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
+	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 94));
+	   // box.setOpaque(true);
 
-	    
-
-	    _compteur_de_point = new JLabel("Points :"+_nb_point);	    
+	    _compteur_de_point = new JLabel("Points :"+_nb_point);	 
+	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
 	    
-	    box.add(Box.createRigidArea(new Dimension(20,58)));
-	    box.add(_compteur_de_vie);
+	    box.add(Box.createRigidArea(new Dimension(20,100)));
+	    
+	    Box vie_box = new Box(BoxLayout.X_AXIS);
+	    vie_box.setMinimumSize(new Dimension(800, 94));
+	    vie_box.setMaximumSize(new Dimension(800, 94));
+	    vie_box.setPreferredSize(new Dimension(800, 94));
+	   
+	    for(int i = 0;i<_nb_vie_total;i++){
+	    	Image myPicture = null;
+	    	if(i < _nb_vie){
+	    		myPicture = _image_vie;
+	    	}else{
+	    		myPicture = _image_mort;	    		    		
+	    	}
+	    	_vie.add(new JLabel(new ImageIcon(myPicture)));
+	    	_vie.get(_vie.size()-1).setLocation(_vie.get(_vie.size()-1).getLocation().x, 0);
+	    	vie_box.add(_vie.get(_vie.size()-1));
+	    }
+	    box.add(vie_box);
 	    box.add(Box.createGlue());
 	    box.add(_compteur_de_point);
-	    box.add(Box.createRigidArea(new Dimension(20,58)));
+	    box.add(Box.createRigidArea(new Dimension(20,100)));
 
 	    jp_sec.add(box);
+	    
+	    
+	    
+	    Box spacer1 = new Box(BoxLayout.X_AXIS);
+	    spacer1.setPreferredSize(new Dimension(40, 150));
+	    jp_sec.add(spacer1);
+	    
 	    
   
 	    Box box2 = new Box(BoxLayout.X_AXIS);
@@ -115,11 +188,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
 
 	    
-		   
-	    _hashtag = new JLabel("#"+hastag_theme);
+	    _hashtag = new JLabel("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
-	    Font hash_font = new Font("",Font.BOLD,24 );
-	   _hashtag.setFont(hash_font);
+	   _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	   
 
 	    box2.add(Box.createGlue());
@@ -128,12 +199,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    jp_sec.add(box2);
 	    
+	    Box spacer3 = new Box(BoxLayout.X_AXIS);
+	    spacer3.setPreferredSize(new Dimension(40, 90));
+	    jp_sec.add(spacer3);
+	    
+	    
+	    
 
 	    Box box3 = new Box(BoxLayout.X_AXIS);
 	    box3.setMaximumSize(new Dimension(9999, 40));
 	    box3.setMinimumSize(new Dimension(_fenetre.getSize().width, 40));
 	    _tf_saisie.setMaximumSize(new Dimension(300,40));
-	    _tf_saisie.setFont(new Font("",Font.TYPE1_FONT,16 ));
+	    _tf_saisie.setFont(new Font("",Font.TYPE1_FONT,20 ));
 	    _tf_saisie.addKeyListener(this);
 	    
 	    box3.add(Box.createRigidArea(new Dimension(20,40)));
@@ -144,6 +221,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 
 	    jp_sec.add(box3);
+	    
 	    
 
 	    
@@ -161,24 +239,34 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    
+	    Box spacer5 = new Box(BoxLayout.X_AXIS);
+	    spacer5.setPreferredSize(new Dimension(40, 20));
+	    jp_sec.add(spacer5);
+	    
 	    
 
 	    Box box5 = new Box(BoxLayout.X_AXIS);
-	    box5.setMaximumSize(new Dimension(9999, 50));
-	    box5.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
+	    box5.setPreferredSize(new Dimension(40, 75));
 	    
 	    
 	    _b_verifier = new JButton("vérifier");
+	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
+	    _b_verifier.setPreferredSize(new Dimension(150, 75));
 		_b_verifier.addActionListener(this);
 	    
 	    box5.add(Box.createGlue());
 	    box5.add(_b_verifier);
 	    box5.add(Box.createGlue());
-	    
 
 	    jp_sec.add(box5);
 	    
 
+	    
+	    Box spacer2 = new Box(BoxLayout.X_AXIS);
+	    spacer2.setPreferredSize(new Dimension(10, 100));
+	    jp_sec.add(spacer2);
+	    
+	    
 	    
 	    _listword = _verifier.getListWords();
 	    System.out.println(_listword.size());
@@ -195,7 +283,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    int i = 0;
 		for(TweetWord word : _listword){
 			i++;
-	    	if(i == 4){
+	    	if(i == 6){
 	    		i=0;
 	    		jp_sec.add(box6);
 	    		
@@ -239,47 +327,75 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			pgl.add(p);
 			JLabel txt = new JLabel(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,24 ));
+			txt.setFont(new Font("",Font.BOLD,40 ));
 			txt.setForeground(new Color(29, 202, 255,255));
 			_listword_label.add(txt);
 			p.add(txt);
 		}
 		if(i != 0)
 			jp_sec.add(box6);
+	
 		
-	    _fenetre.setVisible(true);
-
+		_fenetre.repaint();
+		
 	}
 	
-	public void verifier(String mots_a_verifier){
-		mots_a_verifier = TweetParser.cleanWord(mots_a_verifier);
-		if(!mots_a_verifier.isEmpty()){
-        	_txt.setText(_tf_saisie.getText());
-        	TweetWord mots = _verifier.isMotValid(mots_a_verifier);
-        	
-        	if(mots.getPonderation() == -1){
-        		_txt.setText("Mot incorrect !");
-        		loose_vie();
-        	}else if(mots.getPonderation() == -2)
-        		_txt.setText("Mot déja rentré !");
-        	else if(mots.getPonderation() == -3)
-        		_txt.setText("Mot déja rentré et correspond à "+mots.getWord()+" !");
-        	else if(mots.getPonderation() > 0){
-        		_txt.setText("Mot "+mots.getWord()+" correct ! Plus "+mots.getPonderation()+" points.");
-        		add_point(mots.getPonderation(),mots);
-        		
-        	}
-        	_tf_saisie.setText("");
-    	}else{
-    		_txt.setText("Veuillez entrer un mot valide !");
-    	}
-		
-		if(_nb_point == 100){
-			new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+	
+	
+	private void redraw_vie(){
+		 for(int i = 0;i<_nb_vie_total;i++){
+			 Image myPicture = null;
+		    	if(i < _nb_vie){
+		    		myPicture = _image_vie;
+		    	}else{
+		    		myPicture = _image_mort;	    		    		
+		    	}
+
+		    	_vie.get(i).setIcon(new ImageIcon(myPicture));
+		    }
+		 _fenetre.repaint();
+	}
+
+	public void verifier(String mot_a_verifier){
+		mot_a_verifier = mot_a_verifier.trim();
+		if(mot_a_verifier.isEmpty()){
+			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
 		}
-		if(_nb_vie == 0){
-			new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+		else {
+			List<String> mots_a_verifier = Arrays.asList(mot_a_verifier.split(" "));
+			String affichage  = "";
+			for(String mot: mots_a_verifier) {
+				mot = TweetParser.cleanWord(mot);
+				if(mot.isEmpty()) {
+					affichage += "Un des mots proposé est invalide, il a été ignoré ! ";
+					continue;
+				}
+	        	TweetWord motVerifie = _verifier.isMotValid(mot);
+	        	
+	        	if(motVerifie.getPonderation() == -1){
+	        		affichage += "Le mot " + mot + " est incorrect ! ";
+	        		loose_vie();
+	        	}else if(motVerifie.getPonderation() == -2)
+	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
+	        	else if(motVerifie.getPonderation() == -3)
+	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
+	        	else if(motVerifie.getPonderation() > 0){
+	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
+	        		add_point(motVerifie.getPonderation(), motVerifie);
+	        	}
+	        	_txt.setText(affichage);
+	        	if(_nb_point == 100){
+					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+					break;
+				}
+				if(_nb_vie == 0){
+					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+					break;
+				}
+	        	_tf_saisie.setText("");
+			}
 		}
+
 		_fenetre.repaint();
 		
 	}
@@ -288,7 +404,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private void loose_vie(){
 		if(_nb_vie != 0){
 			_nb_vie--;
-			_compteur_de_vie.setText("vie :"+_nb_vie);
+			redraw_vie();
 		}
 	}
 	private void add_point(int nb_point,TweetWord mots){
@@ -318,6 +434,4 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
     }
-	
-	
 }
