@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -23,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import ihm.components.Bt;
+import ihm.components.Tbt;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -35,7 +38,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 
-public class IHM_Iterface extends JFrame implements KeyListener{
+public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 	
 	/**
 	 * 
@@ -47,6 +50,8 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	protected JPanel _jp_principal;
 	
 	protected Dimension _screen,_screenx,_screeny;
+	
+	protected Bt _quit;
 	
 	protected Font arista_light;
 	protected Font arista_btn;
@@ -141,9 +146,11 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 
 	    _fenetre.add(_jp_principal);
 	    
-	    Bt quit = new Bt("EXIT");
-	    
-	    quit.setxy(90, 0);
+	    _quit = new Bt("EXIT");
+	    _quit.setGravity(Bt.TOP_RIGHT);
+	    _quit.setxy(100, 0);
+	    _quit.addActionListener(this);
+	    _jp_principal.add(_quit);
 	    
 	    return _jp_principal;
 	}
@@ -253,7 +260,15 @@ public class IHM_Iterface extends JFrame implements KeyListener{
         }
          
     }
+	
+	
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == _quit)
+			close_all();
+	}
+	
 }
+
 
 
 class TestImagePanel extends JPanel {

@@ -321,6 +321,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 		if( e.getSource() == _b_play ){
 			lauchegame();
 		}else if( e.getSource() == _b_easy){
@@ -347,6 +348,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
         		 }
      	    }
         }
+		
+		
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Txt extends JLabel {
@@ -18,6 +19,12 @@ public class Txt extends JLabel {
 			
 	public Txt(String text){
 		super(text);
+		contruct();
+		
+	}
+	
+	public Txt(ImageIcon im){
+		super(im);
 		contruct();
 		
 	}
@@ -52,22 +59,24 @@ public class Txt extends JLabel {
 	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
-	    int width = metrics.stringWidth( getText() );
-	    int height = metrics.getHeight();
-	    Dimension newDimension =  new Dimension(width+40,height+10);
-	    setPreferredSize(newDimension);
-	    setBounds(new Rectangle(getLocation(), getPreferredSize()));
-	    
-	    if(_gravity == CENTER){
-	    	_center_x = getWidth()/2;
-	    	_center_y = getHeight()/2;
-	    }else if(_gravity == TOP_RIGHT){
-	    	_center_x = getWidth();
-	    	_center_y = 0;
-		}else{
-	    	_center_x = 0;
-	    	_center_y = 0;
-	    }
+		if(getText() != null){
+		    int width = metrics.stringWidth( getText() );
+		    int height = metrics.getHeight();
+		    Dimension newDimension =  new Dimension(width+40,height+10);
+		    setPreferredSize(newDimension);
+		    setBounds(new Rectangle(getLocation(), getPreferredSize()));
+		    
+		    if(_gravity == CENTER){
+		    	_center_x = getWidth()/2;
+		    	_center_y = getHeight()/2;
+		    }else if(_gravity == TOP_RIGHT){
+		    	_center_x = getWidth();
+		    	_center_y = 0;
+			}else{
+		    	_center_x = 0;
+		    	_center_y = 0;
+		    }
+		}
 	}
 	
 	

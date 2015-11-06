@@ -1,49 +1,46 @@
 package ihm.components;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JToggleButton;
+import javax.swing.JTextField;
 
-public class Tbt extends JToggleButton {
+public class Tf extends JTextField {
 	
-
 	private int _gravity,_center_x,_center_y;
 	private Dimension _screen;
 	//FLAG de Gravity
 	static public int CENTER=1,TOP_LEFT=2,TOP_RIGHT=3;
 	
-	public Tbt(){
-		super("button");
+	
+			
+	public Tf(int colomn){
+		super(colomn);
+		contruct();
+		
+	}
+	
+	public Tf(){
+		super();
 		contruct();
 	}
-	public Tbt(String text){
-		super(text);
-		contruct();
-	}
+
+	
 	private void contruct(){
-		_gravity=CENTER;
+		_gravity = CENTER;
 		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		auto_resize();
 	}
-
 	
 	
-
 	public void setGravity(int flag){
 		_gravity = flag;
 		
 		if(flag < 1 && flag > 3)
 			_gravity = CENTER;
-		
 		auto_resize();
-		re_setxy();
 	}
 	
 	
@@ -73,14 +70,7 @@ public class Tbt extends JToggleButton {
 	    }
 	}
 	
-	public void setFont(Font font){
-		super.setFont(font);
-		auto_resize();
-	}
 	
-	private void re_setxy(){
-		//setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
-	}
 	public void setxy(float x,float y){
 		setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
 	}
