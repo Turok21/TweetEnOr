@@ -51,9 +51,9 @@ public class Tf extends JTextField {
 	}
 	
 	public void auto_resize(){
-		FontMetrics metrics = getFontMetrics(getFont()); 
-	    int width = metrics.stringWidth( getText() );
-	    int height = metrics.getHeight();
+	    int width = getPreferredSize().width;
+	    int height = getPreferredSize().height;
+	    System.out.println(getPreferredSize());
 	    Dimension newDimension =  new Dimension(width+40,height+10);
 	    setPreferredSize(newDimension);
 	    setBounds(new Rectangle(getLocation(), getPreferredSize()));
@@ -71,6 +71,11 @@ public class Tf extends JTextField {
 	}
 	
 	
+	
+
+	public void setxyin(float x,float y,int in_w,int in_h){
+		setLocation((int)(in_w*(x/100))-_center_x,(int)(in_h*(y/100))-_center_y);
+	}
 	public void setxy(float x,float y){
 		setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
 	}
@@ -83,6 +88,16 @@ public class Tf extends JTextField {
 	
 	public void setwh(float w,float h){
 		setSize(new Dimension((int) w,(int) h));
+		if(_gravity == CENTER){
+	    	_center_x = getWidth()/2;
+	    	_center_y = getHeight()/2;
+	    }else if(_gravity == TOP_RIGHT){
+	    	_center_x = getWidth();
+	    	_center_y = 0;
+		}else{
+	    	_center_x = 0;
+	    	_center_y = 0;
+	    }
 	}
 	public void setw(float w){
 		setwh((int) w,getHeight());

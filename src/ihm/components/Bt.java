@@ -67,6 +67,10 @@ public class Bt extends JButton {
 	}	    
 	
 	
+
+	public void setxyin(float x,float y,int in_w,int in_h){
+		setLocation((int)(in_w*(x/100))-_center_x,(int)(in_h*(y/100))-_center_y);
+	}
 	public void setxy(float x,float y){
 		setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
 	}

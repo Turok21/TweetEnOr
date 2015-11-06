@@ -62,7 +62,7 @@ public class Txt extends JLabel {
 		if(getText() != null){
 		    int width = metrics.stringWidth( getText() );
 		    int height = metrics.getHeight();
-		    Dimension newDimension =  new Dimension(width+40,height+10);
+		    Dimension newDimension =  new Dimension(width+0,height+10);
 		    setPreferredSize(newDimension);
 		    setBounds(new Rectangle(getLocation(), getPreferredSize()));
 		    
@@ -80,6 +80,9 @@ public class Txt extends JLabel {
 	}
 	
 	
+	public void setxyin(float x,float y,int in_w,int in_h){
+		setLocation((int)(in_w*(x/100))-_center_x,(int)(in_h*(y/100))-_center_y);
+	}
 	public void setxy(float x,float y){
 		setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
 	}

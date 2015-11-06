@@ -39,6 +39,7 @@ import org.omg.CORBA.portable.InputStream;
 
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
+import ihm.components.Pa;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import utils.TweetParser;
@@ -120,6 +121,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public void draw(int redraw){
 		
+		_listword = _verifier.getListWords();
+		
+		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre);
@@ -134,12 +138,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _tf_saisie = new Tf(50);
 	    _tf_saisie.setVisible(true);
 	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
+	    _tf_saisie.addKeyListener(this);
+	    _tf_saisie.setxy(50, 50);
 	    _jp_principal.add(_tf_saisie);
 	    
 	  
 
 	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
+	    
 	    
 	    
 	   
@@ -155,66 +163,40 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	//vie_box.add(_vie.get(_vie.size()-1));
 	    }
 
-	    
-	    
-	    
-	 /*
-
-	    
-	    _hashtag = new JLabel("#"+hasttag);
+	    _hashtag = new Txt("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
-	   _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
-	   
+	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
+	    _hashtag.auto_resize();
+	    _hashtag.setxy(50, 40);
+	    _jp_principal.add(_hashtag);
 
 	
-	    
-	    
 
-	    _tf_saisie.setMaximumSize(new Dimension(300,40));
-	    _tf_saisie.setFont(new Font("",Font.TYPE1_FONT,20 ));
-	    _tf_saisie.addKeyListener(this);
-	    
-	  
-	    _txt = new JLabel("");
-	    
-
+	    _txt = new Txt("");
 	    
 	    
-	
-	    
-	    
-	    _b_verifier = new JButton("vérifier");
+	    _b_verifier = new Bt("vérifier");
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
 	    _b_verifier.setPreferredSize(new Dimension(150, 75));
 		_b_verifier.addActionListener(this);
+	    
 	 
 
-	    
-	    
-	    
-	    
-	    _listword = _verifier.getListWords();
+	
+	    JPanel pc = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-	    JPanel pgl = new JPanel(new FlowLayout());
-	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    pgl.setMaximumSize(new Dimension(900, 900));
-	    
-
-	    
+		float x=10,y=55,y2=0;
+	  
 	    int i = 0;
 		for(TweetWord word : _listword){
 			i++;
 	    	if(i == 6){
 	    		i=0;
-
-	    	    pgl = new JPanel(new FlowLayout());
-	    	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    	    pgl.setMaximumSize(new Dimension(900, 900));
-	    	    
-
+	    		y=y2;
+	    		x=10;
 	    	}
 	    	
-			JPanel p = new JPanel() {
+			Pa p = new Pa(null) {
 			     
 				private static final long serialVersionUID = 1L;
 
@@ -231,7 +213,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			        graphics.setColor(getBackground());
 			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
 			        graphics.setColor(getForeground());
-			       // graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			       //graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
 			     }
 			  };
 			  p.setBounds(10,10,100,30);
@@ -239,15 +221,34 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			  p.setBackground(new Color(29, 202, 255,255));
 			
-			pgl.add(p);
-			JLabel txt = new JLabel(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,40 ));
+			
+			Txt txt = new Txt(""+word.getWord());
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
+			txt.setForeground(new Color(255, 255, 255,255));
+			txt.setGravity(Txt.CENTER);		
 			_listword_label.add(txt);
+
 			p.add(txt);
+			p.setxy(x,y);
+			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
+			
+			txt.setxyin(50,50,p.getWidth(),p.getHeight());
+			
+			_jp_principal.add(p);
+			
+			
+			int a = p.getLocation().x + p.getSize().width + (int)(_screen.width*0.01);
+			int b = p.getLocation().y + p.getSize().height + (int)(_screen.height*0.01);
+			
+			x = (a/(float)_screen.width)*100;
+			System.out.println(x);
+			y2 = (b/((float)_screen.height))*100;
+			
 		}
 	
-		*/
+		
+		
 		_fenetre.repaint();
 		
 		

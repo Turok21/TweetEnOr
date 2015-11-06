@@ -1,17 +1,18 @@
 package ihm.components;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Frame;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JToggleButton;
+import javax.swing.JPanel;
 
-public class Tbt extends JToggleButton {
+public class Pa extends JPanel {
 	
 
 	private int _gravity,_center_x,_center_y;
@@ -19,48 +20,38 @@ public class Tbt extends JToggleButton {
 	//FLAG de Gravity
 	static public int CENTER=1,TOP_LEFT=2,TOP_RIGHT=3;
 	
-	public Tbt(){
-		super("button");
+	public Pa(){
+		super();
 		contruct();
 	}
-	public Tbt(String text){
-		super(text);
+	public Pa(LayoutManager LM){
+		super(LM);
 		contruct();
 	}
+	
 	private void contruct(){
-		_gravity=CENTER;
 		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		auto_resize();
 	}
-
 	
-	
-
 	public void setGravity(int flag){
 		_gravity = flag;
 		
 		if(flag < 1 && flag > 3)
 			_gravity = CENTER;
-		
-		auto_resize();
-		re_setxy();
-	}
-	
-	
-	
-	public void settext(String txt){
-		super.setText(txt);
 		auto_resize();
 	}
+	
+
 	
 	public void auto_resize(){
-		FontMetrics metrics = getFontMetrics(getFont()); 
-	    int width = metrics.stringWidth( getText() );
+		/*FontMetrics metrics = getFontMetrics(getFont()); 
+	    int width = metrics.stringWidth( 60 );
 	    int height = metrics.getHeight();
 	    Dimension newDimension =  new Dimension(width+40,height+10);
 	    setPreferredSize(newDimension);
 	    setBounds(new Rectangle(getLocation(), getPreferredSize()));
-	    
+	    */
 	    if(_gravity == CENTER){
 	    	_center_x = getWidth()/2;
 	    	_center_y = getHeight()/2;
@@ -71,16 +62,9 @@ public class Tbt extends JToggleButton {
 	    	_center_x = 0;
 	    	_center_y = 0;
 	    }
-	}
+	}	    
 	
-	public void setFont(Font font){
-		super.setFont(font);
-		auto_resize();
-	}
 	
-	private void re_setxy(){
-		//setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
-	}
 	
 
 	public void setxyin(float x,float y,int in_w,int in_h){
