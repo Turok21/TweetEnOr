@@ -4,6 +4,7 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,38 +45,16 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	
 	public Accueil_IHM(){
 		super();
-		
-		
-		
-  
+
 	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
-	    _fenetre.addKeyListener(this);
+	    _jp_principal.setPreferredSize(_screen);
+	    _fenetre.getContentPane().setVisible(true);
+	    _fenetre.setVisible(true);
 	    _jp_principal.setLayout(null);
 	    
-/*
-		Icon myImgIcon = new ImageIcon("./data/images/gif3.gif");
-		JLabel imageLbl = new JLabel(myImgIcon);
-		imageLbl.setBounds(0, 0,_screen.width,_screen.height);
-*/
+ 
 	    
-		
-		
-		
-
-		JLabel image = new JLabel( new ImageIcon( "./data/images/fond_Tweet_en_or.jpg"));
-		JPanel fond = new JPanel();
-		fond.setLayout(new BorderLayout());
-		fond.setPreferredSize(_screen);
-		fond.setMinimumSize(_screen);
-		fond.setMaximumSize(_screen);
-		fond.add(image);
-
-		
-		image.setBounds(0, 0, _screen.width, _screen.height-190);
-		_jp_principal.add(image,null);
-		
-		
-		_b_next = new JButton("#NEXT");
+	    _b_next = new JButton("#NEXT");
 	    _b_next.setFont(arista_light.deriveFont(55));
 	    _b_next.addActionListener(this);
 	    _b_next.setSize(150,50);
@@ -84,16 +63,28 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	
 		_jp_principal.add( _b_next);
 		
+		
+	
+		JLabel image = new JLabel(
+			new ImageIcon(
+				new ImageIcon( "./data/images/fond_Accueil.jpg").getImage().getScaledInstance(_screen.width, _screen.height, Image.SCALE_SMOOTH)
+			)
+		);
+		image.setBounds(0, 0, _screen.width, _screen.height);
+		_jp_principal.add(image,null);
+		
+		
+		
+		
 	    
-		_jp_principal.setPreferredSize(Toolkit.getDefaultToolkit().getScreenSize());
+		
 
 
 
     
-		_fenetre.getContentPane().setVisible(true);
-	    _fenetre.setVisible(true);
+		
 	    
-	/*    int vx=2,vy=2;
+	    int vx=2,vy=2;
 	    while(true){
 	    	
 	    	if(_b_next.getLocation().x < 0)
@@ -114,7 +105,9 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 				Thread.sleep(10);
 			} catch (InterruptedException e) { e.printStackTrace(); }
 	    	 
-	    }*/
+	    }
+	    
+	    //applique_fond();
 	}
 
 
