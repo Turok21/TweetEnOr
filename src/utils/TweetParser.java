@@ -135,15 +135,40 @@ public abstract class TweetParser {
         /** Tri de la map */
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
 
+        Map<String, Integer> sortMergedPonderatedWord = mergeSimilarWords(sortPonderatedWord);
+        
         /** Recuperation des 10 mots les plus représentatif */
         Map<String, Integer> topPonderatedWord = new HashMap<>();
         int nbWord = 10;
-        for (Map.Entry<String, Integer> entry : sortPonderatedWord.entrySet()) {
+        for (Map.Entry<String, Integer> entry : sortMergedPonderatedWord.entrySet()) {
             if (nbWord <= 0) break;
             topPonderatedWord.put(entry.getKey(), entry.getValue());
             nbWord--;
         }
         return topPonderatedWord;
+    }
+    
+    private static Map<String, Integer> mergeSimilarWords(Map<String, Integer> sortedMapWords) {
+    	Map<String, Integer> mergedMapWords = new HashMap<>();
+    	
+    	for (String word : new ArrayList<>(sortedMapWords.keySet())) {
+    		boolean match = false;
+    		for (String mergedWord : new ArrayList<>(mergedMapWords.keySet())) {
+    			if(WordComparator.wordCompare(word, mergedWord)) {
+    				match = true;
+    				// add old and new ponderation
+    				int newPonderation =  mergedMapWords.get(mergedWord) + sortedMapWords.get(word);
+    				mergedMapWords.put(mergedWord, newPonderation);
+    				break;
+    			}
+    		}
+    		if(!match) {
+    			// No merge available, create new entry
+    			mergedMapWords.put(word, sortedMapWords.get(word));
+    		}
+    	}
+    	// Sort again if order has changed
+    	return sortByComparator(mergedMapWords);
     }
 
     private static List<TweetWord> mapPonderatedToTweetWord(Map<String, Integer> tweetList) {
