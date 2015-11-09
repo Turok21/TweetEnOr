@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import controllers.CtrlTweetEnOr;
 import utils.TweetWord;
+import Sounds.Player;
 
 public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
@@ -37,31 +38,32 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	private static final long serialVersionUID = 1L;
 	private JLabel _text;
 	private JButton _b_again;
-
+	private static Player player;
 
 	public static void main(String[] args){		
+		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),0,listword);
+		new End_IHM(new JFrame(""),1,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
 		super();
-		
-		
+		player = new Player();
 		
 		if(fin == 0)
 			loose_screen(fram, fin, listword);
-		else
+		else{
 			win_screen(fram, fin, listword);
-		
-    
-	    
+			
+		}
+
 	    _fenetre.setVisible(true);
-
+	    if (fin != 0)
+	    	player.play("./data/Sounds/OhYeah.wav");
 	}
-	
 
+	
 	private void loose_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram);
@@ -202,7 +204,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram);
 		
 		_fenetre.addKeyListener(this);
-			
+		
 		JPanel jp_sec = new JPanel();
 		jp_sec.setOpaque(false);
 		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
@@ -308,7 +310,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		Box spacer = new Box(BoxLayout.X_AXIS);
 		spacer.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.08)));
 		jp_sec.add(spacer);
-		    
+		 
+		
 		   
 		_b_again.setText("Recommencer");
 		jp_sec.add(_b_again);
