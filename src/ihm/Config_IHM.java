@@ -30,6 +30,7 @@ import javax.swing.JToggleButton;
 import ihm.components.Bt;
 import ihm.components.Tbt;
 import ihm.components.Txt;
+import ihm.components.composent.GRAVITY;
 
 public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
@@ -88,7 +89,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_easy = new Tbt("Facile");
 	    _b_easy.setFont(arista_btn);
 	    _b_easy.addActionListener(this);
-	    _b_easy.setGravity(Bt.TOP_RIGHT);
+	    _b_easy.setGravity(GRAVITY.TOP_RIGHT);
 	    _b_easy.setxy(100, 0);
 	    _jp_principal.add(_b_easy);
 	    

@@ -48,14 +48,16 @@ public class Tbt extends JToggleButton {
 	}
 	
 	public void auto_resize(){
-	    int width = getPreferredSize().width;
-	    int height = getPreferredSize().height;
-	    System.out.println(getPreferredSize());
-	    Dimension newDimension =  new Dimension(width+40,height+10);
-	    setPreferredSize(newDimension);
-	    setBounds(new Rectangle(getLocation(), getPreferredSize()));
+		FontMetrics metrics = getFontMetrics(getFont()); 
+		if(getText() != null){
+		    int width = metrics.stringWidth( getText() );
+		    int height = metrics.getHeight();
+		    Dimension newDimension =  new Dimension(width+40,height+10);
+		    setPreferredSize(newDimension);
+		    setBounds(new Rectangle(getLocation(), getPreferredSize()));
 	    
-	    apply_gravity();
+		    apply_gravity();
+		}
 	}
 	
 	private void apply_gravity(){

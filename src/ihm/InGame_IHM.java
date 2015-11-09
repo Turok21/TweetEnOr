@@ -151,10 +151,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
-	    System.out.println(ratio_size_vie);
+
 	    float xtmp=1;
 	    for(int i = 0;i<_nb_vie_total;i++){
 	    	Txt tmp = new Txt(new ImageIcon(_image_vie));
+	    	tmp.setGravity(GRAVITY.TOP_LEFT);
 	    	tmp.setxy(xtmp, 2);
 	    	xtmp+=ratio_size_vie;
 	    	_vie.add(tmp);
@@ -176,9 +177,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    _b_verifier = new Bt("vérifier");
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
-	    _b_verifier.setPreferredSize(new Dimension(150, 75));
-	    _b_verifier.auto_resize();
 	    _b_verifier.setGravity(GRAVITY.CENTER);
+	    _b_verifier.setwh(150, 75);
+	    _b_verifier.auto_resize();
 	    _b_verifier.setxy(50, 50);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
@@ -236,6 +237,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				wline2 += p.getWidth()+15;
 				hline2 = p.getHeight()+5;
 			}
+			System.out.println();
 			i++;
 		}
 		
@@ -255,7 +257,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		pline.setGravity(GRAVITY.CENTER);
 
 	    	}
-	    	pword.setxyin(5,0,pline.getWidth(),pline.getHeight());
+	    	pword.setxyin(20,0,pline.getWidth(),pline.getHeight());
 	    	pline.setxy(50,60);
 			pline.add(pword);
 	

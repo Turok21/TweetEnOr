@@ -44,13 +44,7 @@ public class Pa extends JPanel implements composent{
 	
 	
 	public void auto_resize(){
-	    /*int width = getPreferredSize().width;
-	    int height = getPreferredSize().height;
-	    System.out.println(getPreferredSize());
-	    Dimension newDimension =  new Dimension(width+40,height+10);
-	    setPreferredSize(newDimension);
-	    setBounds(new Rectangle(getLocation(), getPreferredSize()));
-	    */
+	    
 	    apply_gravity();
 	}
 	
@@ -96,18 +90,18 @@ public class Pa extends JPanel implements composent{
 	public void setwh(float w,float h){
 		_Ph=h;
 		_Pw=w;
-		setSize(new Dimension((int) w,(int) h));
 		apply_gravity();
+		setSize(new Dimension((int) w,(int) h));
 	}
 	public void setw(float w){
 		_Pw=w;
-		setwh((int) w,getHeight());
 		apply_gravity();
+		setwh((int) w,getHeight());
 	}
 	public void seth(float h){
 		_Ph=h;
-		setwh(getWidth(),(int) h);
 		apply_gravity();
+		setwh(getWidth(),(int) h);
 	}
 	
 	
