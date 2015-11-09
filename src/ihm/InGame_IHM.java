@@ -25,9 +25,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,6 +39,7 @@ import javax.swing.JTextField;
 
 import org.omg.CORBA.portable.InputStream;
 
+import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
 import ihm.components.Pa;
@@ -63,6 +66,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private Image _image_mort,_image_vie;
 	
+	
+	private Pa _panelwait;
 	
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;
@@ -92,12 +97,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
 		
+		
 		_vie = new ArrayList<>();
 		
 		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
 		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
 		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
 		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		
 	    
 		_fram_given = fram;
 	    hasttag = hastag_theme;
@@ -105,10 +112,27 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nb_vie_total = Difficulte;
 		_nb_point = 0;
 		
-		_listword_label = new ArrayList<Txt>();
-	    _verifier = new CtrlTweetEnOr(hastag_theme);
 		
-		draw(0);
+		
+		drawloader(0);
+		_fenetre.setVisible(true);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				/*try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {e.printStackTrace();}
+				*/_listword_label = new ArrayList<Txt>();
+			    _verifier = new CtrlTweetEnOr(hasttag);
+				_listword = _verifier.getListWords();
+				draw(0);
+				show_windows();	
+				_fenetre.remove(_panelwait);
+				_fenetre.getContentPane().repaint();
+			}
+		}).start();
+		
+		
 		
 		
 		
@@ -116,21 +140,45 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 		
-		show_windows();	
+		
+		
 
 	}
 	
-	public void draw(int redraw){
+	public void drawloader(int redraw){
 		
-		_listword = _verifier.getListWords();
+		if(redraw == 1){
+			_fenetre.remove(_jp_principal);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,true);
+		}else{
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+		}
+		
+		
+        Txt loader = new Txt(new ImageIcon("./data/images/gif.gif"));
+        _panelwait = new Pa();
+        _panelwait.setwh(_screen.width, _screen.height);
+        _panelwait.setBackground(new Color(40, 170, 225));
+        _panelwait.setOpaque(true);
+        loader.setxyin(50, 50,_panelwait.getWidth(),_panelwait.getHeight());
+        _panelwait.add(loader);
+        _fenetre.add(_panelwait);
+        
+	}
+	
+	
+	public void draw(int redraw){
 		
 		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,true);
 		}else{
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
 		}
+		
+		
+		
 	    _fenetre.addKeyListener(this);
 		_jp_principal.addKeyListener(this);
 		
@@ -142,12 +190,17 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
 	    _tf_saisie.addKeyListener(this);
 	    _tf_saisie.setxy(50, 45);
+	    _tf_saisie.setFocusable(true);
 	    _jp_principal.add(_tf_saisie);
+
 	    
 	  
 
 	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
+	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point.setxy((float)98.5,(float)3);
+	    _jp_principal.add(_compteur_de_point);
 	    
 	    
 	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
@@ -172,7 +225,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	
 
-	    _txt = new Txt("");
+	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
+	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
+	    _txt.auto_resize();
+	    _txt.setxy(50, 54);
+	    _jp_principal.add(_txt);
 	    
 	    
 	    _b_verifier = new Bt("vérifier");
@@ -183,6 +240,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setxy(50, 50);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
+	    
 	 
 
 	
@@ -221,7 +279,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
-			txt.setForeground(new Color(255, 255, 255,255));
+			//txt.setForeground(new Color(255, 255, 255,255));
 			txt.setGravity(GRAVITY.CENTER);		
 			_listword_label.add(txt);
 
@@ -237,30 +295,37 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				wline2 += p.getWidth()+15;
 				hline2 = p.getHeight()+5;
 			}
-			System.out.println();
+			
 			i++;
 		}
 		
-		
+		float x_decalage = 0,y_de=60;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa pword : words){
 			
-	    	if(i == 5 || i == 10){
-	    		pline.setOpaque(true);
+	    	pword.setGravity(GRAVITY.TOP_LEFT);
+	    	pword.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
+	    	x_decalage += (((float)pword.getWidth()+15)/(float)pline.getWidth())*100;
+	    
+	    	
+			pline.add(pword);
+			
+			if(i == 5 || i == 10){
+	    		pline.setxy(50,y_de);
+	    		pline.setOpaque(false);
 	    		_jp_principal.add(pline);
 	    		
 	    		pline = new Pa(null);
 	    		pline.setwh(wline2, hline2);
 	    		pline.setGravity(GRAVITY.CENTER);
-
+	    		x_decalage = 0;
+	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
+	    		System.out.println(y_de);
 	    	}
-	    	pword.setxyin(20,0,pline.getWidth(),pline.getHeight());
-	    	pline.setxy(50,60);
-			pline.add(pword);
-	
+			
 			i++;
 		}
 		
@@ -272,7 +337,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	
-	private void redraw_vie(){
+	private void redraw_vie(){		
 		 for(int i = 0;i<_nb_vie_total;i++){
 			 Image myPicture = null;
 		    	if(i < _nb_vie){
@@ -284,12 +349,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		    	_vie.get(i).setIcon(new ImageIcon(myPicture));
 		    }
 		 _fenetre.repaint();
+		 
+		 if(_nb_vie == 0)
+			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
 	}
 
 	public void verifier(String mot_a_verifier){
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
 			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
+		    _txt.auto_resize();
 		}
 		else {
 			List<String> mots_a_verifier = Arrays.asList(mot_a_verifier.split(" "));
@@ -314,6 +383,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
 	        	_txt.setText(affichage);
+	    	    _txt.auto_resize();
 	        	if(_nb_point == 100){
 					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
 					break;
@@ -332,12 +402,29 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	private void loose_vie(){
-		if(_nb_vie != 0){
-			_nb_vie--;
-			redraw_vie();
-		}
+	 
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playDie();
+				if(_nb_vie != 0){
+					_nb_vie--;
+					redraw_vie();
+				}
+			}
+		}).start();
 	}
 	private void add_point(int nb_point,TweetWord mots){
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playGoodAnswer();
+			}
+		}).start();
+		
 		
 		for(Txt label : _listword_label){
 			if(label.getText().compareTo(mots.getWord()) == 0){
@@ -348,6 +435,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 		_nb_point += nb_point;
 		_compteur_de_point.setText("Points "+_nb_point);
+		_compteur_de_point.auto_resize();
 	}
 	
 

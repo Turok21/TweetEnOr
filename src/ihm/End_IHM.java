@@ -60,7 +60,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	private void loose_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram,false);
 		
 		_fenetre.addKeyListener(this);
 			
@@ -154,7 +154,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 	private void win_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram,false);
 		
 		_fenetre.addKeyListener(this);
 			

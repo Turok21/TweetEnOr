@@ -13,7 +13,7 @@ import ihm.components.composent.GRAVITY;
 public class Txt extends JLabel {
 	
 	private int _center_x,_center_y;
-	private GRAVITY _gravity;
+	private GRAVITY _gravity = GRAVITY.CENTER;
 	private float _Px,_Py,_Ph,_Pw;
 	private Dimension _screen;
 
@@ -40,6 +40,11 @@ public class Txt extends JLabel {
 
 	
 	private void contruct(){
+		_Px = 0;
+		_Py = 0;
+		_Ph = 0;
+		_Pw = 0;
+		
 		_gravity = GRAVITY.CENTER;
 		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		auto_resize();
@@ -54,6 +59,7 @@ public class Txt extends JLabel {
 	
 	public void settext(String txt){
 		super.setText(txt);
+		
 		auto_resize();
 	}
 	
@@ -64,8 +70,7 @@ public class Txt extends JLabel {
 		    int height = metrics.getHeight();
 		    Dimension newDimension =  new Dimension(width+0,height+10);
 		    setPreferredSize(newDimension);
-		    setBounds(new Rectangle(getLocation(), getPreferredSize()));
-	    
+		    setBounds(new Rectangle(getLocation(), newDimension));
 		    apply_gravity();
 		}
 	}
@@ -82,6 +87,8 @@ public class Txt extends JLabel {
 	    	_center_x = 0;
 	    	_center_y = 0;
 	    }
+		
+		setLocation((int)(_screen.width*(_Px/100))-_center_x,(int)(_screen.height*(_Py/100))-_center_y);
 	}
 	
 	
