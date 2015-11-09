@@ -55,6 +55,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Tf _tf_saisie;
 	private Bt _b_verifier;
 	
+	private Txt _loader;
 	private Txt _txt;
 	private Txt _compteur_de_point;
 	private Txt _hashtag;
@@ -96,7 +97,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
-		
+		System.out.println(Difficulte);
 		
 		_vie = new ArrayList<>();
 		
@@ -119,15 +120,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				/*try {
-					Thread.sleep(2000);
+				try {
+					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
-				*/_listword_label = new ArrayList<Txt>();
+				_listword_label = new ArrayList<Txt>();
 			    _verifier = new CtrlTweetEnOr(hasttag);
 				_listword = _verifier.getListWords();
 				draw(0);
 				show_windows();	
-				_fenetre.remove(_panelwait);
+				_fenetre.remove(_loader);
 				_fenetre.getContentPane().repaint();
 			}
 		}).start();
@@ -149,21 +150,27 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,true);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fenetre,false);
 		}else{
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fram_given,false);
 		}
 		
-		
-        Txt loader = new Txt(new ImageIcon("./data/images/gif.gif"));
-        _panelwait = new Pa();
+	
+        _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
+        _panelwait = new Pa(null);
+        _panelwait.setGravity(GRAVITY.TOP_LEFT);
         _panelwait.setwh(_screen.width, _screen.height);
+        _panelwait.setxy(0,0);
         _panelwait.setBackground(new Color(40, 170, 225));
         _panelwait.setOpaque(true);
-        loader.setxyin(50, 50,_panelwait.getWidth(),_panelwait.getHeight());
-        _panelwait.add(loader);
-        _fenetre.add(_panelwait);
+        _loader.setxyin(50, 50,_panelwait.getWidth(),_panelwait.getHeight());
+        System.out.println(_panelwait.getWidth()+" "+_panelwait.getHeight());
+        _loader.setBackground(new Color(40, 170, 225));
+        _loader.setOpaque(true);
+        //_panelwait.add(loader);
+        _fenetre.add(_loader);
         
+        show_windows();
 	}
 	
 	
@@ -172,7 +179,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,true);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,false);
 		}else{
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
 		}
