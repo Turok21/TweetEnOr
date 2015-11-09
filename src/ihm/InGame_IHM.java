@@ -184,19 +184,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 
 
 	
-	    JPanel pc = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-		float x=10,y=55,y2=0;
+	    List<Pa> words = new ArrayList<Pa>();
+		float x=10,wline=0,hline=0,wline2=0,hline2=0;
 	  
 	    int i = 0;
 		for(TweetWord word : _listword){
-			i++;
-	    	if(i == 6){
-	    		i=0;
-	    		y=y2;
-	    		x=10;
-	    	}
-	    	
+			
 			Pa p = new Pa(null) {
 			     
 				private static final long serialVersionUID = 1L;
@@ -231,24 +224,40 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			_listword_label.add(txt);
 
 			p.add(txt);
-			p.setxy(x,y);
 			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
-			
 			txt.setxyin(50,50,p.getWidth(),p.getHeight());
 			
-			_jp_principal.add(p);
-			
-			
-			int a = p.getLocation().x + p.getSize().width + (int)(_screen.width*0.01);
-			int b = p.getLocation().y + p.getSize().height + (int)(_screen.height*0.01);
-			
-			x = (a/(float)_screen.width)*100;
-			System.out.println(x);
-			y2 = (b/((float)_screen.height))*100;
-			
+			words.add(p);
+			if(i < 5){
+				wline += p.getWidth()+15;
+				hline = p.getHeight()+5;
+			}else {
+				wline2 += p.getWidth()+15;
+				hline2 = p.getHeight()+5;
+			}
+			i++;
 		}
-	
 		
+		
+		i=1;
+		Pa pline = new Pa(null);
+		pline.setwh(wline, hline);
+		for(Pa pword : words){
+			
+	    	if(i == 5 || i == 10){
+	    		pline.setOpaque(true);
+	    		_jp_principal.add(pline);
+	    		
+	    		pline = new Pa(null);
+	    		pline.setwh(wline2, hline2);
+
+	    	}
+	    	pword.setxyin(x,0,pline.getWidth(),pline.getHeight());
+	    	pline.setxy(50,60);
+			pline.add(pword);
+	
+			i++;
+		}
 		
 		_fenetre.repaint();
 		

@@ -64,9 +64,12 @@ public class Tf extends JTextField {
 	    }else if(_gravity == TOP_RIGHT){
 	    	_center_x = getWidth();
 	    	_center_y = 0;
-		}else{
+	    }else if(_gravity == TOP_LEFT){
 	    	_center_x = 0;
 	    	_center_y = 0;
+	    }else{
+	    	_center_x = getWidth()/2;
+	    	_center_y = getHeight()/2;
 	    }
 	}
 	
@@ -88,16 +91,6 @@ public class Tf extends JTextField {
 	
 	public void setwh(float w,float h){
 		setSize(new Dimension((int) w,(int) h));
-		if(_gravity == CENTER){
-	    	_center_x = getWidth()/2;
-	    	_center_y = getHeight()/2;
-	    }else if(_gravity == TOP_RIGHT){
-	    	_center_x = getWidth();
-	    	_center_y = 0;
-		}else{
-	    	_center_x = 0;
-	    	_center_y = 0;
-	    }
 	}
 	public void setw(float w){
 		setwh((int) w,getHeight());
