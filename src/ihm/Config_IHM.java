@@ -26,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+import Sounds.Player;
+
 public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 
@@ -35,6 +37,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Player player;
 
 	private JToggleButton _b_easy, _b_medium, _b_hard;
 	private JButton _b_play;
@@ -262,6 +265,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == _b_play ){
+			player = new Player();
+			player.play("./data/Sounds/Twitter.wav");
 			lauchegame();
 		}else if( e.getSource() == _b_easy){
         	_b_medium.setSelected(false);
