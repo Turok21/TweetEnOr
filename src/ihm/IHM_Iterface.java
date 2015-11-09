@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -110,13 +111,13 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 	
 
 	
-	protected JPanel load_fenetre_and_panel_principale(String title,String fond,JFrame fram){
+	protected JPanel load_fenetre_and_panel_principale(String title,String fond,JFrame fram,boolean donotremove){
 		
-		if(fram != null)
+		if(fram != null && !donotremove)
 			fram.getContentPane().removeAll();
 		
 		_fenetre = fram;
-		
+        
 		_fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		_fenetre.setTitle(title);

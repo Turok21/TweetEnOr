@@ -68,7 +68,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	public Config_IHM(JFrame fram) {
 
 
-		load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram);
+		load_fenetre_and_panel_principale("Un Tweet en Or - Config ","fond_Tweet_en_or.jpg",fram,false);
 				
 
 		

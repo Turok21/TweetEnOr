@@ -46,7 +46,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	public Accueil_IHM(){
 		super();
 
-	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this);
+	    _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg",this,false);
 	    
 	    
  
