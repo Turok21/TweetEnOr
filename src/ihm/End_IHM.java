@@ -32,7 +32,6 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JLabel _text;
 	private Bt _b_again;
 
 
@@ -76,8 +75,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 			
 			Txt txt = new Txt(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,40 ));
 			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();
 			
@@ -100,11 +99,11 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 					}
 					else if( k == 9)
 					{
-						txt.setxy(7 ,(23 + k*6) + (k )*2);
+						txt.setxy(7 ,(23 + k*6) + k*2);
 					}
 					else
 					{
-						txt.setxy(7, ( 23 + (k)*6) );
+						txt.setxy(7, 23 + k*6 );
 					}
 				}
 				left = false;
@@ -141,12 +140,11 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			
 			k++;
 		}
-
-		_text = new JLabel();
 	    
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
 		_b_again.setText("Recommencer");
+		_b_again.setFont(arista_light.deriveFont(55));
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy(50,85);
 		_jp_principal.add(_b_again);
@@ -160,116 +158,35 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		_fenetre.addKeyListener(this);
 			
-		JPanel jp_sec = new JPanel();
-		jp_sec.setOpaque(false);
-		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
-		_jp_principal.add(jp_sec);
-	    
-		
-		
-		Box spacer3 = new Box(BoxLayout.X_AXIS);
-	    spacer3.setPreferredSize(new Dimension(40, 400));
-	    jp_sec.add(spacer3);
- 
-	  
-	    Box box6 = new Box(BoxLayout.X_AXIS);
-	    JPanel pgl = new JPanel(new FlowLayout());
-	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    pgl.setMaximumSize(new Dimension(900, 900));
-	    
-	    box6.add(Box.createGlue());
-	    box6.add(pgl);
-	    box6.add(Box.createGlue());
-	    
-	   
-
-	    Box box3 = null;
 	    int k = 1;
+	    float lastX = 10;
+	    float lastY = 75;
 		for(TweetWord word : listword){		
 					    
-		    if(k%2 != 0){
-		    	box3 = new Box(BoxLayout.X_AXIS);
-		    	System.out.println(""+(int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)-(k*100)));
-		    	box3.setMaximumSize(new Dimension((int) ((Toolkit.getDefaultToolkit().getScreenSize().width*0.8)-(k*100)),
-												  (int) (Toolkit.getDefaultToolkit().getScreenSize().height*0.05) ));
-		    	//box3.setOpaque(true);
-		    }
-			
-			JPanel p = new JPanel() {
-			     /**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-			     protected void paintComponent(Graphics g) {
-			        super.paintComponent(g);
-			        Dimension arcs = new Dimension(15,15);
-			        int width = getWidth();
-			        int height = getHeight();
-			        Graphics2D graphics = (Graphics2D) g;
-			        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-
-			        graphics.setColor(getBackground());
-			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
-			        graphics.setColor(getForeground());
-			       // graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
-			     }
-			  };
-			  p.setBounds(10,10,100,30);
-			  p.setOpaque(false);
-			
-			 p.setBackground(new Color(29, 202, 255,255));
-			
-			pgl.add(p);
-			
-			
-			
-			JLabel txt = new JLabel(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,24 ));
+			Txt txt = new Txt(""+word.getWord());
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 			txt.setForeground(new Color(242, 209, 0 ,255));
-			p.add(txt);
-			
-			Box box4 = new Box(BoxLayout.X_AXIS);
-			box4.add(Box.createGlue());
-			box4.add(p);
-			box4.add(Box.createGlue());
-			
-			if(k%2 == 0){
-				Box spacer4 = new Box(BoxLayout.X_AXIS);
-				spacer4.setPreferredSize(new Dimension((int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.8)-((k*100)), 0));
-				jp_sec.add(spacer4);
-				box3.add(spacer4);
-				box3.add(box4);
-				jp_sec.add(box3);
-			}else{
-				box3.add(box4);
-			}
-			
-			
+			txt.setGravity(GRAVITY.CENTER);
+			txt.auto_resize();
+			txt.setxy(lastX, lastY);
+
+			lastX += 9;
+			if(k < 4  )
+				lastY -= 10;
+			if( k > 6 )
+				lastY += 10;
+		
+			_jp_principal.add(txt);
 			k++;
 		}
 		
-		
-	    
-	    jp_sec.add(box6);
-	    
-	    
-	    _text = new JLabel();
 		_b_again = new Bt();
-		_b_again.setPreferredSize(new Dimension(150, 50));
 		_b_again.addActionListener(this);
-
-
-		Box spacer = new Box(BoxLayout.X_AXIS);
-		spacer.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.08)));
-		jp_sec.add(spacer);
-		    
-		   
 		_b_again.setText("Recommencer");
-		jp_sec.add(_b_again);
-		
+		_b_again.setGravity(GRAVITY.CENTER);
+		_b_again.setxy(50,50);
+		_jp_principal.add(_b_again);
+	    
 	}
 
 	@Override
