@@ -224,18 +224,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	_jp_principal.add(tmp);
 	    }
 	    
-<<<<<<< HEAD
-=======
-	    Box spacer1 = new Box(BoxLayout.X_AXIS);
-	    spacer1.setPreferredSize(new Dimension(40, 50));
-	    jp_sec.add(spacer1);
-	    
-	    
-  
-	    Box box2 = new Box(BoxLayout.X_AXIS);
-	    box2.setMaximumSize(new Dimension(9999, 50));
-	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
->>>>>>> refs/remotes/origin/master
+
 
 	    _hashtag = new Txt("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
@@ -263,33 +252,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _jp_principal.add(_b_verifier);
 	    
 	 
-
-<<<<<<< HEAD
 	
 	    List<Pa> words = new ArrayList<Pa>();
 		float x=10,wline=0,hline=0,wline2=0,hline2=0;
-	  
-=======
-	    
-	    Box spacer2 = new Box(BoxLayout.X_AXIS);
-	    spacer2.setPreferredSize(new Dimension(10, 10));
-	    jp_sec.add(spacer2);
-	    
-	    
-	    
-	    _listword = _verifier.getListWords();
-	    System.out.println(_listword.size());
-	    
-	    Box box6 = new Box(BoxLayout.X_AXIS);
-	    JPanel pgl = new JPanel(new FlowLayout());
-	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    pgl.setMaximumSize(new Dimension(900, 900));
-	    
-	    box6.add(Box.createGlue());
-	    box6.add(pgl);
-	    box6.add(Box.createGlue());
-	    
->>>>>>> refs/remotes/origin/master
+
 	    int i = 0;
 		for(TweetWord word : _listword){
 			

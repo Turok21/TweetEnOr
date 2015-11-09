@@ -147,18 +147,10 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
-<<<<<<< HEAD
+
 	    _jp_principal.setPreferredSize(_screen);
 	    _jp_principal.setLayout(null);
-=======
-	    JPanel panel_fond = null;
-		try {
-			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
-		} catch (IOException e) {e.printStackTrace();}
 
-	//	panel_fond.addKeyListener(this);
-		_jp_principal.setLayout(new BorderLayout());
->>>>>>> refs/remotes/origin/master
 		_jp_principal.setOpaque(false);
 
 	    _fenetre.add(_jp_principal);
@@ -230,63 +222,13 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 
 	  }
 	
-<<<<<<< HEAD
-	
-	/*
-	 * Play music
-	 * only wav format
-	 */
-	public void play(String audioFilePath) {
-        File audioFile = new File(audioFilePath);
- 
-        try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
- 
-            AudioFormat format = audioStream.getFormat();
- 
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
- 
-            Clip audioClip = (Clip) AudioSystem.getLine(info);
- 
-            audioClip.addLineListener((LineListener) this);
- 
-            audioClip.open(audioStream);
-             
-            audioClip.start();
 
-            
-			while (audioClip.isRunning()) {
-                // wait for the playback completes
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-             
-            audioClip.close();
-             
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("The specified audio file is not supported.");
-            ex.printStackTrace();
-        } catch (LineUnavailableException ex) {
-            System.out.println("Audio line for playing back is unavailable.");
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            System.out.println("Error playing the audio file.");
-            ex.printStackTrace();
-        }
-         
-    }
 	
 	
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _quit)
 			close_all();
 	}
-	
-=======
->>>>>>> refs/remotes/origin/master
 }
 
 
