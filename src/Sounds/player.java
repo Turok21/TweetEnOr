@@ -29,8 +29,59 @@ public class Player implements LineListener {
      * Play a given audio file.
      * @param audioFilePath Path of the audio file.
      */
-    public void play(String audioFilePath) {
-    	File audioFile = new File(audioFilePath);
+    public void playDie() {
+    	File audioFile = new File("./data/Sounds/Die.wav");
+    	int audioLength;
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+ 
+            AudioFormat format = audioStream.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+ 
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+ 
+            audioClip.addLineListener(this);
+ 
+            audioClip.open(audioStream);
+            audioLength = (int) (audioClip.getMicrosecondLength()/1650);
+            
+            audioClip.setFramePosition(0);
+            audioClip.start();
+             
+           while (!playCompleted) {
+                // wait for the playback completes
+                try {
+                	System.out.println(audioLength);
+                	//en millisecondes
+                    Thread.sleep(audioLength);
+                    audioClip.stop();
+                   // audioClip.close();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            //audioClip.flush();
+           // audioClip.drain();
+            //audioClip.close();
+           audioClip.stop();
+             
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }
+        
+        
+    }
+    
+    public void playGoodAnswer() {
+    	File audioFile = new File("./data/Sounds/GoodAnswer.wav");
     	int audioLength;
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
@@ -46,6 +97,7 @@ public class Player implements LineListener {
             audioClip.open(audioStream);
             audioLength = (int) (audioClip.getMicrosecondLength()/1650);
              
+            audioClip.setFramePosition(0);
             audioClip.start();
              
            while (!playCompleted) {
@@ -55,14 +107,171 @@ public class Player implements LineListener {
                 	//en millisecondes
                     Thread.sleep(audioLength);
                     audioClip.stop();
-                    audioClip.close();
+                   // audioClip.close();
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
-            audioClip.flush();
-            audioClip.drain();
-            audioClip.close();
+            //audioClip.flush();
+           // audioClip.drain();
+            //audioClip.close();
+           audioClip.stop();
+            
+             
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }
+        
+        
+    }
+    
+    public void playBadAnswer() {
+    	File audioFile = new File("./data/Sounds/BadAnswer.wav");
+    	int audioLength;
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+ 
+            AudioFormat format = audioStream.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+ 
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+ 
+            audioClip.addLineListener(this);
+ 
+            audioClip.open(audioStream);
+            audioLength = (int) (audioClip.getMicrosecondLength()/1650);
+             
+            audioClip.setFramePosition(0);
+            audioClip.start();
+             
+           while (!playCompleted) {
+                // wait for the playback completes
+                try {
+                	System.out.println(audioLength);
+                	//en millisecondes
+                    Thread.sleep(audioLength);
+                    audioClip.stop();
+                   // audioClip.close();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            //audioClip.flush();
+           // audioClip.drain();
+            //audioClip.close();
+           audioClip.stop();
+            
+             
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }
+        
+        
+    }
+    
+    public void playTwitter() {
+    	File audioFile = new File("./data/Sounds/Twitter.wav");
+    	int audioLength;
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+ 
+            AudioFormat format = audioStream.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+ 
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+ 
+            audioClip.addLineListener(this);
+ 
+            audioClip.open(audioStream);
+            audioLength = (int) (audioClip.getMicrosecondLength()/1650);
+             
+            audioClip.setFramePosition(0);
+            audioClip.start();
+             
+           while (!playCompleted) {
+                // wait for the playback completes
+                try {
+                	System.out.println(audioLength);
+                	//en millisecondes
+                    Thread.sleep(audioLength);
+                    audioClip.stop();
+                   // audioClip.close();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            //audioClip.flush();
+           // audioClip.drain();
+            //audioClip.close();
+           audioClip.stop();
+            
+             
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }
+        
+        
+    }
+    
+    public void playOhYeah() {
+    	File audioFile = new File("./data/Sounds/OhYeah.wav");
+    	int audioLength;
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+ 
+            AudioFormat format = audioStream.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+ 
+            Clip audioClip = (Clip) AudioSystem.getLine(info);
+ 
+            audioClip.addLineListener(this);
+ 
+            audioClip.open(audioStream);
+            audioLength = (int) (audioClip.getMicrosecondLength()/1650);
+             
+            audioClip.setFramePosition(0);
+            audioClip.start();
+             
+           while (!playCompleted) {
+                // wait for the playback completes
+                try {
+                	System.out.println(audioLength);
+                	//en millisecondes
+                    Thread.sleep(audioLength);
+                    audioClip.stop();
+                   // audioClip.close();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            //audioClip.flush();
+           // audioClip.drain();
+            //audioClip.close();
+           audioClip.stop();
             
              
         } catch (UnsupportedAudioFileException ex) {
