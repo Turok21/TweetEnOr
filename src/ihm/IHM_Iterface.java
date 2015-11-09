@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -110,10 +111,14 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		_fenetre.addKeyListener(this);
 		_fenetre.setFocusable(true);
 	    
+		GraphicsDevice gd =
+	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	   
 		if(_fenetre.getExtendedState() != JFrame.MAXIMIZED_BOTH){
+			
 			_fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			_fenetre.setUndecorated(true);
+			gd.setFullScreenWindow(_fenetre);
 		}
 	    
 	    _fenetre.setLocationRelativeTo(null);
@@ -124,11 +129,11 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
-	 /*   JPanel panel_fond = null;
+	    JPanel panel_fond = null;
 		try {
 			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
 		} catch (IOException e) {e.printStackTrace();}
-*/
+
 	//	panel_fond.addKeyListener(this);
 		_jp_principal.setLayout(new BorderLayout());
 		_jp_principal.setOpaque(false);
@@ -198,53 +203,6 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 
 	  }
 	
-	
-	/*
-	 * Play music
-	 * only wav format
-	 */
-	public void play(String audioFilePath) {
-        File audioFile = new File(audioFilePath);
- 
-        try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
- 
-            AudioFormat format = audioStream.getFormat();
- 
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
- 
-            Clip audioClip = (Clip) AudioSystem.getLine(info);
- 
-            audioClip.addLineListener((LineListener) this);
- 
-            audioClip.open(audioStream);
-             
-            audioClip.start();
-
-            
-			while (audioClip.isRunning()) {
-                // wait for the playback completes
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-             
-            audioClip.close();
-             
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("The specified audio file is not supported.");
-            ex.printStackTrace();
-        } catch (LineUnavailableException ex) {
-            System.out.println("Audio line for playing back is unavailable.");
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            System.out.println("Error playing the audio file.");
-            ex.printStackTrace();
-        }
-         
-    }
 }
 
 
