@@ -180,7 +180,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 	    Box spacer1 = new Box(BoxLayout.X_AXIS);
-	    spacer1.setPreferredSize(new Dimension(40, 150));
+	    spacer1.setPreferredSize(new Dimension(40, 50));
 	    jp_sec.add(spacer1);
 	    
 	    
@@ -265,7 +265,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	    
 	    Box spacer2 = new Box(BoxLayout.X_AXIS);
-	    spacer2.setPreferredSize(new Dimension(10, 100));
+	    spacer2.setPreferredSize(new Dimension(10, 10));
 	    jp_sec.add(spacer2);
 	    
 	    
@@ -377,16 +377,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	
 	        	if(motVerifie.getPonderation() == -1){
 	        		affichage += "Le mot " + mot + " est incorrect ! ";
-	        		player.play("./data/Sounds/Die.wav");
+	        		player.playDie();
 	        		loose_vie();
 	        	}else if(motVerifie.getPonderation() == -2){
-	        		player.play("./data/Sounds/BadAnswer.wav");
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
 	        	}else if(motVerifie.getPonderation() == -3){
-	        		player.play("./data/Sounds/BadAnswer.wav");
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
 	        	}else if(motVerifie.getPonderation() > 0){
-	        		player.play("./data/Sounds/GoodAnswer.wav");
+	        		player.playGoodAnswer();
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}

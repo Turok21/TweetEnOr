@@ -114,13 +114,11 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 
 
 	
-
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_next)
 			player = new Player();
-			player.play("./data/Sounds/Twitter.wav");
+			player.playTwitter();
 			lauchconfig();
 	}
 

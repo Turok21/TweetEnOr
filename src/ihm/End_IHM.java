@@ -60,7 +60,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	    _fenetre.setVisible(true);
 	    if (fin != 0)
-	    	player.play("./data/Sounds/OhYeah.wav");
+	    	player.playOhYeah();
 	}
 
 	

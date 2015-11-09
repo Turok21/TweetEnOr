@@ -266,7 +266,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	public void actionPerformed(ActionEvent e) {
 		if( e.getSource() == _b_play ){
 			player = new Player();
-			player.play("./data/Sounds/Twitter.wav");
+			player.playTwitter();
 			lauchegame();
 		}else if( e.getSource() == _b_easy){
         	_b_medium.setSelected(false);
