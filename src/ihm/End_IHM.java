@@ -64,7 +64,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 	private void loose_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram,false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 			
@@ -158,7 +158,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 	private void win_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram,false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 <<<<<<< HEAD
@@ -196,7 +196,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		for(TweetWord word : listword){		
 					    
 			Txt txt = new Txt(""+word.getWord());
-			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 			txt.setForeground(new Color(242, 209, 0 ,255));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();
