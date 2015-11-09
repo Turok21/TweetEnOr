@@ -198,6 +198,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
+	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point.setxy((float)98.5,(float)3);
+	    _jp_principal.add(_compteur_de_point);
 	    
 	    
 	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
@@ -222,10 +225,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	
 
-	    _txt = new Txt("gfdsgsgfd");
+	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
 	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _txt.auto_resize();
-	    _txt.setxy(50, 53);
+	    _txt.setxy(50, 54);
 	    _jp_principal.add(_txt);
 	    
 	    
@@ -432,6 +435,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 		_nb_point += nb_point;
 		_compteur_de_point.setText("Points "+_nb_point);
+		_compteur_de_point.auto_resize();
 	}
 	
 
