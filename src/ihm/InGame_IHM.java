@@ -42,6 +42,7 @@ import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Tf;
 import ihm.components.Txt;
+import ihm.components.composent.GRAVITY;
 import utils.TweetParser;
 import utils.TweetWord;
 
@@ -177,7 +178,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
 	    _b_verifier.setPreferredSize(new Dimension(150, 75));
 	    _b_verifier.auto_resize();
-	    _b_verifier.setGravity(Bt.CENTER);
+	    _b_verifier.setGravity(GRAVITY.CENTER);
 	    _b_verifier.setxy(50, 50);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
@@ -220,7 +221,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
 			txt.setForeground(new Color(255, 255, 255,255));
-			txt.setGravity(Txt.CENTER);		
+			txt.setGravity(GRAVITY.CENTER);		
 			_listword_label.add(txt);
 
 			p.add(txt);
@@ -242,6 +243,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
+		pline.setGravity(GRAVITY.CENTER);
 		for(Pa pword : words){
 			
 	    	if(i == 5 || i == 10){
@@ -250,9 +252,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		
 	    		pline = new Pa(null);
 	    		pline.setwh(wline2, hline2);
+	    		pline.setGravity(GRAVITY.CENTER);
 
 	    	}
-	    	pword.setxyin(x,0,pline.getWidth(),pline.getHeight());
+	    	pword.setxyin(5,0,pline.getWidth(),pline.getHeight());
 	    	pline.setxy(50,60);
 			pline.add(pword);
 	

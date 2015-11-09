@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 
 import ihm.components.Bt;
 import ihm.components.Tbt;
+import ihm.components.composent.GRAVITY;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -147,7 +148,7 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 	    _fenetre.add(_jp_principal);
 	    
 	    _quit = new Bt("EXIT");
-	    _quit.setGravity(Bt.TOP_RIGHT);
+	    _quit.setGravity(GRAVITY.TOP_RIGHT);
 	    _quit.setxy(100, 0);
 	    _quit.addActionListener(this);
 	    _jp_principal.add(_quit);
