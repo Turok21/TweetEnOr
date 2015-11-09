@@ -55,6 +55,13 @@ public class Player implements LineListener {
 	protected DataLine.Info infoOhYeah;
 	protected Clip audioClipOhYeah;
 	
+	//Déclaration pour le son Perdu
+	protected File audioFilePerdu;
+	protected AudioInputStream audioStreamPerdu;
+	protected AudioFormat formatPerdu;
+	protected DataLine.Info infoPerdu;
+	protected Clip audioClipPerdu;
+	
 	boolean playCompleted;
 	
 	public Player (){
@@ -157,6 +164,25 @@ public class Player implements LineListener {
 	        ex.printStackTrace();
 	    } catch (IOException ex) {
 	        System.out.println("OhYeah : Error playing the audio file.");
+	        ex.printStackTrace();
+	    }
+    	
+    	audioFilePerdu = new File("./data/Sounds/Perdu.wav");
+    	try{
+			audioStreamPerdu = AudioSystem.getAudioInputStream(audioFilePerdu);
+	       formatPerdu = audioStreamPerdu.getFormat();
+	        infoPerdu = new DataLine.Info(Clip.class, formatPerdu);
+	        audioClipPerdu = (Clip) AudioSystem.getLine(infoPerdu);
+	        audioClipPerdu.addLineListener(this);
+	        audioClipPerdu.open(audioStreamPerdu);
+		} catch (UnsupportedAudioFileException ex) {
+	        System.out.println("Perdu : The specified audio file is not supported.");
+	        ex.printStackTrace();
+	    } catch (LineUnavailableException ex) {
+	        System.out.println("Perdu : Audio line for playing back is unavailable.");
+	        ex.printStackTrace();
+	    } catch (IOException ex) {
+	        System.out.println("Perdu : Error playing the audio file.");
 	        ex.printStackTrace();
 	    }
     	
@@ -277,6 +303,27 @@ public class Player implements LineListener {
         }finally{
         	audioClipOhYeah.stop();
         	audioClipOhYeah.setFramePosition(0);
+          }
+        
+    }
+    
+    
+    public void playPerdu() {
+        try {
+        	playCompleted = false;
+            audioClipPerdu.start();
+             
+           while (!playCompleted) {
+                // wait for the playback completes
+                try {
+                	Thread.sleep(1/1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }finally{
+        	audioClipPerdu.stop();
+        	audioClipPerdu.setFramePosition(0);
           }
         
     }
