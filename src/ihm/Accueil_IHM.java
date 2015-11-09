@@ -19,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Sounds.Player;
+
 public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
 
@@ -28,7 +30,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	 */
 	private static final long serialVersionUID = 1L;
 
-
+	private Player player;
 
 	private JButton _b_next;
 	private Component _spacer;
@@ -117,6 +119,8 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == _b_next)
+			player = new Player();
+			player.play("./data/Sounds/Twitter.wav");
 			lauchconfig();
 	}
 
