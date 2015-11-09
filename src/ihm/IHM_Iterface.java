@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -9,6 +10,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -23,6 +26,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ihm.components.Bt;
+import ihm.components.Tbt;
+import ihm.components.composent.GRAVITY;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -34,7 +41,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 
-public class IHM_Iterface extends JFrame implements KeyListener{
+public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 	
 	/**
 	 * 
@@ -45,18 +52,23 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 
 	protected JPanel _jp_principal;
 	
-	protected Dimension _screen;
+	protected Dimension _screen,_screenx,_screeny;
+	
+	protected Bt _quit;
 	
 	protected Font arista_light;
 	protected Font arista_btn;
 	protected Font arista;
+	
+	private String _fond_path;
 		
 	public IHM_Iterface() {
 		
 		
 		
 		_screen = Toolkit.getDefaultToolkit().getScreenSize();
-		
+		_screenx = new Dimension(_screen.width, 0);
+		_screeny = new Dimension(0, _screen.width);
 		
 		try {
             //create the font to use. Specify the size!
@@ -98,13 +110,15 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 		
 	}
 	
-	protected JPanel load_fenetre_and_panel_principale(String title,String fond,JFrame fram){
+
+	
+	protected JPanel load_fenetre_and_panel_principale(String title,String fond,JFrame fram,boolean donotremove){
 		
-		if(fram != null)
+		if(fram != null && !donotremove)
 			fram.getContentPane().removeAll();
 		
 		_fenetre = fram;
-		
+        
 		_fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		_fenetre.setTitle(title);
@@ -125,46 +139,46 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	    
 	    _fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
+	    
+	    
+	    _fond_path = "./data/images/"+fond;
+	    
 	    _jp_principal = new JPanel();
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
-	    JPanel panel_fond = null;
-		try {
-			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
-		} catch (IOException e) {e.printStackTrace();}
 
-	//	panel_fond.addKeyListener(this);
-		_jp_principal.setLayout(new BorderLayout());
+	    _jp_principal.setPreferredSize(_screen);
+	    _jp_principal.setLayout(null);
+
 		_jp_principal.setOpaque(false);
-	    
-	//	_fenetre.setContentPane(panel_fond);
+
 	    _fenetre.add(_jp_principal);
+	    
+	    _quit = new Bt("EXIT");
+	    _quit.setGravity(GRAVITY.TOP_RIGHT);
+	    _quit.setxy(100, 0);
+	    _quit.addActionListener(this);
+	    _jp_principal.add(_quit);
 	    
 	    return _jp_principal;
 	}
 	
-	protected  JPanel setBackgroundImage(JFrame frame, final File img) throws IOException
-	{
-		JPanel panel = new JPanel()
-		{
-			private static final long serialVersionUID = 1;
-			
-			private BufferedImage buf = ImageIO.read(img);
-			
-			@Override
-			protected void paintComponent(Graphics g)
-			{
-				super.paintComponent(g);
-				
-				g.drawImage(buf.getScaledInstance( _fenetre.getWidth(), _fenetre.getHeight(), buf.SCALE_SMOOTH), 0,0, null);
-			}
-		};
-
-		frame.setContentPane(panel);
+	protected void show_windows(){
 		
-		return panel;
+		JLabel image = new JLabel(
+			new ImageIcon(
+				new ImageIcon( _fond_path).getImage().getScaledInstance(_screen.width, _screen.height, Image.SCALE_SMOOTH)
+			)
+		);
+		image.setBounds(0, 0, _screen.width, _screen.height);
+		_jp_principal.add(image,null);
+		
+		_fenetre.getContentPane().setVisible(true);
+	    _fenetre.setVisible(true);
 	}
+	
+	
 
 	@Override
 	public void keyPressed(KeyEvent e) {	
@@ -173,11 +187,16 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
-			_fenetre.dispose();
-			_fenetre.setVisible(false);
-			this.dispose();
-			System.exit(0);
+			close_all();
 		}
+	}
+	
+	protected void close_all(){
+		_fenetre.dispose();
+		_fenetre.setVisible(false);
+		this.dispose();
+		System.exit(0);
+		
 	}
 
 	@Override
@@ -203,7 +222,15 @@ public class IHM_Iterface extends JFrame implements KeyListener{
 
 	  }
 	
+
+	
+	
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == _quit)
+			close_all();
+	}
 }
+
 
 
 class TestImagePanel extends JPanel {
