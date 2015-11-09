@@ -19,40 +19,41 @@ public class Player implements LineListener {
 	 * Play music
 	 * only wav format
 	 */
+	
+	//Declaration pour le son perte de vie
 	protected File audioFileDie;
 	protected AudioInputStream audioStreamDie;
 	protected AudioFormat formatDie;
 	protected DataLine.Info infoDie;
 	protected Clip audioClipDie;
-	int audioLengthDie;
 	
+	//Declaration pour le son bonne réponse
 	protected File audioFileGoodAnswer;
 	protected AudioInputStream audioStreamGoodAnswer;
 	protected AudioFormat formatGoodAnswer;
 	protected DataLine.Info infoGoodAnswer;
 	protected Clip audioClipGoodAnswer;
-	int audioLengthGoodAnswer;
 	
+	//Declaration pour le son mauvaise réponse
 	protected File audioFileBadAnswer;
 	protected AudioInputStream audioStreamBadAnswer;
 	protected AudioFormat formatBadAnswer;
 	protected DataLine.Info infoBadAnswer;
 	protected Clip audioClipBadAnswer;
-	int audioLengthBadAnswer;
 	
+	//Declaration pour le son Twitter
 	protected File audioFileTwitter;
 	protected AudioInputStream audioStreamTwitter;
 	protected AudioFormat formatTwitter;
 	protected DataLine.Info infoTwitter;
 	protected Clip audioClipTwitter;
-	int audioLengthTwitter;
 	
+	//Déclaration pour le son Gagné
 	protected File audioFileOhYeah;
 	protected AudioInputStream audioStreamOhYeah;
 	protected AudioFormat formatOhYeah;
 	protected DataLine.Info infoOhYeah;
 	protected Clip audioClipOhYeah;
-	int audioLengthOhYeah;
 	
 	boolean playCompleted;
 	
@@ -60,15 +61,15 @@ public class Player implements LineListener {
 		
 		playCompleted = false;
 		
-		audioFileDie = new File("./data/Sounds/Die.wav");
+		//Son perte de vie
+		audioFileDie = new File("./data/Sounds/Die.wav"); //creation d'un fichier
     	try{
-			audioStreamDie = AudioSystem.getAudioInputStream(audioFileDie);
-	       formatDie = audioStreamDie.getFormat();
+			audioStreamDie = AudioSystem.getAudioInputStream(audioFileDie); //creation du stream
+	       formatDie = audioStreamDie.getFormat(); // =wav
 	        infoDie = new DataLine.Info(Clip.class, formatDie);
 	        audioClipDie = (Clip) AudioSystem.getLine(infoDie);
-	        audioClipDie.addLineListener(this);
-	        audioClipDie.open(audioStreamDie);
-	        audioLengthDie = (int) (audioClipDie.getMicrosecondLength()/1650);
+	        audioClipDie.addLineListener(this); //Listener pour savoir si le son est termine de jouer ou non
+	        audioClipDie.open(audioStreamDie); //ouverture du stream
 		} catch (UnsupportedAudioFileException ex) {
 	        System.out.println("Die : The specified audio file is not supported.");
 	        ex.printStackTrace();
@@ -89,7 +90,6 @@ public class Player implements LineListener {
 	        audioClipGoodAnswer = (Clip) AudioSystem.getLine(infoGoodAnswer);
 	        audioClipGoodAnswer.addLineListener(this);
 	        audioClipGoodAnswer.open(audioStreamGoodAnswer);
-	        audioLengthGoodAnswer = (int) (audioClipDie.getMicrosecondLength()/1650);
 		} catch (UnsupportedAudioFileException ex) {
 	        System.out.println("GoodAnswer : The specified audio file is not supported.");
 	        ex.printStackTrace();
@@ -110,7 +110,6 @@ public class Player implements LineListener {
 	        audioClipBadAnswer = (Clip) AudioSystem.getLine(infoBadAnswer);
 	        audioClipBadAnswer.addLineListener(this);
 	        audioClipBadAnswer.open(audioStreamBadAnswer);
-	        audioLengthBadAnswer = (int) (audioClipBadAnswer.getMicrosecondLength()/1650);
 		} catch (UnsupportedAudioFileException ex) {
 	        System.out.println("BadAnswer : The specified audio file is not supported.");
 	        ex.printStackTrace();
@@ -130,7 +129,6 @@ public class Player implements LineListener {
 	        audioClipTwitter = (Clip) AudioSystem.getLine(infoTwitter);
 	        audioClipTwitter.addLineListener(this);
 	        audioClipTwitter.open(audioStreamTwitter);
-	        audioLengthTwitter = (int) (audioClipTwitter.getMicrosecondLength()/1650);
 		} catch (UnsupportedAudioFileException ex) {
 	        System.out.println("Twitter : The specified audio file is not supported.");
 	        ex.printStackTrace();
@@ -151,7 +149,6 @@ public class Player implements LineListener {
 	        audioClipOhYeah = (Clip) AudioSystem.getLine(infoOhYeah);
 	        audioClipOhYeah.addLineListener(this);
 	        audioClipOhYeah.open(audioStreamOhYeah);
-	        audioLengthOhYeah = (int) (audioClipOhYeah.getMicrosecondLength()/1650);
 		} catch (UnsupportedAudioFileException ex) {
 	        System.out.println("OhYeah : The specified audio file is not supported.");
 	        ex.printStackTrace();
@@ -177,31 +174,22 @@ public class Player implements LineListener {
      */
     public void playDie() {
         try {
-        	playCompleted = false;
-            audioClipDie.setFramePosition(0);
-            audioClipDie.start();
+        	playCompleted = false; 
+            audioClipDie.start(); //lancer le son
              
            while (!playCompleted) {
                 // wait for the playback completes
                 try {
-                	System.out.println(audioLengthDie);
-                	//en millisecondes
-                    Thread.sleep(audioLengthDie);
-                    audioClipDie.stop();
-                   // audioClipDie.close();
+                	//en millisecondes  audioLengthDie
+                    Thread.sleep(1/1000); //attendre la fin du son
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
-           // audioClipDie.flush();
-            //audioClipDie.drain();
-            //audioClip.close();
-           //audioClipDie.stop();
              
         }finally{
-           	audioClipDie.stop();
-           	audioClipDie.setFramePosition(0);
-           	//audioClipDie.close();
+           	audioClipDie.stop(); //arret de la lecture 
+           	audioClipDie.setFramePosition(0); //remettre le cruseur au debut
            
           }
     }
@@ -209,24 +197,17 @@ public class Player implements LineListener {
     public void playGoodAnswer() {
         try {
         	playCompleted = false;
-            audioClipGoodAnswer.setFramePosition(0);
             audioClipGoodAnswer.start();
              
            while (!playCompleted) {
                 // wait for the playback completes
                 try {
-                	System.out.println(audioLengthGoodAnswer);
                 	//en millisecondes
-                    Thread.sleep(audioLengthGoodAnswer);
-                    audioClipGoodAnswer.stop();
-                   // audioClip.close();
+                	Thread.sleep(1/1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
-            //audioClip.flush();
-           // audioClip.drain();
-            //audioClip.close();
         }finally{
         	audioClipGoodAnswer.stop();
         	audioClipGoodAnswer.setFramePosition(0);
@@ -239,17 +220,12 @@ public class Player implements LineListener {
  
         try {
         	playCompleted = false;
-            audioClipBadAnswer.setFramePosition(0);
             audioClipBadAnswer.start();
              
            while (!playCompleted) {
                 // wait for the playback completes
                 try {
-                	System.out.println(audioLengthBadAnswer);
-                	//en millisecondes
-                    Thread.sleep(audioLengthBadAnswer);
-                    audioClipBadAnswer.stop();
-                   // audioClip.close();
+                	Thread.sleep(1/1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
@@ -267,17 +243,13 @@ public class Player implements LineListener {
         try {
             
         	playCompleted = false;
-            audioClipTwitter.setFramePosition(0);
             audioClipTwitter.start();
              
            while (!playCompleted) {
                 // wait for the playback completes
                 try {
-                	System.out.println(audioLengthTwitter);
                 	//en millisecondes
-                    Thread.sleep(audioLengthTwitter);
-                    audioClipTwitter.stop();
-                   // audioClip.close();
+                	Thread.sleep(1/1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
@@ -292,17 +264,12 @@ public class Player implements LineListener {
     public void playOhYeah() {
         try {
         	playCompleted = false;
-            audioClipOhYeah.setFramePosition(0);
             audioClipOhYeah.start();
              
            while (!playCompleted) {
                 // wait for the playback completes
                 try {
-                	System.out.println(audioLengthOhYeah);
-                	//en millisecondes
-                    Thread.sleep(audioLengthOhYeah);
-                    audioClipOhYeah.stop();
-                   // audioClip.close();
+                	Thread.sleep(1/1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
