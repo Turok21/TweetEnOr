@@ -27,6 +27,8 @@ public class Txt extends JLabel {
 		super(im);
 		contruct();
 		
+		setwh(im.getIconWidth(),im.getIconHeight());
+		
 	}
 	
 	public Txt(){

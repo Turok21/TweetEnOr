@@ -140,7 +140,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
 	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
 	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50, 50);
+	    _tf_saisie.setxy(50, 45);
 	    _jp_principal.add(_tf_saisie);
 	    
 	  
@@ -149,25 +149,23 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    
 	    
-	    
-	   
+	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
+	    System.out.println(ratio_size_vie);
+	    float xtmp=1;
 	    for(int i = 0;i<_nb_vie_total;i++){
-	    	Image myPicture = null;
-	    	if(i < _nb_vie){
-	    		myPicture = _image_vie;
-	    	}else{
-	    		myPicture = _image_mort;	    		    		
-	    	}
-	    	_vie.add(new Txt(new ImageIcon(myPicture)));
-	    	_vie.get(_vie.size()-1).setLocation(_vie.get(_vie.size()-1).getLocation().x, 0);
-	    	//vie_box.add(_vie.get(_vie.size()-1));
+	    	Txt tmp = new Txt(new ImageIcon(_image_vie));
+	    	tmp.setxy(xtmp, 2);
+	    	xtmp+=ratio_size_vie;
+	    	_vie.add(tmp);
+	    	_jp_principal.add(tmp);
 	    }
+	    
 
 	    _hashtag = new Txt("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
 	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	    _hashtag.auto_resize();
-	    _hashtag.setxy(50, 40);
+	    _hashtag.setxy(50, 35);
 	    _jp_principal.add(_hashtag);
 
 	
@@ -178,8 +176,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier = new Bt("vérifier");
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
 	    _b_verifier.setPreferredSize(new Dimension(150, 75));
+	    _b_verifier.auto_resize();
+	    _b_verifier.setGravity(Bt.CENTER);
+	    _b_verifier.setxy(50, 50);
 		_b_verifier.addActionListener(this);
-	    
+	    _jp_principal.add(_b_verifier);
 	 
 
 	
@@ -212,8 +213,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 			        graphics.setColor(getBackground());
 			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
-			        graphics.setColor(getForeground());
-			       //graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			       // graphics.setColor(getForeground());
+			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
 			     }
 			  };
 			  p.setBounds(10,10,100,30);
