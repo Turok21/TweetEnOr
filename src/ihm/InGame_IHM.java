@@ -40,6 +40,7 @@ import org.omg.CORBA.portable.InputStream;
 import controllers.CtrlTweetEnOr;
 import utils.TweetParser;
 import utils.TweetWord;
+import Sounds.Player;
 
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
@@ -58,6 +59,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JPanel jp_sec;
 		
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	private Player player;
 	
 	private Image _image_mort,_image_vie;
 	
@@ -357,6 +359,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	}
 
 	public void verifier(String mot_a_verifier){
+		player = new Player();
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
 			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
@@ -374,12 +377,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	
 	        	if(motVerifie.getPonderation() == -1){
 	        		affichage += "Le mot " + mot + " est incorrect ! ";
+	        		player.play("./data/Sounds/Die.wav");
 	        		loose_vie();
-	        	}else if(motVerifie.getPonderation() == -2)
+	        	}else if(motVerifie.getPonderation() == -2){
+	        		player.play("./data/Sounds/BadAnswer.wav");
 	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
-	        	else if(motVerifie.getPonderation() == -3)
+	        	}else if(motVerifie.getPonderation() == -3){
+	        		player.play("./data/Sounds/BadAnswer.wav");
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
-	        	else if(motVerifie.getPonderation() > 0){
+	        	}else if(motVerifie.getPonderation() > 0){
+	        		player.play("./data/Sounds/GoodAnswer.wav");
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
