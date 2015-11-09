@@ -39,7 +39,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	public static void main(String[] args){		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),0,listword);
+		new End_IHM(new JFrame(""),1,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
@@ -66,38 +66,76 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_fenetre.addKeyListener(this);
 			
 	    boolean left = true;
+	    float lastY = 23;
 	    boolean firtWordAtLef = true;
 	    boolean firtWordAtright = true;
+	    
 	    int k = 1;
+	    
 		for(TweetWord word : listword){		
 		
 			
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(new Font("",Font.BOLD,40 ));
-			txt.setForeground(new Color(242, 40, 0 ,255));
-			//txt.setGravity(GRAVITY.CENTER);
+			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setGravity(GRAVITY.CENTER);
+			txt.auto_resize();
 			
 			if(left)
 			{
 				if(firtWordAtLef)
 				{
-					txt.setxy(7,  20);
-					left = false;
+					txt.setxy(7,  lastY);
 					firtWordAtLef = false;
 				}
 				else
-					txt.setxy(7,  k*10);
+				{
+					if(k == 5)
+					{
+						txt.setxy(7, ( 23 + k*6) + k );
+					}
+					else if( k == 7)
+					{
+						txt.setxy(7 ,(23 + k*6) + (k -1)*2);
+					}
+					else if( k == 9)
+					{
+						txt.setxy(7 ,(23 + k*6) + (k )*2);
+					}
+					else
+					{
+						txt.setxy(7, ( 23 + (k)*6) );
+					}
+				}
+				left = false;
 			}
 			else
 			{
 				if(firtWordAtright)
 				{
-					txt.setxy(93 ,20);
-					left = true;
+					txt.setxy(93 ,23);
 					firtWordAtright = false;
 				}
 				else
-					txt.setxy(93 ,k*10);
+				{
+					if(k == 6 )
+					{
+						txt.setxy(93 ,(23 + (k - 1)*6) + (k-1));
+					}
+					else if( k == 8)
+					{
+						txt.setxy(93 ,(23 + (k - 1)*6) + (k-2)*2);
+					}
+					else if( k == 10)
+					{
+						txt.setxy(93 ,(23 + (k - 1)*6) + (k-1)*2);
+					}
+					else
+					{
+						txt.setxy(93 ,(23 + (k - 1)*6));
+					}
+				}
+				left = true;
 			}
 			_jp_principal.add(txt);
 			
@@ -110,10 +148,9 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.addActionListener(this);
 		_b_again.setText("Recommencer");
 		_b_again.setGravity(GRAVITY.CENTER);
-		_b_again.setxy(50,50);
+		_b_again.setxy(50,85);
 		_jp_principal.add(_b_again);
-		
-		
+			
 	}
 
 	
@@ -145,7 +182,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	    box6.add(Box.createGlue());
 	    
 	   
-	   
+
 	    Box box3 = null;
 	    int k = 1;
 		for(TweetWord word : listword){		
