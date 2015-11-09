@@ -5,9 +5,7 @@ import ihm.components.composent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import javax.swing.JPanel;
 
-import Sounds.Player;
 
 public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
@@ -15,8 +13,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
 
     private static final long serialVersionUID = 1L;
 
-    private Bt     _b_next;
-    private JPanel _jp_principal;
+    private Bt _b_next;
 
     public static void main(String[] args) {
         new Accueil_IHM();
@@ -25,8 +22,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener,KeyListe
     public Accueil_IHM() {
         super();
 
-
-        _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ", "fond_Accueil.jpg", this,false);
+        _jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Accueil ","fond_Accueil.jpg", this,true);
 
         _b_next = new Bt("#NEXT");
         _b_next.setFont(arista_btn);

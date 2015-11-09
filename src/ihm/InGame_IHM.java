@@ -99,7 +99,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
-		System.out.println(Difficulte);
 		
 		_vie = new ArrayList<>();
 		
@@ -383,7 +382,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	
 	        	if(motVerifie.getPonderation() == -1){
 	        		affichage += "Le mot " + mot + " est incorrect ! ";
-	        		player.playDie();
 	        		loose_vie();
 	        	}else if(motVerifie.getPonderation() == -2){
 	        		player.playBadAnswer();
@@ -392,7 +390,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
 	        	}else if(motVerifie.getPonderation() > 0){
-	        		player.playGoodAnswer();
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
