@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -124,10 +125,14 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 		_fenetre.addKeyListener(this);
 		_fenetre.setFocusable(true);
 	    
+		GraphicsDevice gd =
+	            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	   
 		if(_fenetre.getExtendedState() != JFrame.MAXIMIZED_BOTH){
+			
 			_fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			_fenetre.setUndecorated(true);
+			gd.setFullScreenWindow(_fenetre);
 		}
 	    
 	    _fenetre.setLocationRelativeTo(null);
@@ -142,8 +147,18 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 		_jp_principal.addKeyListener(this);
 	    _jp_principal.setLayout(new BoxLayout(_jp_principal, BoxLayout.Y_AXIS));
 	    
+<<<<<<< HEAD
 	    _jp_principal.setPreferredSize(_screen);
 	    _jp_principal.setLayout(null);
+=======
+	    JPanel panel_fond = null;
+		try {
+			panel_fond = setBackgroundImage(_fenetre, new File("./data/images/"+fond));
+		} catch (IOException e) {e.printStackTrace();}
+
+	//	panel_fond.addKeyListener(this);
+		_jp_principal.setLayout(new BorderLayout());
+>>>>>>> refs/remotes/origin/master
 		_jp_principal.setOpaque(false);
 
 	    _fenetre.add(_jp_principal);
@@ -215,6 +230,7 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 
 	  }
 	
+<<<<<<< HEAD
 	
 	/*
 	 * Play music
@@ -269,6 +285,8 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 			close_all();
 	}
 	
+=======
+>>>>>>> refs/remotes/origin/master
 }
 
 

@@ -13,6 +13,7 @@ import ihm.components.Bt;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetWord;
+import Sounds.Player;
 
 public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	
@@ -21,10 +22,17 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+<<<<<<< HEAD
 	private Bt _b_again;
 
+=======
+	private JLabel _text;
+	private JButton _b_again;
+	private static Player player;
+>>>>>>> refs/remotes/origin/master
 
 	public static void main(String[] args){		
+		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),1,listword);
@@ -32,21 +40,28 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
 		super();
-		
-		
+		player = new Player();
 		
 		if(fin == 0)
 			loose_screen(fram, fin, listword);
-		else
+		else{
 			win_screen(fram, fin, listword);
+<<<<<<< HEAD
 		
     
 	    
 	   show_windows();
+=======
+			
+		}
+>>>>>>> refs/remotes/origin/master
 
+	    _fenetre.setVisible(true);
+	    if (fin != 0)
+	    	player.playOhYeah();
 	}
-	
 
+	
 	private void loose_screen(JFrame fram,int fin,ArrayList<TweetWord> listword){
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram,false);
@@ -146,7 +161,35 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram,false);
 		
 		_fenetre.addKeyListener(this);
+<<<<<<< HEAD
 			
+=======
+		
+		JPanel jp_sec = new JPanel();
+		jp_sec.setOpaque(false);
+		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
+		_jp_principal.add(jp_sec);
+	    
+		
+		
+		Box spacer3 = new Box(BoxLayout.X_AXIS);
+	    spacer3.setPreferredSize(new Dimension(40, 400));
+	    jp_sec.add(spacer3);
+ 
+	  
+	    Box box6 = new Box(BoxLayout.X_AXIS);
+	    JPanel pgl = new JPanel(new FlowLayout());
+	    pgl.setBackground(new Color(0, 0, 0, 0));
+	    pgl.setMaximumSize(new Dimension(900, 900));
+	    
+	    box6.add(Box.createGlue());
+	    box6.add(pgl);
+	    box6.add(Box.createGlue());
+	    
+	   
+	   
+	    Box box3 = null;
+>>>>>>> refs/remotes/origin/master
 	    int k = 1;
 	    float lastX = 10;
 	    float lastY = 75;
@@ -171,6 +214,17 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
+<<<<<<< HEAD
+=======
+
+
+		Box spacer = new Box(BoxLayout.X_AXIS);
+		spacer.setPreferredSize(new Dimension(40, (int) (Toolkit.getDefaultToolkit().getScreenSize().width*0.08)));
+		jp_sec.add(spacer);
+		 
+		
+		   
+>>>>>>> refs/remotes/origin/master
 		_b_again.setText("Recommencer");
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy(50,50);

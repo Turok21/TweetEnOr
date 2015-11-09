@@ -48,6 +48,7 @@ import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetParser;
 import utils.TweetWord;
+import Sounds.Player;
 
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
@@ -64,6 +65,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JFrame _fram_given;
 		
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	private Player player;
 	
 	private Image _image_mort,_image_vie;
 	
@@ -222,6 +224,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	_jp_principal.add(tmp);
 	    }
 	    
+<<<<<<< HEAD
+=======
+	    Box spacer1 = new Box(BoxLayout.X_AXIS);
+	    spacer1.setPreferredSize(new Dimension(40, 50));
+	    jp_sec.add(spacer1);
+	    
+	    
+  
+	    Box box2 = new Box(BoxLayout.X_AXIS);
+	    box2.setMaximumSize(new Dimension(9999, 50));
+	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
+>>>>>>> refs/remotes/origin/master
 
 	    _hashtag = new Txt("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
@@ -250,10 +264,32 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	 
 
+<<<<<<< HEAD
 	
 	    List<Pa> words = new ArrayList<Pa>();
 		float x=10,wline=0,hline=0,wline2=0,hline2=0;
 	  
+=======
+	    
+	    Box spacer2 = new Box(BoxLayout.X_AXIS);
+	    spacer2.setPreferredSize(new Dimension(10, 10));
+	    jp_sec.add(spacer2);
+	    
+	    
+	    
+	    _listword = _verifier.getListWords();
+	    System.out.println(_listword.size());
+	    
+	    Box box6 = new Box(BoxLayout.X_AXIS);
+	    JPanel pgl = new JPanel(new FlowLayout());
+	    pgl.setBackground(new Color(0, 0, 0, 0));
+	    pgl.setMaximumSize(new Dimension(900, 900));
+	    
+	    box6.add(Box.createGlue());
+	    box6.add(pgl);
+	    box6.add(Box.createGlue());
+	    
+>>>>>>> refs/remotes/origin/master
 	    int i = 0;
 		for(TweetWord word : _listword){
 			
@@ -362,6 +398,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	}
 
 	public void verifier(String mot_a_verifier){
+		player = new Player();
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
 			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
@@ -380,12 +417,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	
 	        	if(motVerifie.getPonderation() == -1){
 	        		affichage += "Le mot " + mot + " est incorrect ! ";
+	        		player.playDie();
 	        		loose_vie();
-	        	}else if(motVerifie.getPonderation() == -2)
+	        	}else if(motVerifie.getPonderation() == -2){
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
-	        	else if(motVerifie.getPonderation() == -3)
+	        	}else if(motVerifie.getPonderation() == -3){
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
-	        	else if(motVerifie.getPonderation() > 0){
+	        	}else if(motVerifie.getPonderation() > 0){
+	        		player.playGoodAnswer();
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
