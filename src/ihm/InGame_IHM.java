@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -37,6 +38,7 @@ import javax.swing.JTextField;
 
 import org.omg.CORBA.portable.InputStream;
 
+import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
 import ihm.components.Pa;
@@ -91,6 +93,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
+
 		
 		_vie = new ArrayList<>();
 		
@@ -117,6 +120,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 		
 		show_windows();	
+		
 
 	}
 	
@@ -142,7 +146,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
 	    _tf_saisie.addKeyListener(this);
 	    _tf_saisie.setxy(50, 45);
+	    _tf_saisie.setFocusable(true);
 	    _jp_principal.add(_tf_saisie);
+
 	    
 	  
 
@@ -183,6 +189,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setxy(50, 50);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
+	    
 	 
 
 	
@@ -221,7 +228,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
-			txt.setForeground(new Color(255, 255, 255,255));
+			//txt.setForeground(new Color(255, 255, 255,255));
 			txt.setGravity(GRAVITY.CENTER);		
 			_listword_label.add(txt);
 
@@ -237,30 +244,37 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				wline2 += p.getWidth()+15;
 				hline2 = p.getHeight()+5;
 			}
-			System.out.println();
+			
 			i++;
 		}
 		
-		
+		float x_decalage = 0,y_de=60;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa pword : words){
 			
-	    	if(i == 5 || i == 10){
-	    		pline.setOpaque(true);
+	    	pword.setGravity(GRAVITY.TOP_LEFT);
+	    	pword.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
+	    	x_decalage += (((float)pword.getWidth()+15)/(float)pline.getWidth())*100;
+	    
+	    	
+			pline.add(pword);
+			
+			if(i == 5 || i == 10){
+	    		pline.setxy(50,y_de);
+	    		pline.setOpaque(false);
 	    		_jp_principal.add(pline);
 	    		
 	    		pline = new Pa(null);
 	    		pline.setwh(wline2, hline2);
 	    		pline.setGravity(GRAVITY.CENTER);
-
+	    		x_decalage = 0;
+	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
+	    		System.out.println(y_de);
 	    	}
-	    	pword.setxyin(20,0,pline.getWidth(),pline.getHeight());
-	    	pline.setxy(50,60);
-			pline.add(pword);
-	
+			
 			i++;
 		}
 		
@@ -332,12 +346,29 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	
 	private void loose_vie(){
-		if(_nb_vie != 0){
-			_nb_vie--;
-			redraw_vie();
-		}
+	 
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playDie();
+				if(_nb_vie != 0){
+					_nb_vie--;
+					redraw_vie();
+				}
+			}
+		}).start();
 	}
 	private void add_point(int nb_point,TweetWord mots){
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playGoodAnswer();
+			}
+		}).start();
+		
 		
 		for(Txt label : _listword_label){
 			if(label.getText().compareTo(mots.getWord()) == 0){
