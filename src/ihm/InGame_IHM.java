@@ -2,17 +2,13 @@ package ihm;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,20 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioSystem;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import org.omg.CORBA.portable.InputStream;
-
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
@@ -48,12 +32,14 @@ import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetParser;
 import utils.TweetWord;
-import Sounds.Player;
 
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
+	private static final long serialVersionUID = 1L;
+
 	private Tf _tf_saisie;
+	
 	private Bt _b_verifier;
 	
 	private Txt _loader;
@@ -61,20 +47,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Txt _compteur_de_point;
 	private Txt _hashtag;
 	private ArrayList<Txt> _vie;
+	private ArrayList<Txt> _listword_label;
 	
 	private JFrame _fram_given;
 		
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
-	private Player player;
 	
 	private Image _image_mort,_image_vie;
 	
-	
-	private Pa _panelwait;
+	private Player player;
 	
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;
-	private List<Txt> _listword_label;
 	
 	
 	private String hasttag;
@@ -158,17 +142,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	
         _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
-        _panelwait = new Pa(null);
-        _panelwait.setGravity(GRAVITY.TOP_LEFT);
-        _panelwait.setwh(_screen.width, _screen.height);
-        _panelwait.setxy(0,0);
-        _panelwait.setBackground(new Color(40, 170, 225));
-        _panelwait.setOpaque(true);
-        _loader.setxyin(50, 50,_panelwait.getWidth(),_panelwait.getHeight());
-        System.out.println(_panelwait.getWidth()+" "+_panelwait.getHeight());
+
+        _loader.setxy(50, 50);
         _loader.setBackground(new Color(40, 170, 225));
         _loader.setOpaque(true);
-        //_panelwait.add(loader);
         _fenetre.add(_loader);
         
         show_windows();
@@ -229,7 +206,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _hashtag.setForeground(Color.blue);
 	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	    _hashtag.auto_resize();
-	    _hashtag.setxy(50, 35);
+	    _hashtag.setxy(50, 33);
 	    _jp_principal.add(_hashtag);
 
 	
@@ -237,7 +214,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
 	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _txt.auto_resize();
-	    _txt.setxy(50, 54);
+	    _txt.setxy(50, 56);
 	    _jp_principal.add(_txt);
 	    
 	    
@@ -246,14 +223,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setGravity(GRAVITY.CENTER);
 	    _b_verifier.setwh(150, 75);
 	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 50);
+	    _b_verifier.setxy(50, 52);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
 	 
 	
 	    List<Pa> words = new ArrayList<Pa>();
-		float x=10,wline=0,hline=0,wline2=0,hline2=0;
+		float wline=0,hline=0,wline2=0,hline2=0;
 
 	    int i = 0;
 		for(TweetWord word : _listword){
@@ -307,7 +284,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			i++;
 		}
 		
-		float x_decalage = 0,y_de=60;
+		float x_decalage = 0,y_de=64;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
