@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
@@ -30,27 +31,37 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),0,listword);
+		new End_IHM(new JFrame(""),1,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
 		super();
-		Player player = new Player();
-		
-		if(fin == 0)
-			loose_screen(fram, fin, listword);
-		else
-			win_screen(fram, fin, listword);
 
+		
+		if(fin == 0){
+			loose_screen(fram, fin, listword);
+		}else{
+			win_screen(fram, fin, listword);
+		}
 	    
 	   show_windows();
-
-
-	    _fenetre.setVisible(true);
-	    if(fin == 0)
-	    	 player.playPerdu();
-		else
-			 player.playOhYeah();
+	   
+	   if(fin == 0){
+			new Thread(new Runnable() {
+				public void run() {
+					Player player = new Player();
+					player.playPerdu();
+				}
+			}).start();
+	    	 
+		}else{
+			new Thread(new Runnable() {
+				public void run() {
+					Player player = new Player();
+					player.playOhYeah();
+				}
+			}).start();
+		}
 
 	   
 	}
@@ -155,6 +166,14 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
+		
+		Txt imgGagne = new Txt(new ImageIcon("./data/images/gagne.png"));
+        imgGagne.setGravity(GRAVITY.CENTER);
+        imgGagne.setxy(50, 20);
+        imgGagne.auto_resize();
+        _jp_principal.add(imgGagne);
+
+
 
 	    int k = 1;
 	    float lastX = 10;
@@ -180,11 +199,13 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
-
+		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 		_b_again.setText("Recommencer");
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy(50,50);
 		_jp_principal.add(_b_again);
+		
+		
 	    
 	}
 

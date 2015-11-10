@@ -340,6 +340,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	}
 
 	public void verifier(String mot_a_verifier){
+
+		boolean dorepaite = true;
 		player = new Player();
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
@@ -372,19 +374,22 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	}
 	        	_txt.setText(affichage);
 	    	    _txt.auto_resize();
+	    	    //new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
 	        	if(_nb_point == 100){
 					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
-					break;
+					dorepaite = false;
 				}
 				if(_nb_vie == 0){
 					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
-					break;
+					dorepaite = false;
 				}
 	        	_tf_saisie.setText("");
 			}
 		}
-
-		_fenetre.repaint();
+		
+		if(dorepaite)
+			_fenetre.repaint();
+		
 		
 	}
 	
@@ -438,6 +443,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		super.keyPressed(e);
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
     }
