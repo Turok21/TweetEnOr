@@ -53,11 +53,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
-	private Player player;
-	
 	private Image _image_mort,_image_vie;
 	
-	private Pa _panelwait;
+	private Player player;
 	
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;
@@ -208,7 +206,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _hashtag.setForeground(Color.blue);
 	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	    _hashtag.auto_resize();
-	    _hashtag.setxy(50, 35);
+	    _hashtag.setxy(50, 33);
 	    _jp_principal.add(_hashtag);
 
 	
@@ -216,7 +214,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
 	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _txt.auto_resize();
-	    _txt.setxy(50, 54);
+	    _txt.setxy(50, 56);
 	    _jp_principal.add(_txt);
 	    
 	    
@@ -225,7 +223,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setGravity(GRAVITY.CENTER);
 	    _b_verifier.setwh(150, 75);
 	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 50);
+	    _b_verifier.setxy(50, 52);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
@@ -286,7 +284,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			i++;
 		}
 		
-		float x_decalage = 0,y_de=60;
+		float x_decalage = 0,y_de=64;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
