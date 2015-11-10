@@ -89,6 +89,8 @@ public class Txt extends JLabel {
 	    }
 		
 		setLocation((int)(_screen.width*(_Px/100))-_center_x,(int)(_screen.height*(_Py/100))-_center_y);
+		// à dupliquer et à adapter au référentiel
+		
 	}
 	
 	

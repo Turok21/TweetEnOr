@@ -13,6 +13,7 @@ import javax.swing.JProgressBar;
 
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
+import ihm.components.Shared_component;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetWord;
@@ -31,7 +32,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	public static void main(String[] args){		
 		
-		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new JProgressBar());
+		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new Shared_component());
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),0,listword,"test",666);
 	}

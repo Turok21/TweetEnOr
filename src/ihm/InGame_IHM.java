@@ -55,7 +55,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JFrame _fram_given;
 	
 	private Pa _pa_pb;
-	private JProgressBar _pb;
 	private Shared_component _shared;
 	
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
@@ -119,7 +118,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
 				_listword_label = new ArrayList<Txt>();
-			    _verifier = new CtrlTweetEnOr(hasttag,_shared._progressbar);
+			    _verifier = new CtrlTweetEnOr(hasttag,_shared);
 				_listword = _verifier.getListWords();
 				draw(0);
 				show_windows();	
@@ -160,6 +159,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _loader.setxy(50, 35);
         _loader.setOpaque(true);
         
+        _shared.txt_line1 = new Txt();
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+        _shared.txt_line1.setForeground(Color.white);
+        _shared.txt_line1.settext("Création des données de jeux en cours ...");
+        _shared.txt_line1.setxy(50, 64);
+        
+        
+        
         _shared._progressbar = new JProgressBar();
         _shared._progressbar.setSize(500,30);
         _shared._progressbar.setForeground(new Color(29, 202, 255,255));
@@ -167,6 +174,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
         _pa_pb = new Pa(null);
         
+        _pa_pb.add(_shared.txt_line1);
         _pa_pb.add(_shared._progressbar);
         _pa_pb.setSize(_screen);
         _pa_pb.setBackground(new Color(40, 170, 225));
