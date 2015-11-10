@@ -83,7 +83,7 @@ public abstract class TweetParser {
 		    });
 		    for (String tweet : listTweets) {
 		    	tweet = cleanTweet(tweet);
-		    	tt.process(tweet.split("'|\\s+")); // Convertion de la phrase en une liste de mots
+		    	tt.process(tweet.split("‘|’|'|\\s+")); // Convertion de la phrase en une liste de mots
 	        }
 		  }
 		catch (Exception e) {
