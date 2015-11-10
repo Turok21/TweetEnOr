@@ -23,6 +23,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
@@ -50,7 +52,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private ArrayList<Txt> _listword_label;
 	
 	private JFrame _fram_given;
-		
+	
+	private Pa _pa_pb;
+	private JProgressBar _pb;
+	
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
 	private Image _image_mort,_image_vie;
@@ -112,10 +117,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				} catch (InterruptedException e) {e.printStackTrace();}
 				_listword_label = new ArrayList<Txt>();
 			    _verifier = new CtrlTweetEnOr(hasttag);
-				_listword = _verifier.getListWords();
+				_listword = _verifier.getListWords(_pb);
 				draw(0);
 				show_windows();	
 				_fenetre.remove(_loader);
+				_fenetre.remove(_pa_pb);
 				_fenetre.getContentPane().repaint();
 			}
 		}).start();
@@ -135,6 +141,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public void drawloader(int redraw){
 		
+		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fenetre,false);
@@ -143,12 +150,38 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 		
 	
+		
+		
+		
         _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
-
-        _loader.setxy(50, 50);
-        _loader.setBackground(new Color(40, 170, 225));
+        _loader.setxy(50, 35);
         _loader.setOpaque(true);
-        _fenetre.add(_loader);
+        
+        _pb = new JProgressBar();
+		_pb.setSize(500,30);
+		_pb.setForeground(new Color(29, 202, 255,255));
+		_pb.setLocation((int)((_screen.width/2)-(_pb.getSize().width*0.5)), (int)((_screen.height*0.6)-(_pb.getSize().height/2)));
+        _pa_pb = new Pa(null);
+        _pa_pb.add(_pb);
+        _pa_pb.setSize(_screen);
+        _pa_pb.setBackground(new Color(40, 170, 225));
+        
+
+        _pa_pb.add(_loader);
+        _fenetre.add(_pa_pb);
+        
+        
+        new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for(int i =0 ;i<100;i++){
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {e.printStackTrace();}
+					_pb.setValue(_pb.getValue()+ 1);
+				}
+			}
+		}).start();
         
         show_windows();
 	}
