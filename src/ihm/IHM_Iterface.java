@@ -176,6 +176,7 @@ public class IHM_Iterface extends JFrame implements KeyListener,ActionListener{
 		
 		_fenetre.getContentPane().setVisible(true);
 	    _fenetre.setVisible(true);
+	    _fenetre.getContentPane().repaint();
 	}
 	
 	
