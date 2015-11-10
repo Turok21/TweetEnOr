@@ -8,6 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JProgressBar;
+
 import utils.KeyWord;
 import utils.TweetParser;
 import utils.TweetWord;
@@ -21,9 +23,11 @@ public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
     private List<String> _invalidWords;
     private List<String> _validWords;
+    private JProgressBar _pb;
     
-    public CtrlTweetEnOr(String word) {
+    public CtrlTweetEnOr(String word,JProgressBar pb) {
     	// Create "cache" directory if does not exist
+    	_pb = pb;
     	File directory = new File("cache");
     	directory.mkdirs();
     	
@@ -39,9 +43,10 @@ public class CtrlTweetEnOr {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			pb.setValue(pb.getMaximum());
     	}
     	else {
-    		this._keyWords = TweetParser.findWords(word);
+    		this._keyWords = TweetParser.findWords(word,_pb);
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 				oos.writeObject(this._keyWords) ;
@@ -101,7 +106,7 @@ public class CtrlTweetEnOr {
 
     public static void main(String[] args) {
         System.out.println("CLASS CtrlTweetEnOr IS NOW RUNNING !");
-        CtrlTweetEnOr ctrl = new CtrlTweetEnOr("Ski");
+        CtrlTweetEnOr ctrl = new CtrlTweetEnOr("Ski",new JProgressBar());
 
         System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
         System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));

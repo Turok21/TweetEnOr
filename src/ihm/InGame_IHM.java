@@ -116,8 +116,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
 				_listword_label = new ArrayList<Txt>();
-			    _verifier = new CtrlTweetEnOr(hasttag);
-				_listword = _verifier.getListWords(_pb);
+			    _verifier = new CtrlTweetEnOr(hasttag,_pb);
+				_listword = _verifier.getListWords();
 				draw(0);
 				show_windows();	
 				_fenetre.remove(_loader);
@@ -170,7 +170,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _pa_pb.add(_loader);
         _fenetre.add(_pa_pb);
         
-        
+       /*
         new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -182,7 +182,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				}
 			}
 		}).start();
-        
+        */
         show_windows();
 	}
 	

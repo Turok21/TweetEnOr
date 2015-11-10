@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JProgressBar;
+
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -25,6 +27,7 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 public abstract class TweetParser {
 
+	
     private static List<String> stopwords = new ArrayList<String>(Arrays.asList(
     	      "le", "la", "les",
     	      "ma", "mon", "mes", "tes", "ses", "sa", "son", "leurs", "leur", "laquelle", "lesquelles",
@@ -51,13 +54,16 @@ public abstract class TweetParser {
     	      "francais", "france"
     	));
 
-    private static int nbTweetsToGet = 4000;
+    private static int nbTweetsToGet = 1000;
 
-    public static KeyWord findWords(String keyWords) {
-        List<String> listTweets = getTweets(keyWords);
+    public static KeyWord findWords(String keyWords,JProgressBar jp) {
+        List<String> listTweets = getTweets(keyWords,jp);
         List<String> words = new ArrayList<>();
+        jp.setMaximum(listTweets.size());
+        jp.setValue(0);
         for (String tweet : listTweets) {
             words.addAll(cleanWords(tweet.split(" |'"), keyWords));
+            jp.setValue(jp.getValue()+1);
         }
 
         Map<String, Integer> topWords = listWordToPonderatedMap(words);
@@ -66,11 +72,14 @@ public abstract class TweetParser {
         return new KeyWord(keyWords, tweetWords);
     }
 
-    private static List<String> getTweets(String keyWord) {
+    private static List<String> getTweets(String keyWord,JProgressBar jp) {
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
-
+        
+        jp.setMaximum(nbTweetsToGet);
+        jp.setValue(0);
+        
         Query query = new Query(keyWord);
         query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
@@ -80,11 +89,13 @@ public abstract class TweetParser {
             do {
                 for (Status status : result.getTweets()) {
                     listTweets.add(status.getText());
+                    jp.setValue(jp.getValue()+1);
                 }
                 query = result.nextQuery();
                 if (query != null) {
                     result = twitter.search(query);
                 }
+                
             }
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
@@ -192,7 +203,7 @@ public abstract class TweetParser {
     }
 
     public static void main(String argc[]) {
-        KeyWord keyw = findWords("ski");
+        KeyWord keyw = findWords("ski",new JProgressBar());
         System.out.println(keyw);
 //        System.out.println(keyw);
     }

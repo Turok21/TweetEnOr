@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JProgressBar;
+
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
 import ihm.components.Txt;
@@ -29,7 +31,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	public static void main(String[] args){		
 		
-		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
+		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new JProgressBar());
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),1,listword);
 	}
