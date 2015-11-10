@@ -179,9 +179,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             _tbt_easy.setSelected(false);
             _tbt_medium.setSelected(false);
             _difficulte = Config_IHM.HARD;
-        } else if(_b_help == e.getSource()){
-        	
-        	
         }else {
         
             for (Tbt lab : _list_theme) {

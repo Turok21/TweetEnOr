@@ -144,17 +144,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	
         _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
-        _panelwait = new Pa(null);
-        _panelwait.setGravity(GRAVITY.TOP_LEFT);
-        _panelwait.setwh(_screen.width, _screen.height);
-        _panelwait.setxy(0,0);
-        _panelwait.setBackground(new Color(40, 170, 225));
-        _panelwait.setOpaque(true);
-        _loader.setxyin(50, 50,_panelwait.getWidth(),_panelwait.getHeight());
-        System.out.println(_panelwait.getWidth()+" "+_panelwait.getHeight());
+
+        _loader.setxy(50, 50);
         _loader.setBackground(new Color(40, 170, 225));
         _loader.setOpaque(true);
-        //_panelwait.add(loader);
         _fenetre.add(_loader);
         
         show_windows();
