@@ -67,6 +67,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private int _nb_vie;
 	private int _nb_vie_total;
 	
+	private int _maj,_tab;
 	
 	static int HARD=8;	
 	static int MEDIUM=10;	
@@ -83,7 +84,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
-		
+		_maj = 0;
+		_tab = 0;
 		_vie = new ArrayList<>();
 		
 		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
@@ -446,5 +448,28 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		super.keyPressed(e);
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
+        if (e.getKeyCode()==KeyEvent.VK_CAPS_LOCK){
+        	_maj++;
+        	if(_maj >= 24){
+        		for(Txt mot: _listword_label) {
+        			if(mot.getForeground().getRed() == 29 && mot.getForeground().getGreen() == 202 && mot.getForeground().getBlue() == 255)
+        				mot.setForeground(new Color(254, 255, 255,255));
+    			}
+        	}
+        	_tab = 0;	
+        }else
+        	_maj = 0;
+        
+        if (e.getKeyCode()==KeyEvent.VK_UP){
+        	_tab++;
+        	if(_tab >= 24){
+        		for(Txt mot: _listword_label) {
+        			if(mot.getForeground().getRed() == 254 && mot.getForeground().getGreen() == 255 && mot.getForeground().getBlue() == 255)
+        				mot.setForeground(new Color(29, 202, 255,255));
+    			}
+        	}
+        	_maj = 0;	
+        }else
+        	_tab = 0;
     }
 }
