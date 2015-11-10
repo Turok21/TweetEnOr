@@ -195,7 +195,7 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
     }
 
     public static JButton getTooltip() {
-        JButton b = new JButton("?");
+        Bt b = new Bt("?");
         b.setToolTipText(("<html><p width=\"500\">"
                 + "<strong>1 - Choisir un thème d'actualité</strong> <br />"
                 + "<strong>2 - Trouver les dix mots en rapport avec le thème</strong>"
