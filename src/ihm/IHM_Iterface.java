@@ -132,7 +132,7 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
 
         _quit = new Bt("EXIT");
         _quit.setGravity(GRAVITY.TOP_RIGHT);
-        _quit.setxy(100, 0);
+        _quit.setxy(99, 1);
         _quit.addActionListener(this);
         _jp_principal.add(_quit);
 

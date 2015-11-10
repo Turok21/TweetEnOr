@@ -26,19 +26,20 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	private Bt _b_again;
-
-
+	private String _hastag;
+	private int _points;
 
 	public static void main(String[] args){		
 		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new JProgressBar());
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),1,listword);
+		new End_IHM(new JFrame(""),0,listword,"test",666);
 	}
 
-	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
+	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword,String hastag,int point) {
 		super();
-
+		_hastag = hastag;
+		_points = point;
 		
 		if(fin == 0){
 			loose_screen(fram, fin, listword);
@@ -90,6 +91,24 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();
+			
+			
+			Txt hash = new Txt("#"+_hastag);
+	        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+	        hash.setForeground(new Color(140, 0, 0 ,255));
+	        hash.auto_resize();
+	        hash.setxy(25, 12);
+	        _jp_principal.add(hash);
+	        
+	        
+	        Txt point = new Txt("Score : "+_points);
+	        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+	        point.setForeground(new Color(140, 0, 0 ,255));
+	        point.auto_resize();
+	        point.setxy(75, 12);
+	        _jp_principal.add(point);
+	        
+	        
 			
 			if(left)
 			{
@@ -171,11 +190,26 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		Txt imgGagne = new Txt(new ImageIcon("./data/images/gagne.png"));
         imgGagne.setGravity(GRAVITY.CENTER);
-        imgGagne.setxy(50, 20);
+        imgGagne.setxy(50, 12);
         imgGagne.auto_resize();
         _jp_principal.add(imgGagne);
 
 
+        Txt hash = new Txt("#"+_hastag);
+        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+        hash.setForeground(new Color(255, 209, 0 ,255));
+        hash.auto_resize();
+        hash.setxy(50, 24);
+        _jp_principal.add(hash);
+        
+        Txt point = new Txt("Score : "+_points);
+        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+        point.setForeground(new Color(255, 209, 0 ,255));
+        point.auto_resize();
+        point.setxy(50, 34);
+        _jp_principal.add(point);
+        
+        	
 
 	    int k = 1;
 	    float lastX = 10;
@@ -203,8 +237,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.addActionListener(this);
 		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 		_b_again.setText("Recommencer");
-		_b_again.setGravity(GRAVITY.CENTER);
-		_b_again.setxy(50,50);
+		_b_again.setGravity(GRAVITY.TOP_RIGHT);
+		_b_again.setxy(98,90);
 		_jp_principal.add(_b_again);
 		
 		

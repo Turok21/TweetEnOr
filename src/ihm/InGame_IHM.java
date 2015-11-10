@@ -371,7 +371,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		 _fenetre.repaint();
 		 
 		 if(_nb_vie == 0)
-			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 	}
 
 	public void verifier(String mot_a_verifier){
@@ -411,11 +411,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	    _txt.auto_resize();
 	    	    //new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
 	        	if(_nb_point == 100){
-					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 					dorepaite = false;
 				}
 				if(_nb_vie == 0){
-					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
+					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 					dorepaite = false;
 				}
 	        	_tf_saisie.setText("");
