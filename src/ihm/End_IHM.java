@@ -88,7 +88,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			
 			Txt txt = new Txt(""+word.getWord());
 			txt.setForeground(new Color(87, 1, 8 ,255));
-			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();
 			
@@ -97,7 +97,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
 	        hash.setForeground(new Color(140, 0, 0 ,255));
 	        hash.auto_resize();
-	        hash.setxy(25, 12);
+	        hash.setxy(20, 12);
 	        _jp_principal.add(hash);
 	        
 	        
@@ -105,7 +105,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
 	        point.setForeground(new Color(140, 0, 0 ,255));
 	        point.auto_resize();
-	        point.setxy(75, 12);
+	        point.setxy(80, 12);
 	        _jp_principal.add(point);
 	        
 	        
@@ -225,10 +225,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			txt.setxy(lastX, lastY);
 
 			lastX += 9;
-			if(k < 4  )
-				lastY -= 10;
-			if( k > 6 )
-				lastY += 10;
+			if(k < 5  )
+				lastY -= 7;
+			if( k > 5 )
+				lastY += 7;
 		
 			_jp_principal.add(txt);
 			k++;
