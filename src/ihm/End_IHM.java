@@ -114,26 +114,26 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			{
 				if(firtWordAtLef)
 				{
-					txt.setxy(7,  lastY);
+					txt.setxy(11,  lastY);
 					firtWordAtLef = false;
 				}
 				else
 				{
 					if(k == 5)
 					{
-						txt.setxy(7, ( 23 + k*6) + k );
+						txt.setxy(11, ( 23 + k*6) + k );
 					}
 					else if( k == 7)
 					{
-						txt.setxy(7 ,(23 + k*6) + (k -1)*2);
+						txt.setxy(11 ,(23 + k*6) + (k -1)*2);
 					}
 					else if( k == 9)
 					{
-						txt.setxy(7 ,(23 + k*6) + k*2);
+						txt.setxy(11 ,(23 + k*6) + k*2);
 					}
 					else
 					{
-						txt.setxy(7, 23 + k*6 );
+						txt.setxy(11, 23 + k*6 );
 					}
 				}
 				left = false;
@@ -142,26 +142,26 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			{
 				if(firtWordAtright)
 				{
-					txt.setxy(93 ,23);
+					txt.setxy(89 ,23);
 					firtWordAtright = false;
 				}
 				else
 				{
 					if(k == 6 )
 					{
-						txt.setxy(93 ,(23 + (k - 1)*6) + (k-1));
+						txt.setxy(89 ,(23 + (k - 1)*6) + (k-1));
 					}
 					else if( k == 8)
 					{
-						txt.setxy(93 ,(23 + (k - 1)*6) + (k-2)*2);
+						txt.setxy(89 ,(23 + (k - 1)*6) + (k-2)*2);
 					}
 					else if( k == 10)
 					{
-						txt.setxy(93 ,(23 + (k - 1)*6) + (k-1)*2);
+						txt.setxy(89 ,(23 + (k - 1)*6) + (k-1)*2);
 					}
 					else
 					{
-						txt.setxy(93 ,(23 + (k - 1)*6));
+						txt.setxy(89 ,(23 + (k - 1)*6));
 					}
 				}
 				left = true;
@@ -175,8 +175,9 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.addActionListener(this);
 		_b_again.setText("Recommencer");
 		_b_again.setFont(arista_light.deriveFont(55));
+		_b_again.auto_resize();
 		_b_again.setGravity(GRAVITY.CENTER);
-		_b_again.setxy(50,85);
+		_b_again.setxy((float)49.5,80);
 		_jp_principal.add(_b_again);
 			
 	}
