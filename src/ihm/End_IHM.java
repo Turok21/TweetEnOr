@@ -47,8 +47,12 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 
 	    _fenetre.setVisible(true);
+	    if(fin == 0)
+	    	 player.playOhYeah();
+		else
+			 player.playOhYeah();
 
-	    player.playOhYeah();
+	   
 	}
 
 	

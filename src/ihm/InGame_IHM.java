@@ -2,17 +2,13 @@ package ihm;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,20 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioSystem;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import org.omg.CORBA.portable.InputStream;
-
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
@@ -48,12 +32,14 @@ import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetParser;
 import utils.TweetWord;
-import Sounds.Player;
 
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
+	private static final long serialVersionUID = 1L;
+
 	private Tf _tf_saisie;
+	
 	private Bt _b_verifier;
 	
 	private Txt _loader;
@@ -61,20 +47,20 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Txt _compteur_de_point;
 	private Txt _hashtag;
 	private ArrayList<Txt> _vie;
+	private ArrayList<Txt> _listword_label;
 	
 	private JFrame _fram_given;
 		
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	
 	private Player player;
 	
 	private Image _image_mort,_image_vie;
-	
 	
 	private Pa _panelwait;
 	
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;
-	private List<Txt> _listword_label;
 	
 	
 	private String hasttag;
@@ -253,7 +239,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 
 	
 	    List<Pa> words = new ArrayList<Pa>();
-		float x=10,wline=0,hline=0,wline2=0,hline2=0;
+		float wline=0,hline=0,wline2=0,hline2=0;
 
 	    int i = 0;
 		for(TweetWord word : _listword){

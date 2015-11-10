@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JToggleButton;
+import javax.swing.ToolTipManager;
 
 import ihm.components.Bt;
 import ihm.components.Tbt;
@@ -51,7 +52,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _jp_principal.add(_title_frame);
 
         /*************** Help ***************/
-        _b_help = new Bt(" ? ");
+        _b_help = getTooltip();
         _b_help.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 40));
         _b_help.setGravity(GRAVITY.CENTER);
         _b_help.addActionListener(this);
@@ -178,7 +179,11 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             _tbt_easy.setSelected(false);
             _tbt_medium.setSelected(false);
             _difficulte = Config_IHM.HARD;
-        } else {
+        } else if(_b_help == e.getSource()){
+        	
+        	
+        }else {
+        
             for (Tbt lab : _list_theme) {
                 if (e.getSource() == lab) {
                     _hastag_theme = lab.getText();

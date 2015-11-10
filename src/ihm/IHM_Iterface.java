@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 
 import ihm.components.Bt;
 import ihm.components.Tbt;
@@ -194,7 +195,8 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
 
     }
 
-    public static JButton getTooltip() {
+    public static Bt getTooltip() {
+    	ToolTipManager.sharedInstance().setInitialDelay(0);
         Bt b = new Bt("?");
         b.setToolTipText(("<html><p width=\"500\">"
                 + "<strong>1 - Choisir un thème d'actualité</strong> <br />"
@@ -204,7 +206,7 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
                 + "<li>Tu gagnes les points correspondant au mot s'il est present</li>"
                 + "</ul>"
                 + "<strong>Ton nombre de vie dépends du niveau de difficulté</strong>"
-                + "<br /><strong>/Bonne partie !</strong>"
+                + "<br /><strong>Bonne partie !</strong>"
                 + "</p></html>"));
 
         return b;
