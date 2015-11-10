@@ -2,17 +2,13 @@ package ihm;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,46 +21,49 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JProgressBar;
 
-import org.omg.CORBA.portable.InputStream;
-
+import Sounds.Player;
 import controllers.CtrlTweetEnOr;
+import ihm.components.Bt;
+import ihm.components.Pa;
+import ihm.components.Tf;
+import ihm.components.Txt;
+import ihm.components.composent.GRAVITY;
 import utils.TweetParser;
 import utils.TweetWord;
 
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
-	private JTextField _tf_saisie;
-	private JButton _b_verifier;
+	private static final long serialVersionUID = 1L;
+
+	private Tf _tf_saisie;
 	
-	private JLabel _txt;
-	private JLabel _compteur_de_point;
-	private JLabel _compteur_de_vie;
-	private JLabel _hashtag;
-	private ArrayList<JLabel> _vie;
+	private Bt _b_verifier;
+	
+	private Txt _loader;
+	private Txt _txt;
+	private Txt _compteur_de_point;
+	private Txt _hashtag;
+	private ArrayList<Txt> _vie;
+	private ArrayList<Txt> _listword_label;
 	
 	private JFrame _fram_given;
 	
-	private JPanel jp_sec;
-		
+	private Pa _pa_pb;
+	private JProgressBar _pb;
+	
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
 	private Image _image_mort,_image_vie;
 	
+	private Player player;
 	
 	private CtrlTweetEnOr _verifier;
-	private  List<TweetWord> _listword;
-	private  List<JLabel> _listword_label;
+	private List<TweetWord> _listword;
 	
 	
 	private String hasttag;
@@ -73,6 +72,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private int _nb_vie;
 	private int _nb_vie_total;
 	
+	private int _maj,_tab;
 	
 	static int HARD=8;	
 	static int MEDIUM=10;	
@@ -89,13 +89,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
-		
+		_maj = 0;
+		_tab = 0;
 		_vie = new ArrayList<>();
 		
 		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
 		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
 		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
 		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		
 	    
 		_fram_given = fram;
 	    hasttag = hastag_theme;
@@ -103,10 +105,28 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nb_vie_total = Difficulte;
 		_nb_point = 0;
 		
-		_listword_label = new ArrayList<JLabel>();
-	    _verifier = new CtrlTweetEnOr(hastag_theme);
 		
-		draw(0);
+		
+		drawloader(0);
+		_fenetre.setVisible(true);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {e.printStackTrace();}
+				_listword_label = new ArrayList<Txt>();
+			    _verifier = new CtrlTweetEnOr(hasttag,_pb);
+				_listword = _verifier.getListWords();
+				draw(0);
+				show_windows();	
+				_fenetre.remove(_loader);
+				_fenetre.remove(_pa_pb);
+				_fenetre.getContentPane().repaint();
+			}
+		}).start();
+		
+		
 		
 		
 		
@@ -114,194 +134,144 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    
 		
-	    _fenetre.setVisible(true);
+		
+		
 
 	}
 	
-	public void draw(int redraw){
+	public void drawloader(int redraw){
+		
 		
 		if(redraw == 1){
 			_fenetre.remove(_jp_principal);
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fenetre,false);
 		}else{
-			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fram_given,false);
 		}
+		
+	
+		
+		
+		
+        _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
+        _loader.setxy(50, 35);
+        _loader.setOpaque(true);
+        
+        _pb = new JProgressBar();
+		_pb.setSize(500,30);
+		_pb.setForeground(new Color(29, 202, 255,255));
+		_pb.setLocation((int)((_screen.width/2)-(_pb.getSize().width*0.5)), (int)((_screen.height*0.6)-(_pb.getSize().height/2)));
+        _pa_pb = new Pa(null);
+        _pa_pb.add(_pb);
+        _pa_pb.setSize(_screen);
+        _pa_pb.setBackground(new Color(40, 170, 225));
+        
+
+        _pa_pb.add(_loader);
+        _fenetre.add(_pa_pb);
+        
+       /*
+        new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for(int i =0 ;i<100;i++){
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {e.printStackTrace();}
+					_pb.setValue(_pb.getValue()+ 1);
+				}
+			}
+		}).start();
+        */
+        show_windows();
+	}
+	
+	
+	public void draw(int redraw){
+		
+		
+		if(redraw == 1){
+			_fenetre.remove(_jp_principal);
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fenetre,false);
+		}else{
+			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+		}
+		
+		
+		
 	    _fenetre.addKeyListener(this);
-		jp_sec = new JPanel();
-		jp_sec.setOpaque(false);
-		jp_sec.setLayout(new BoxLayout(jp_sec,BoxLayout.Y_AXIS));
-		
-		_jp_principal.add(jp_sec);
+		_jp_principal.addKeyListener(this);
 		
 		
-	    _tf_saisie = new JTextField(50);
+		
+	    _tf_saisie = new Tf(50);
 	    _tf_saisie.setVisible(true);
-	    
-	    
-	    Box spacer0 = new Box(BoxLayout.X_AXIS);
-	    spacer0.setPreferredSize(new Dimension(40, 50));
-	    jp_sec.add(spacer0);
-	    
-	    Box box = new Box(BoxLayout.X_AXIS);
-	    box.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 94));
-	   // box.setOpaque(true);
-
-	    _compteur_de_point = new JLabel("Points :"+_nb_point);	 
-	    _compteur_de_point.setFont(arista_light.deriveFont(32));
-	    _compteur_de_vie = new JLabel("vie :"+_nb_vie);
-	    
-	    box.add(Box.createRigidArea(new Dimension(20,100)));
-	    
-	    Box vie_box = new Box(BoxLayout.X_AXIS);
-	    vie_box.setMinimumSize(new Dimension(800, 94));
-	    vie_box.setMaximumSize(new Dimension(800, 94));
-	    vie_box.setPreferredSize(new Dimension(800, 94));
-	   
-	    for(int i = 0;i<_nb_vie_total;i++){
-	    	Image myPicture = null;
-	    	if(i < _nb_vie){
-	    		myPicture = _image_vie;
-	    	}else{
-	    		myPicture = _image_mort;	    		    		
-	    	}
-	    	_vie.add(new JLabel(new ImageIcon(myPicture)));
-	    	_vie.get(_vie.size()-1).setLocation(_vie.get(_vie.size()-1).getLocation().x, 0);
-	    	vie_box.add(_vie.get(_vie.size()-1));
-	    }
-	    box.add(vie_box);
-	    box.add(Box.createGlue());
-	    box.add(_compteur_de_point);
-	    box.add(Box.createRigidArea(new Dimension(20,100)));
-
-	    jp_sec.add(box);
-	    
-	    
-	    
-	    Box spacer1 = new Box(BoxLayout.X_AXIS);
-	    spacer1.setPreferredSize(new Dimension(40, 150));
-	    jp_sec.add(spacer1);
-	    
-	    
-  
-	    Box box2 = new Box(BoxLayout.X_AXIS);
-	    box2.setMaximumSize(new Dimension(9999, 50));
-	    box2.setMinimumSize(new Dimension(_fenetre.getSize().width, 50));
-
-	    
-	    _hashtag = new JLabel("#"+hasttag);
-	    _hashtag.setForeground(Color.blue);
-	   _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
-	   
-
-	    box2.add(Box.createGlue());
-	    box2.add(_hashtag);
-	    box2.add(Box.createGlue());
-	    
-	    jp_sec.add(box2);
-	    
-	    Box spacer3 = new Box(BoxLayout.X_AXIS);
-	    spacer3.setPreferredSize(new Dimension(40, 90));
-	    jp_sec.add(spacer3);
-	    
-	    
-	    
-
-	    Box box3 = new Box(BoxLayout.X_AXIS);
-	    box3.setMaximumSize(new Dimension(9999, 40));
-	    box3.setMinimumSize(new Dimension(_fenetre.getSize().width, 40));
-	    _tf_saisie.setMaximumSize(new Dimension(300,40));
-	    _tf_saisie.setFont(new Font("",Font.TYPE1_FONT,20 ));
+	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
 	    _tf_saisie.addKeyListener(this);
-	    
-	    box3.add(Box.createRigidArea(new Dimension(20,40)));
-	    box3.add(Box.createGlue());
-	    box3.add(_tf_saisie);
-	    box3.add(Box.createGlue());
-	    box3.add(Box.createRigidArea(new Dimension(20,40)));
-	    
-
-	    jp_sec.add(box3);
-	    
-	    
+	    _tf_saisie.setxy(50, 45);
+	    _tf_saisie.setFocusable(true);
+	    _jp_principal.add(_tf_saisie);
 
 	    
-	    Box box4 = new Box(BoxLayout.X_AXIS);
-	    box4.setMaximumSize(new Dimension(9999, 0));
-	    box4.setMinimumSize(new Dimension(_fenetre.getSize().width, 0));
-	    
-	    _txt = new JLabel("");
-	    
-	    box4.add(Box.createGlue());
-	    box4.add(_txt);
-	    box4.add(Box.createGlue());
+	  
 
-	    jp_sec.add(box4);
+	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
+	    _compteur_de_point.setFont(arista_light.deriveFont(32));
+	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point.setxy((float)98.5,(float)3);
+	    _jp_principal.add(_compteur_de_point);
 	    
 	    
-	    
-	    Box spacer5 = new Box(BoxLayout.X_AXIS);
-	    spacer5.setPreferredSize(new Dimension(40, 20));
-	    jp_sec.add(spacer5);
-	    
+	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
+
+	    float xtmp=1;
+	    for(int i = 0;i<_nb_vie_total;i++){
+	    	Txt tmp = new Txt(new ImageIcon(_image_vie));
+	    	tmp.setGravity(GRAVITY.TOP_LEFT);
+	    	tmp.setxy(xtmp, 2);
+	    	xtmp+=ratio_size_vie;
+	    	_vie.add(tmp);
+	    	_jp_principal.add(tmp);
+	    }
 	    
 
-	    Box box5 = new Box(BoxLayout.X_AXIS);
-	    box5.setPreferredSize(new Dimension(40, 75));
+
+	    _hashtag = new Txt("#"+hasttag);
+	    _hashtag.setForeground(Color.blue);
+	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
+	    _hashtag.auto_resize();
+	    _hashtag.setxy(50, 33);
+	    _jp_principal.add(_hashtag);
+
+	
+
+	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
+	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
+	    _txt.auto_resize();
+	    _txt.setxy(50, 56);
+	    _jp_principal.add(_txt);
 	    
 	    
-	    _b_verifier = new JButton("vérifier");
+	    _b_verifier = new Bt("vérifier");
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
-	    _b_verifier.setPreferredSize(new Dimension(150, 75));
+	    _b_verifier.setGravity(GRAVITY.CENTER);
+	    _b_verifier.setwh(150, 75);
+	    _b_verifier.auto_resize();
+	    _b_verifier.setxy(50, 52);
 		_b_verifier.addActionListener(this);
+	    _jp_principal.add(_b_verifier);
 	    
-	    box5.add(Box.createGlue());
-	    box5.add(_b_verifier);
-	    box5.add(Box.createGlue());
+	 
+	
+	    List<Pa> words = new ArrayList<Pa>();
+		float wline=0,hline=0,wline2=0,hline2=0;
 
-	    jp_sec.add(box5);
-	    
-
-	    
-	    Box spacer2 = new Box(BoxLayout.X_AXIS);
-	    spacer2.setPreferredSize(new Dimension(10, 100));
-	    jp_sec.add(spacer2);
-	    
-	    
-	    
-	    _listword = _verifier.getListWords();
-	    System.out.println(_listword.size());
-	    
-	    Box box6 = new Box(BoxLayout.X_AXIS);
-	    JPanel pgl = new JPanel(new FlowLayout());
-	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    pgl.setMaximumSize(new Dimension(900, 900));
-	    
-	    box6.add(Box.createGlue());
-	    box6.add(pgl);
-	    box6.add(Box.createGlue());
-	    
 	    int i = 0;
 		for(TweetWord word : _listword){
-			i++;
-	    	if(i == 6){
-	    		i=0;
-	    		jp_sec.add(box6);
-	    		
-	    		box6 = new Box(BoxLayout.X_AXIS);
-	    	    pgl = new JPanel(new FlowLayout());
-	    	    pgl.setBackground(new Color(0, 0, 0, 0));
-	    	    pgl.setMaximumSize(new Dimension(900, 900));
-	    	    
-	    	    box6.add(Box.createGlue());
-	    	    box6.add(pgl);
-	    	    box6.add(Box.createGlue());
-	    		
-	    	}
-	    	
-			JPanel p = new JPanel() {
-			     /**
-				 * 
-				 */
+			
+			Pa p = new Pa(null) {
+			     
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -316,8 +286,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 			        graphics.setColor(getBackground());
 			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
-			        graphics.setColor(getForeground());
-			       // graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			       // graphics.setColor(getForeground());
+			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
 			     }
 			  };
 			  p.setBounds(10,10,100,30);
@@ -325,24 +295,69 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			  p.setBackground(new Color(29, 202, 255,255));
 			
-			pgl.add(p);
-			JLabel txt = new JLabel(""+word.getWord());
-			txt.setFont(new Font("",Font.BOLD,40 ));
+			
+			Txt txt = new Txt(""+word.getWord());
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
+			//txt.setForeground(new Color(255, 255, 255,255));
+			txt.setGravity(GRAVITY.CENTER);		
 			_listword_label.add(txt);
+
 			p.add(txt);
+			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
+			txt.setxyin(50,50,p.getWidth(),p.getHeight());
+			
+			words.add(p);
+			if(i < 5){
+				wline += p.getWidth()+15;
+				hline = p.getHeight()+5;
+			}else {
+				wline2 += p.getWidth()+15;
+				hline2 = p.getHeight()+5;
+			}
+			
+			i++;
 		}
-		if(i != 0)
-			jp_sec.add(box6);
-	
+		
+		float x_decalage = 0,y_de=64;
+		i=1;
+		Pa pline = new Pa(null);
+		pline.setwh(wline, hline);
+		pline.setGravity(GRAVITY.CENTER);
+		for(Pa pword : words){
+			
+	    	pword.setGravity(GRAVITY.TOP_LEFT);
+	    	pword.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
+	    	x_decalage += (((float)pword.getWidth()+15)/(float)pline.getWidth())*100;
+	    
+	    	
+			pline.add(pword);
+			
+			if(i == 5 || i == 10){
+	    		pline.setxy(50,y_de);
+	    		pline.setOpaque(false);
+	    		_jp_principal.add(pline);
+	    		
+	    		pline = new Pa(null);
+	    		pline.setwh(wline2, hline2);
+	    		pline.setGravity(GRAVITY.CENTER);
+	    		x_decalage = 0;
+	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
+	    		System.out.println(y_de);
+	    	}
+			
+			i++;
+		}
 		
 		_fenetre.repaint();
+		
+		
 		
 	}
 	
 	
 	
-	private void redraw_vie(){
+	private void redraw_vie(){		
 		 for(int i = 0;i<_nb_vie_total;i++){
 			 Image myPicture = null;
 		    	if(i < _nb_vie){
@@ -354,12 +369,19 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		    	_vie.get(i).setIcon(new ImageIcon(myPicture));
 		    }
 		 _fenetre.repaint();
+		 
+		 if(_nb_vie == 0)
+			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 	}
 
 	public void verifier(String mot_a_verifier){
+
+		boolean dorepaite = true;
+		player = new Player();
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
 			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
+		    _txt.auto_resize();
 		}
 		else {
 			List<String> mots_a_verifier = Arrays.asList(mot_a_verifier.split(" "));
@@ -375,41 +397,64 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	if(motVerifie.getPonderation() == -1){
 	        		affichage += "Le mot " + mot + " est incorrect ! ";
 	        		loose_vie();
-	        	}else if(motVerifie.getPonderation() == -2)
+	        	}else if(motVerifie.getPonderation() == -2){
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
-	        	else if(motVerifie.getPonderation() == -3)
+	        	}else if(motVerifie.getPonderation() == -3){
+	        		player.playBadAnswer();
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
-	        	else if(motVerifie.getPonderation() > 0){
+	        	}else if(motVerifie.getPonderation() > 0){
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
 	        	_txt.setText(affichage);
+	    	    _txt.auto_resize();
+	    	    //new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
 	        	if(_nb_point == 100){
-					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
-					break;
+					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
+					dorepaite = false;
 				}
 				if(_nb_vie == 0){
-					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword);
-					break;
+					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
+					dorepaite = false;
 				}
 	        	_tf_saisie.setText("");
 			}
 		}
-
-		_fenetre.repaint();
+		
+		if(dorepaite)
+			_fenetre.repaint();
+		
 		
 	}
 	
 	
 	private void loose_vie(){
-		if(_nb_vie != 0){
-			_nb_vie--;
-			redraw_vie();
-		}
+	 
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playDie();
+				if(_nb_vie != 0){
+					_nb_vie--;
+					redraw_vie();
+				}
+			}
+		}).start();
 	}
 	private void add_point(int nb_point,TweetWord mots){
 		
-		for(JLabel label : _listword_label){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playGoodAnswer();
+			}
+		}).start();
+		
+		
+		for(Txt label : _listword_label){
 			if(label.getText().compareTo(mots.getWord()) == 0){
 				label.setForeground(new Color(255,255,255));
 				_fenetre.repaint();
@@ -418,11 +463,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 		_nb_point += nb_point;
 		_compteur_de_point.setText("Points "+_nb_point);
+		_compteur_de_point.auto_resize();
 	}
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
         if( e.getSource() == _b_verifier)
         	verifier( _tf_saisie.getText());
 	}
@@ -431,7 +478,31 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		super.keyPressed(e);
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
+        if (e.getKeyCode()==KeyEvent.VK_CAPS_LOCK){
+        	_maj++;
+        	if(_maj >= 24){
+        		for(Txt mot: _listword_label) {
+        			if(mot.getForeground().getRed() == 29 && mot.getForeground().getGreen() == 202 && mot.getForeground().getBlue() == 255)
+        				mot.setForeground(new Color(254, 255, 255,255));
+    			}
+        	}
+        	_tab = 0;	
+        }else
+        	_maj = 0;
+        
+        if (e.getKeyCode()==KeyEvent.VK_UP){
+        	_tab++;
+        	if(_tab >= 24){
+        		for(Txt mot: _listword_label) {
+        			if(mot.getForeground().getRed() == 254 && mot.getForeground().getGreen() == 255 && mot.getForeground().getBlue() == 255)
+        				mot.setForeground(new Color(29, 202, 255,255));
+    			}
+        	}
+        	_maj = 0;	
+        }else
+        	_tab = 0;
     }
 }

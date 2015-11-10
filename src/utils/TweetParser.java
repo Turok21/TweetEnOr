@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 import org.annolab.tt4j.TokenHandler;
 import org.annolab.tt4j.TreeTaggerWrapper;
 
+import javax.swing.JProgressBar;
+
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -55,9 +57,13 @@ public abstract class TweetParser {
     		"PRP", "NUM", "PUN", "SENT", "DET", "VER", "KON", "PRO"
     ));
 
-    public static KeyWord findWords(String keyWord) {
+
+
+	public static KeyWord findWords(String keyWord, final JProgressBar jp) {
     	// Récupération des tweets
-    	List<String> listTweets = getTweets(keyWord);
+    	List<String> listTweets = getTweets(keyWord, jp);
+    	jp.setMaximum(listTweets.size());
+    	jp.setValue(0);
     	final List<String> words = new ArrayList<>();
     	
     	// Démarrage du moteur d'analyse des mots
@@ -69,6 +75,7 @@ public abstract class TweetParser {
 		    tt.setHandler(new TokenHandler<String>() {
 		      // Fonction appelée pour chaque mot du tweet
 		      public void token(String token, String pos, String lemma) {
+		    	  jp.setValue(jp.getValue()+1);
 		    	  if(!excludedTypes.contains(pos.split(":")[0])) {
 		    		  words.add(token);
 		    	  }
@@ -95,12 +102,15 @@ public abstract class TweetParser {
         return new KeyWord(keyWord, tweetWords);
     }
 
-    private static List<String> getTweets(String keyWord) {
+    private static List<String> getTweets(String keyWord, JProgressBar jp) {
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
 
+		jp.setMaximum(nbTweetsToGet);
+		jp.setValue(0);
         Query query = new Query(keyWord + " exclude:retweets");
+
         query.setLang("fr"); // On ne récup que les tweet en français
         query.count(100);
         QueryResult result;
@@ -109,11 +119,13 @@ public abstract class TweetParser {
             do {
                 for (Status status : result.getTweets()) {
                     listTweets.add(status.getText());
+                    jp.setValue(jp.getValue()+1);
                 }
                 query = result.nextQuery();
                 if (query != null) {
                     result = twitter.search(query);
                 }
+                
             }
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
@@ -283,7 +295,8 @@ public abstract class TweetParser {
     
     
     public static void main(String argc[]) {
-        KeyWord keyw = findWords("ski");
+        KeyWord keyw = findWords("ski", new JProgressBar());
+        System.out.println(keyw);
     }
 }
 
