@@ -174,7 +174,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
 		_b_again.setText("Recommencer");
-		_b_again.setFont(arista_light.deriveFont(55));
+		_b_again.setFont(arista_btn.deriveFont(65));
 		_b_again.auto_resize();
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy((float)49.5,80);

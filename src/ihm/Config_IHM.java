@@ -128,21 +128,33 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _list_theme.add(new Tbt("Chine"));
         _list_theme.add(new Tbt("COP21"));
         _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
+        _list_theme.add(new Tbt("NASA"));
 
-        int tabX[] = {40, 50, 60, 70, 80};
-        int tabY[] = {35, 45, 55, 65, 75};
 
-        int x = 0, y = 0;
+        int x = 30, y = 35,i=1;
         for (Tbt key : _list_theme) {
             key.setGravity(GRAVITY.CENTER);
             key.setSize(100, 30);
-            key.setxy(tabX[x % 5], tabY[y % 5]);
+            key.setxy(x, y);
             key.addActionListener(this);
+            key.auto_resize();
             _jp_principal.add(key);
-            x++;
-            if (x % 5 == 0) {
-                y++;
+            
+            x+=8;
+            if (i == 6) {
+            	x=30;
+                y+=7;
+                i=0;
             }
+            i++;
         }
         /***************  Fin Themes ***************/
 

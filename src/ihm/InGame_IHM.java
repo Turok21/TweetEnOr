@@ -246,7 +246,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	
 
-	    _txt = new Txt("Entrez un mots en rapport avec ce hashtag !");
+	    _txt = new Txt("Entrez un mot en rapport avec ce hashtag !");
 	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _txt.auto_resize();
 	    _txt.setxy(50, 56);
@@ -410,7 +410,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	_txt.setText(affichage);
 	    	    _txt.auto_resize();
 	    	    //new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
-	        	if(_nb_point == 100){
+	        	if(_nb_point >= 100){
 					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 					dorepaite = false;
 				}
