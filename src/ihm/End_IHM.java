@@ -30,7 +30,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test");
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),1,listword);
+		new End_IHM(new JFrame(""),0,listword);
 	}
 
 	public End_IHM(JFrame fram,int fin,ArrayList<TweetWord> listword) {
@@ -48,7 +48,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	    _fenetre.setVisible(true);
 	    if(fin == 0)
-	    	 player.playOhYeah();
+	    	 player.playPerdu();
 		else
 			 player.playOhYeah();
 
