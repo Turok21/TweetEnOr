@@ -11,9 +11,10 @@
 
 ## Tree tagger
 
-* Suivre les instructions ici : http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
-* Ou si vous êtes sous Linux: télécharger le fichier (http://amoki.fr/tree-tagger.tar.gz) et décompressez le
-* Ou si vous êtes sous Windows, téléchager le fichier (http://amoki.fr/TreeTaggerWidnows.zip) et décompressez le
+* Si vous êtes sous Linux: télécharger le fichier (http://amoki.fr/tree-tagger.tar.gz)
+* Si vous êtes sous Windows, téléchager le fichier (http://amoki.fr/TreeTaggerWindows.zip)
+* Si vous êtes sous MacOS, télécharger le fichier (http://amoki.fr/TreeTaggerMac.zip)
+* Décompressez le fichier où bon vous semble (Attention à ne pas le commit)
 * Installer le jar : http://mvnrepository.com/artifact/org.annolab.tt4j/org.annolab.tt4j/1.2.1
 * Définir le chemin du répertoire de tree-tagger via la variable d'environnement TREE_TAGGER_PATH  (ex: /usr/share/tree-tagger/ ou C:\workspace\TreeTagger)
 
