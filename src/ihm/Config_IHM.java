@@ -148,10 +148,10 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             key.auto_resize();
             _jp_principal.add(key);
             
-            x+=8;
+            x+=10;
             if (i == 6) {
             	x=30;
-                y+=7;
+                y+=5;
                 i=0;
             }
             i++;

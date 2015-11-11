@@ -29,6 +29,7 @@ import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
 import ihm.components.Pa;
+import ihm.components.Shared_component;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
@@ -54,7 +55,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private JFrame _fram_given;
 	
 	private Pa _pa_pb;
-	private JProgressBar _pb;
+	private Shared_component _shared;
 	
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
@@ -89,6 +90,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
+		_shared = new Shared_component();
 		_maj = 0;
 		_tab = 0;
 		_vie = new ArrayList<>();
@@ -116,7 +118,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
 				_listword_label = new ArrayList<Txt>();
-			    _verifier = new CtrlTweetEnOr(hasttag,_pb);
+			    _verifier = new CtrlTweetEnOr(hasttag,_shared);
 				_listword = _verifier.getListWords();
 				draw(0);
 				show_windows();	
@@ -157,32 +159,30 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _loader.setxy(50, 35);
         _loader.setOpaque(true);
         
-        _pb = new JProgressBar();
-		_pb.setSize(500,30);
-		_pb.setForeground(new Color(29, 202, 255,255));
-		_pb.setLocation((int)((_screen.width/2)-(_pb.getSize().width*0.5)), (int)((_screen.height*0.6)-(_pb.getSize().height/2)));
+        _shared.txt_line1 = new Txt();
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+        _shared.txt_line1.setForeground(Color.white);
+        _shared.txt_line1.settext("Création des données de jeux en cours ...");
+        _shared.txt_line1.setxy(50, 64);
+        
+        
+        
+        _shared._progressbar = new JProgressBar();
+        _shared._progressbar.setSize(500,30);
+        _shared._progressbar.setForeground(new Color(29, 202, 255,255));
+        _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
+        		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
         _pa_pb = new Pa(null);
-        _pa_pb.add(_pb);
+        
+        _pa_pb.add(_shared.txt_line1);
+        _pa_pb.add(_shared._progressbar);
         _pa_pb.setSize(_screen);
         _pa_pb.setBackground(new Color(40, 170, 225));
         
 
         _pa_pb.add(_loader);
         _fenetre.add(_pa_pb);
-        
-       /*
-        new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for(int i =0 ;i<100;i++){
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {e.printStackTrace();}
-					_pb.setValue(_pb.getValue()+ 1);
-				}
-			}
-		}).start();
-        */
+      
         show_windows();
 	}
 	

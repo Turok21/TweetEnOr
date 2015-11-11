@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.swing.JProgressBar;
 
+import ihm.components.Shared_component;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -56,14 +57,17 @@ public abstract class TweetParser {
 
     private static int nbTweetsToGet = 1000;
 
-    public static KeyWord findWords(String keyWords,JProgressBar jp) {
-        List<String> listTweets = getTweets(keyWords,jp);
+    public static KeyWord findWords(String keyWords,Shared_component shared) {
+
+        List<String> listTweets = getTweets(keyWords,shared);
         List<String> words = new ArrayList<>();
-        jp.setMaximum(listTweets.size());
-        jp.setValue(0);
+        shared._progressbar.setMaximum(listTweets.size());
+        shared._progressbar.setValue(0);
         for (String tweet : listTweets) {
             words.addAll(cleanWords(tweet.split(" |'"), keyWords));
-            jp.setValue(jp.getValue()+1);
+            shared._progressbar.setValue(shared._progressbar.getValue()+1);
+            shared.txt_line1.settext("Traitement des tweets et création des données de jeux ... ("+
+                    shared._progressbar.getValue()+"/"+shared._progressbar.getMaximum()+")");
         }
 
         Map<String, Integer> topWords = listWordToPonderatedMap(words);
@@ -72,13 +76,13 @@ public abstract class TweetParser {
         return new KeyWord(keyWords, tweetWords);
     }
 
-    private static List<String> getTweets(String keyWord,JProgressBar jp) {
+    private static List<String> getTweets(String keyWord,Shared_component shared) {
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
         
-        jp.setMaximum(nbTweetsToGet);
-        jp.setValue(0);
+        shared._progressbar.setMaximum(nbTweetsToGet);
+        shared._progressbar.setValue(0);
         
         Query query = new Query(keyWord);
         query.setLang("fr"); // On ne récup que les tweet en français
@@ -89,7 +93,9 @@ public abstract class TweetParser {
             do {
                 for (Status status : result.getTweets()) {
                     listTweets.add(status.getText());
-                    jp.setValue(jp.getValue()+1);
+                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
+                    shared.txt_line1.settext("Récupération des tweets ... ("+
+                            shared._progressbar.getValue()+"/"+shared._progressbar.getMaximum()+")");
                 }
                 query = result.nextQuery();
                 if (query != null) {
@@ -203,7 +209,7 @@ public abstract class TweetParser {
     }
 
     public static void main(String argc[]) {
-        KeyWord keyw = findWords("ski",new JProgressBar());
+        KeyWord keyw = findWords("ski",new Shared_component());
         System.out.println(keyw);
 //        System.out.println(keyw);
     }
