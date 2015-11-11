@@ -13,6 +13,7 @@ import javax.swing.JProgressBar;
 
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
+import ihm.components.Shared_component;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import utils.TweetWord;
@@ -31,7 +32,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 
 	public static void main(String[] args){		
 		
-		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new JProgressBar());
+		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new Shared_component());
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),0,listword,"test",666);
 	}
@@ -88,7 +89,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			
 			Txt txt = new Txt(""+word.getWord());
 			txt.setForeground(new Color(87, 1, 8 ,255));
-			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();
 			
@@ -97,7 +98,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
 	        hash.setForeground(new Color(140, 0, 0 ,255));
 	        hash.auto_resize();
-	        hash.setxy(25, 12);
+	        hash.setxy(20, 12);
 	        _jp_principal.add(hash);
 	        
 	        
@@ -105,7 +106,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
 	        point.setForeground(new Color(140, 0, 0 ,255));
 	        point.auto_resize();
-	        point.setxy(75, 12);
+	        point.setxy(80, 12);
 	        _jp_principal.add(point);
 	        
 	        
@@ -174,7 +175,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
 		_b_again.setText("Recommencer");
-		_b_again.setFont(arista_light.deriveFont(55));
+		_b_again.setFont(arista_btn.deriveFont(65));
 		_b_again.auto_resize();
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy((float)49.5,80);
@@ -225,10 +226,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			txt.setxy(lastX, lastY);
 
 			lastX += 9;
-			if(k < 4  )
-				lastY -= 10;
-			if( k > 6 )
-				lastY += 10;
+			if(k < 5  )
+				lastY -= 7;
+			if( k > 5 )
+				lastY += 7;
 		
 			_jp_principal.add(txt);
 			k++;

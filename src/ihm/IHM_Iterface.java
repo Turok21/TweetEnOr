@@ -109,7 +109,7 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
         if (_fenetre.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
 
             _fenetre.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            _fenetre.setUndecorated(true);
+            //_fenetre.setUndecorated(true);
             gd.setFullScreenWindow(_fenetre);
         }
 

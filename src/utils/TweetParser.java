@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 import org.annolab.tt4j.TokenHandler;
 import org.annolab.tt4j.TreeTaggerWrapper;
 
-import javax.swing.JProgressBar;
 
+import ihm.components.Shared_component;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -57,13 +57,11 @@ public abstract class TweetParser {
     		"PRP", "NUM", "PUN", "SENT", "DET", "VER", "KON", "PRO"
     ));
 
-
-
-	public static KeyWord findWords(String keyWord, final JProgressBar jp) {
+	public static KeyWord findWords(String keyWord, final Shared_component shared) {
     	// Récupération des tweets
-    	List<String> listTweets = getTweets(keyWord, jp);
-    	jp.setMaximum(listTweets.size());
-    	jp.setValue(0);
+    	List<String> listTweets = getTweets(keyWord, shared);
+    	shared._progressbar.setMaximum(listTweets.size());
+    	shared._progressbar.setValue(0);
     	final List<String> words = new ArrayList<>();
     	
     	// Démarrage du moteur d'analyse des mots
@@ -75,7 +73,8 @@ public abstract class TweetParser {
 		    tt.setHandler(new TokenHandler<String>() {
 		      // Fonction appelée pour chaque mot du tweet
 		      public void token(String token, String pos, String lemma) {
-		    	  jp.setValue(jp.getValue()+1);
+		    	  shared._progressbar.setValue(shared._progressbar.getValue()+1);
+		    	  shared.txt_line1.settext("Traitement des tweets... (" + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + ")");
 		    	  if(!excludedTypes.contains(pos.split(":")[0])) {
 		    		  words.add(token);
 		    	  }
@@ -102,13 +101,14 @@ public abstract class TweetParser {
         return new KeyWord(keyWord, tweetWords);
     }
 
-    private static List<String> getTweets(String keyWord, JProgressBar jp) {
+    private static List<String> getTweets(String keyWord, Shared_component shared) {
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance(); //création de l'objet twitter 
         List<String> listTweets = new ArrayList<>();
 
-		jp.setMaximum(nbTweetsToGet);
-		jp.setValue(0);
+        shared._progressbar.setMaximum(nbTweetsToGet);
+        shared._progressbar.setValue(0);
+        shared.txt_line1.settext("Récupération des tweets ... (" + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + ")");
         Query query = new Query(keyWord + " exclude:retweets");
 
         query.setLang("fr"); // On ne récup que les tweet en français
@@ -119,7 +119,8 @@ public abstract class TweetParser {
             do {
                 for (Status status : result.getTweets()) {
                     listTweets.add(status.getText());
-                    jp.setValue(jp.getValue()+1);
+                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
+                    shared.txt_line1.settext("Récupération des tweets ... (" + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + ")");
                 }
                 query = result.nextQuery();
                 if (query != null) {
@@ -148,7 +149,7 @@ public abstract class TweetParser {
 
         Map<String, Integer> sortMergedPonderatedWord = mergeSimilarWords(sortPonderatedWord);
         
-        /** Recuperation des 10 mots les plus représentatif */
+        /** Recuperation des 10 mots les plus représentatifs */
         Map<String, Integer> topPonderatedWord = new HashMap<>();
         int nbWord = 10;
         for (Map.Entry<String, Integer> entry : sortMergedPonderatedWord.entrySet()) {
@@ -295,7 +296,7 @@ public abstract class TweetParser {
     
     
     public static void main(String argc[]) {
-        KeyWord keyw = findWords("ski", new JProgressBar());
+        KeyWord keyw = findWords("ski",new Shared_component());
         System.out.println(keyw);
     }
 }

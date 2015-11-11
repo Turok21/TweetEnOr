@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JProgressBar;
 
+import ihm.components.Shared_component;
 import utils.KeyWord;
 import utils.TweetParser;
 import utils.TweetWord;
@@ -23,11 +24,13 @@ public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
     private List<String> _invalidWords;
     private List<String> _validWords;
-    private JProgressBar _pb;
+    private Shared_component _shared;
     
-    public CtrlTweetEnOr(String word,JProgressBar pb) {
+    public CtrlTweetEnOr(String word,Shared_component shared) {
     	// Create "cache" directory if does not exist
-    	_pb = pb;
+    	_shared = shared;
+    	
+    	
     	File directory = new File("cache");
     	directory.mkdirs();
     	
@@ -35,6 +38,7 @@ public class CtrlTweetEnOr {
     	File file =  new File("cache/" + word + ".ser");
     	long threeDays = 260000000L;
     	if(file.exists() && file.lastModified() > new java.util.Date().getTime() - threeDays) {
+    		_shared.txt_line1.settext("Récupération en local des tweets en cours ...");
 			try {
 				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 				this._keyWords = (KeyWord)ois.readObject();
@@ -43,10 +47,11 @@ public class CtrlTweetEnOr {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			pb.setValue(pb.getMaximum());
+
+			_shared._progressbar.setValue(_shared._progressbar.getMaximum());
     	}
     	else {
-    		this._keyWords = TweetParser.findWords(word,_pb);
+    		this._keyWords = TweetParser.findWords(word,_shared);
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 				oos.writeObject(this._keyWords) ;
@@ -106,7 +111,7 @@ public class CtrlTweetEnOr {
 
     public static void main(String[] args) {
         System.out.println("CLASS CtrlTweetEnOr IS NOW RUNNING !");
-        CtrlTweetEnOr ctrl = new CtrlTweetEnOr("Ski",new JProgressBar());
+        CtrlTweetEnOr ctrl = new CtrlTweetEnOr("Ski",new Shared_component());
 
         System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
         System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
