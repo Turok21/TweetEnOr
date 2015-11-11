@@ -14,6 +14,13 @@ import javax.swing.JPanel;
 
 import ihm.components.composent.GRAVITY;
 
+
+/**
+ * surdéfinition du JPanel
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Pa extends JPanel implements composent{
 	
 
