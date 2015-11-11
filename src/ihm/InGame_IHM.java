@@ -46,7 +46,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Bt _b_verifier;
 	
 	private Txt _loader;
-	private Txt _txt;
+	private Txt _info_player;
 	private Txt _compteur_de_point;
 	private Txt _hashtag;
 	private ArrayList<Txt> _vie;
@@ -54,30 +54,27 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private JFrame _fram_given;
 	
-	private Pa _pa_pb;
-	private Shared_component _shared;
+	private Pa _Panel_loader;
+	
+	private Shared_component _shared;//objet d'échange avec CtrlTweetEnOr pour la bar de progression du loader
 	
 	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
 	private Image _image_mort,_image_vie;
 	
-	private Player player;
+	private Player player;//gestionnaire des sons
 	
 	private CtrlTweetEnOr _verifier;
-	private List<TweetWord> _listword;
 	
+	private List<TweetWord> _listword;
 	
 	private String hasttag;
 	
 	private int _nb_point;
 	private int _nb_vie;
 	private int _nb_vie_total;
+	private int _maj,_tab;//cheat afficher/cacher les mots
 	
-	private int _maj,_tab;
-	
-	static int HARD=8;	
-	static int MEDIUM=10;	
-	static int EASY=15;
 	
 
 	public static void main(String[] args) throws FontFormatException, IOException{
@@ -87,60 +84,59 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	
 	
-	
-	public InGame_IHM(LEVEL Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+	/**
+	 * Constructeur 
+	 * 
+	 * @param Difficulte
+	 * @param hastag_theme
+	 * @param fram
+	 * @throws IOException
+	 */
+	public InGame_IHM(LEVEL Difficulte,String hastag_theme,JFrame fram) throws IOException {
+		/*************** initialisation des variables ***************/
 		super();
 		_shared = new Shared_component();
 		_maj = 0;
 		_tab = 0;
 		_vie = new ArrayList<>();
-		
-		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
-		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
-		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
-		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
-		
-	    
 		_fram_given = fram;
 	    hasttag = hastag_theme;
 	    _nb_vie = Difficulte.getvalue();
 		_nb_vie_total = Difficulte.getvalue();
 		_nb_point = 0;
 		
+		/*************** chargement des images pour les vies ***************/
+		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
+		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
+		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+
 		
 		
-		drawloader(0);
-		_fenetre.setVisible(true);
+		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
+		/*************** chargement des données de jeu(twwets) dans un thread à pars pour ne pas freezer le loader ***************/
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {e.printStackTrace();}
 				_listword_label = new ArrayList<Txt>();
 			    _verifier = new CtrlTweetEnOr(hasttag,_shared);
 				_listword = _verifier.getListWords();
-				draw(0);
-				show_windows();	
-				_fenetre.remove(_loader);
-				_fenetre.remove(_pa_pb);
+				
+				draw_play_screen(0);//affiche l'ecran de jeu
+
+				_fenetre.remove(_Panel_loader);
 				_fenetre.getContentPane().repaint();
 			}
 		}).start();
 		
 		
-		
-		
-		
-	    
-	    
-	    
-		
-		
-		
-
 	}
 	
+	/**
+	 * drawloader
+	 * @param redraw : si = 1 une nouvelle fram sera créé
+	 * @param redraw
+	 */
 	public void drawloader(int redraw){
 		
 		
@@ -154,11 +150,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 		
 		
-		
+		/*************** chargement et paramétrage du loader twitter  ***************/
         _loader = new Txt(new ImageIcon("./data/images/gif.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(true);
         
+        /*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
         _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
         _shared.txt_line1.setForeground(Color.white);
@@ -166,28 +163,35 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _shared.txt_line1.setxy(50, 64);
         
         
-        
+        /*************** ProgressBar ***************/
         _shared._progressbar = new JProgressBar();
         _shared._progressbar.setSize(500,30);
         _shared._progressbar.setForeground(new Color(29, 202, 255,255));
         _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
-        _pa_pb = new Pa(null);
         
-        _pa_pb.add(_shared.txt_line1);
-        _pa_pb.add(_shared._progressbar);
-        _pa_pb.setSize(_screen);
-        _pa_pb.setBackground(new Color(40, 170, 225));
         
-
-        _pa_pb.add(_loader);
-        _fenetre.add(_pa_pb);
+        
+        /*************** Panel_loader contient tout les autre composents du loader ***************/
+        _Panel_loader = new Pa(null);
+        _Panel_loader.setSize(_screen);
+        _Panel_loader.setBackground(new Color(40, 170, 225));
+        _Panel_loader.add(_shared.txt_line1);
+        _Panel_loader.add(_shared._progressbar);
+        _Panel_loader.add(_loader);
+        
+        
+        
+        _fenetre.add(_Panel_loader);//ajoute le panel_loader et tout ses composents à la fenetre
       
-        show_windows();
+        show_windows();//affiche la fenetre avec ses composent et sont fond
 	}
 	
-	
-	public void draw(int redraw){
+	/**
+	 * Affiche l'ecran de jeux  
+	 * @param redraw : si = 1 une nouvelle fram sera créé
+	 */
+	public void draw_play_screen(int redraw){
 		
 		
 		if(redraw == 1){
@@ -203,7 +207,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_jp_principal.addKeyListener(this);
 		
 		
-		
+		 /*************** _tf_saisie ***************/
 	    _tf_saisie = new Tf(50);
 	    _tf_saisie.setVisible(true);
 	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
@@ -215,7 +219,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 	    
 	  
-
+	    /*************** _compteur_de_point ***************/
 	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
@@ -223,8 +227,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _jp_principal.add(_compteur_de_point);
 	    
 	    
+	    /*************** _vie  ***************/
 	    float ratio_size_vie = ((float)45/(float)_screen.width)*100;
-
 	    float xtmp=1;
 	    for(int i = 0;i<_nb_vie_total;i++){
 	    	Txt tmp = new Txt(new ImageIcon(_image_vie));
@@ -236,7 +240,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    }
 	    
 
-
+	    /*************** _hashtag ***************/
 	    _hashtag = new Txt("#"+hasttag);
 	    _hashtag.setForeground(Color.blue);
 	    _hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
@@ -245,14 +249,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _jp_principal.add(_hashtag);
 
 	
-
-	    _txt = new Txt("Entrez un mot en rapport avec ce hashtag !");
-	    _txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
-	    _txt.auto_resize();
-	    _txt.setxy(50, 56);
-	    _jp_principal.add(_txt);
+	    /*************** _info_player déchange avec l'utilisateur ***************/
+	    _info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
+	    _info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
+	    _info_player.auto_resize();
+	    _info_player.setxy(50, 56);
+	    _jp_principal.add(_info_player);
 	    
 	    
+	    /*************** _b_verifier ***************/
 	    _b_verifier = new Bt("vérifier");
 	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
 	    _b_verifier.setGravity(GRAVITY.CENTER);
@@ -264,6 +269,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	 
 	
+	    
+	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
 		float wline=0,hline=0,wline2=0,hline2=0;
 
@@ -286,7 +293,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 			        graphics.setColor(getBackground());
 			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
-			       // graphics.setColor(getForeground());
 			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
 			     }
 			  };
@@ -299,7 +305,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
-			//txt.setForeground(new Color(255, 255, 255,255));
 			txt.setGravity(GRAVITY.CENTER);		
 			_listword_label.add(txt);
 
@@ -352,11 +357,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_fenetre.repaint();
 		
 		
-		
+		show_windows();
 	}
 	
 	
-	
+	/**
+	 * reraw vie 
+	 * Rafraichie les vies(oiseaux en haut a gauche) 
+	 */
 	private void redraw_vie(){		
 		 for(int i = 0;i<_nb_vie_total;i++){
 			 Image myPicture = null;
@@ -373,15 +381,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		 if(_nb_vie == 0)
 			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 	}
-
+	/**
+	 * vérifier les mots tapé par l'utilisateur
+	 * @param mot_a_verifier
+	 */
 	public void verifier(String mot_a_verifier){
 
 		boolean dorepaite = true;
 		player = new Player();
 		mot_a_verifier = mot_a_verifier.trim();
 		if(mot_a_verifier.isEmpty()){
-			_txt.setText("Veuillez saisir un (ou plusieurs) mot !");
-		    _txt.auto_resize();
+			_info_player.setText("Veuillez saisir un (ou plusieurs) mot !");
+		    _info_player.auto_resize();
 		}
 		else {
 			List<String> mots_a_verifier = Arrays.asList(mot_a_verifier.split(" "));
@@ -407,9 +418,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
-	        	_txt.setText(affichage);
-	    	    _txt.auto_resize();
-	    	    //new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword);
+	        	_info_player.setText(affichage);
+	    	    _info_player.auto_resize();
+	    	    
 	        	if(_nb_point >= 100){
 					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,hasttag,_nb_point);
 					dorepaite = false;
@@ -428,7 +439,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	}
 	
-	
+	/**
+	 * loose_vie
+	 * enleve une vie au joueur
+	 */
 	private void loose_vie(){
 	 
 		new Thread(new Runnable() {
@@ -436,13 +450,17 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			public void run() {
 				Player player = new Player();
 				player.playDie();
-				if(_nb_vie != 0){
-					_nb_vie--;
-					redraw_vie();
-				}
+				_nb_vie--;
+				redraw_vie();
 			}
 		}).start();
 	}
+	/**
+	 * add_point
+	 * ajoute les point d'un mots a la somme de point total du joueur
+	 * @param nb_point
+	 * @param mots
+	 */
 	private void add_point(int nb_point,TweetWord mots){
 		
 		new Thread(new Runnable() {
@@ -468,6 +486,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 
 	@Override
+	/**
+	 * gère le click sur un bouton
+	 */
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
         if( e.getSource() == _b_verifier)
@@ -477,10 +498,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 
 	@Override
+	/**
+	 * Keypressed
+	 * gère les evenement des touche clavier préssée
+	 */
 	public void keyPressed(KeyEvent e) {
 		super.keyPressed(e);
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
+        /*************** Cheat pour afficher tout les mots non trouver ***************/
         if (e.getKeyCode()==KeyEvent.VK_CAPS_LOCK){
         	_maj++;
         	if(_maj >= 24){
@@ -493,6 +519,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         }else
         	_maj = 0;
         
+
+        /*************** Cheat pour cacher tout les mots non trouver ***************/
         if (e.getKeyCode()==KeyEvent.VK_UP){
         	_tab++;
         	if(_tab >= 24){

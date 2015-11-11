@@ -208,7 +208,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private void lauchegame() {
         try {
             new InGame_IHM(_difficulte, _hastag_theme, _fenetre);
-        } catch (FontFormatException e1) {
         } catch (IOException e1) {}
     }
 }
