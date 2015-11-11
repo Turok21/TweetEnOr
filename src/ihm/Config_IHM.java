@@ -27,12 +27,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private List<Tbt> _list_theme;
     private Bt        _b_play, _b_help;
 
-    int    _difficulte;
+    LEVEL    _difficulte;
     String _hastag_theme;
-
-    static int EASY   = 15;
-    static int MEDIUM = 10;
-    static int HARD   = 8;
 
     public static void main(String[] args) {
         new Config_IHM(new JFrame("test"));
@@ -40,7 +36,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
     public Config_IHM(JFrame fram) {
     	
-    	_difficulte = 10;
+    	_difficulte = LEVEL.MEDIUM;
 
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         /*************** TITLE ***************/
@@ -182,15 +178,15 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         } else if (e.getSource() == _tbt_easy) {
             _tbt_medium.setSelected(false);
             _tbt_hard.setSelected(false);
-            _difficulte = Config_IHM.EASY;
+            _difficulte = LEVEL.EASY;
         } else if (e.getSource() == _tbt_medium) {
             _tbt_easy.setSelected(false);
             _tbt_hard.setSelected(false);
-            _difficulte = Config_IHM.MEDIUM;
+            _difficulte = LEVEL.MEDIUM;
         } else if (e.getSource() == _tbt_hard) {
             _tbt_easy.setSelected(false);
             _tbt_medium.setSelected(false);
-            _difficulte = Config_IHM.HARD;
+            _difficulte = LEVEL.HARD;
         }else {
         
             for (Tbt lab : _list_theme) {

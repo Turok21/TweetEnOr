@@ -31,6 +31,21 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
      *
      */
     private static final long serialVersionUID = 1L;
+    
+    public enum LEVEL {
+		  EASY(15),
+		  MEDIUM(10),
+		  HARD(8);  
+    	  private int value = 10;
+    	  LEVEL(int val){
+    	    this.value = val;
+    	  }
+    	  
+    	  public int getvalue(){
+    		  return value;
+    	  }
+
+	};
 
     protected JFrame _fenetre;
 

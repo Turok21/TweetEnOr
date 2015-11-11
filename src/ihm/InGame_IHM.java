@@ -81,14 +81,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 
 	public static void main(String[] args) throws FontFormatException, IOException{
-		new InGame_IHM(10,"test",new JFrame());
+		new InGame_IHM(LEVEL.MEDIUM,"test",new JFrame());
 	}
 	
 
 	
 	
 	
-	public InGame_IHM(int Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
+	public InGame_IHM(LEVEL Difficulte,String hastag_theme,JFrame fram) throws FontFormatException, IOException{
 		super();
 		_shared = new Shared_component();
 		_maj = 0;
@@ -103,8 +103,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 		_fram_given = fram;
 	    hasttag = hastag_theme;
-	    _nb_vie = Difficulte;
-		_nb_vie_total = Difficulte;
+	    _nb_vie = Difficulte.getvalue();
+		_nb_vie_total = Difficulte.getvalue();
 		_nb_point = 0;
 		
 		
