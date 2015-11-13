@@ -34,7 +34,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 			"Ski", "Politique", "Russie", "GOT", "Syrie", "Migrants", "Mail", "Informatique", "Microsoft",
 			"Apple", "Playstation", "Xbox", "Pollution", "AirCocaine", "Volkswagen", "France", "Fallout",
 			"Noel", "Chine", "COP21", "NASA", "DonDuSang", "birmanie", "bière", "NSA", "PRISM", "espace",
-			"JamesBond", "StarWars"
+			"JamesBond", "StarWars", "escalade"
 	));
 
 
