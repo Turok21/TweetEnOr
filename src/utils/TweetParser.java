@@ -41,7 +41,7 @@ public abstract class TweetParser {
 		"fois", "hors", "ici", "juste", "maintenant", "moins",
 		"même", "notre", "par", "parce", "pas",
 		"peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
-		"sans", "seulement", "si", "sien",
+		"sans", "seulement", "si", "sien", "meme", "plus",
 		"sous", "sur", "tandis", "tellement", "tels",
 		"tous", "tout", "trop", "tres", "vu", "sinon",
 		"jui", "RT", "via", "the", "tweet", "jsuis", "dun", // Specific Twitter words
@@ -61,8 +61,7 @@ public abstract class TweetParser {
     	// Récupération des tweets
     	List<String> listTweets = getTweets(keyWord, shared);
     	// Mise à jour de la barre de progression
-    	shared._progressbar.setMaximum(listTweets.size());
-    	shared._progressbar.setValue(0);
+    	
     	final List<String> words = new ArrayList<>();
     	
     	// Démarrage du moteur d'analyse des mots
@@ -74,19 +73,24 @@ public abstract class TweetParser {
 		    tt.setHandler(new TokenHandler<String>() {
 		      // Fonction appelée pour chaque mot du tweet
 		      public void token(String token, String pos, String lemma) {
-		    	  shared._progressbar.setValue(shared._progressbar.getValue()+1);
-		    	  shared.txt_line1.settext("Traitement des tweets... (" + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + ")");
 		    	  if(!excludedTypes.contains(pos.split(":")[0])) {
 		    		  // Si la nature du mot n'est pas à exclure, on le rejoute dans la liste
 		    		  words.add(token);
 		    	  }
 		      }
 		    });
+		    
+		    shared._progressbar.setMaximum(listTweets.size());
+	    	shared._progressbar.setValue(0);
 		    for (String tweet : listTweets) {
 		    	// On nettoie de tweet (suppréssion des Emoji et autres symboles inutiles
 		    	tweet = cleanTweet(tweet);
 		    	// Convertion de la phrase en une liste de mots
 		    	tt.process(tweet.split("‘|’|'|\\s+"));
+		    	
+		    	shared._progressbar.setValue(shared._progressbar.getValue()+1);
+		    	shared.txt_line1.settext("analyse sémantique, syntaxique et grammaticale des tweets... " + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + " (2/3)");
+		    	  
 	        }
 		  }
 		catch (Exception e) {
@@ -99,7 +103,7 @@ public abstract class TweetParser {
 		// Nettoyage des mots (suppréssion des majuscules, accents, caractère spéciaux)
 		List<String> cleanedWords = cleanWords(words, keyWord); 
 
-        Map<String, Integer> topWords = listWordToPonderatedMap(cleanedWords);
+        Map<String, Integer> topWords = listWordToPonderatedMap(cleanedWords,shared);
         // ponderation
         List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
         return new KeyWord(keyWord, tweetWords);
@@ -113,7 +117,7 @@ public abstract class TweetParser {
 
         shared._progressbar.setMaximum(nbTweetsToGet);
         shared._progressbar.setValue(0);
-        shared.txt_line1.settext("Récupération des tweets ... (" + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + ")");
+        shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
         Query query = new Query(keyWord + " exclude:retweets");
 
         query.setLang("fr"); // On ne récup que les tweets en français
@@ -125,7 +129,7 @@ public abstract class TweetParser {
                 for (Status status : result.getTweets()) {
                     listTweets.add(status.getText());
                     shared._progressbar.setValue(shared._progressbar.getValue()+1);
-                    shared.txt_line1.settext("Récupération des tweets ... (" + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + ")");
+                    shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
                 }
                 query = result.nextQuery();
                 if (query != null) {
@@ -141,7 +145,7 @@ public abstract class TweetParser {
         return listTweets;
     }
 
-    private static Map<String, Integer> listWordToPonderatedMap(List<String> words) {
+    private static Map<String, Integer> listWordToPonderatedMap(List<String> words, Shared_component shared) {
         Map<String, Integer> ponderatedWords = new HashMap<>();
         // Génération d'une map<mot, nombre_occurence)
         for (String word : words) {
@@ -153,7 +157,7 @@ public abstract class TweetParser {
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
         
         // Fusion des mots similaires dans la map
-        Map<String, Integer> sortMergedPonderatedWord = mergeSimilarWords(sortPonderatedWord);
+        Map<String, Integer> sortMergedPonderatedWord = mergeSimilarWords(sortPonderatedWord,shared);
         
         //Recuperation des 10 mots les plus représentatifs 
         Map<String, Integer> topPonderatedWord = new HashMap<>();
@@ -166,9 +170,12 @@ public abstract class TweetParser {
         return topPonderatedWord;
     }
     
-    private static Map<String, Integer> mergeSimilarWords(Map<String, Integer> sortedMapWords) {
+    private static Map<String, Integer> mergeSimilarWords(Map<String, Integer> sortedMapWords, Shared_component shared) {
     	Map<String, Integer> mergedMapWords = new HashMap<>();
-    	
+
+    	shared._progressbar.setValue(0);
+    	shared._progressbar.setMinimum(0);
+    	shared._progressbar.setMaximum(sortedMapWords.size());
     	for (String word : new ArrayList<>(sortedMapWords.keySet())) {
     		// On parcourt la map triée des mots. 
     		// La map triée nous permet de s'assurer qu'en cas de fusion de 2 mots, on garde l'orthographe du plus utilisé
@@ -187,6 +194,9 @@ public abstract class TweetParser {
     			// Si aucun mot équivalent n'a été trouvé, on ajoute de mot à la map
     			mergedMapWords.put(word, sortedMapWords.get(word));
     		}
+    		shared._progressbar.setValue(shared._progressbar.getValue()+1);
+    		shared.txt_line1.settext("Générations des mots... " + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + " (3/3)");
+	    	  
     	}
     	// On tri de nouveau la map
     	return sortByComparator(mergedMapWords);
@@ -237,6 +247,7 @@ public abstract class TweetParser {
                 continue;
             }
             cleanedWords.add(word);
+            
         }
         return cleanedWords;
     }
