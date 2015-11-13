@@ -49,29 +49,31 @@ public abstract class TweetParser {
 		"itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj", "lesechos" // Spoil too much tweet with their hashtag
     ));
 
-    private static int nbTweetsToGet = 1000;
+    private static int nbTweetsToGet = 1000;        // Nombre de tweet a récuperer (par partie) pour générer les mots
+    private static String language = "fr"; // On ne récup que les tweets en français
+    private static int nbTweetParRequest = 100; // 100 tweets/requete (qui est en réalité le maximum de Twitter
+    private static int nbWordToGet = 10; // Nombre de mot a récuperer au final pour jouer
 
-    private static String urlToken = "urltoken";
-    
-    private static List<String> excludedTypes = new ArrayList<String>(Arrays.asList(
+    private static String urlToken = "urltoken";    // Token identifiable permettant lors du traitemant de garder la structure grammaticale des phrases
+
+    private static List<String> excludedTypes = new ArrayList<>(Arrays.asList(
     		"PRP", "NUM", "PUN", "SENT", "DET", "VER", "KON", "PRO"
-    ));
+    ));     // natures des mots à exclure (en utilisant la librairie "TreeTagger")
 
 	public static KeyWord findWords(String keyWord, final Shared_component shared) {
     	// Récupération des tweets
     	List<String> listTweets = getTweets(keyWord, shared);
-    	// Mise à jour de la barre de progression
-    	
+
     	final List<String> words = new ArrayList<>();
-    	
+
     	// Démarrage du moteur d'analyse des mots
     	String treeTaggerPath = System.getenv().get("TREE_TAGGER_PATH");
 		System.setProperty("treetagger.home", treeTaggerPath);
-		TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<String>();
+		TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
 		try {
 		    tt.setModel("french-utf8.par");
 		    tt.setHandler(new TokenHandler<String>() {
-		      // Fonction appelée pour chaque mot du tweet
+		      // Fonction appelée pour chaque mot du tweet  (Separation, reconnaissance du type et analyse des mots)
 		      public void token(String token, String pos, String lemma) {
 		    	  if(!excludedTypes.contains(pos.split(":")[0])) {
 		    		  // Si la nature du mot n'est pas à exclure, on le rejoute dans la liste
@@ -79,18 +81,22 @@ public abstract class TweetParser {
 		    	  }
 		      }
 		    });
-		    
+
+            // Mise à jour de la barre de progression (Sur une echelle de X Tweet)
 		    shared._progressbar.setMaximum(listTweets.size());
 	    	shared._progressbar.setValue(0);
+
+            // boucle sur les tweets
 		    for (String tweet : listTweets) {
 		    	// On nettoie de tweet (suppréssion des Emoji et autres symboles inutiles
 		    	tweet = cleanTweet(tweet);
-		    	// Convertion de la phrase en une liste de mots
+		    	// Convertion de la phrase en une liste de mots et analyse de la phrase
 		    	tt.process(tweet.split("‘|’|'|\\s+"));
-		    	
+
+                // MAJ de la barre de progression en meme temps des tweets
 		    	shared._progressbar.setValue(shared._progressbar.getValue()+1);
 		    	shared.txt_line1.settext("analyse sémantique, syntaxique et grammaticale des tweets... " + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + " (2/3)");
-		    	  
+
 	        }
 		  }
 		catch (Exception e) {
@@ -99,16 +105,24 @@ public abstract class TweetParser {
 		finally {
 		  tt.destroy();
 		}
-		
-		// Nettoyage des mots (suppréssion des majuscules, accents, caractère spéciaux)
-		List<String> cleanedWords = cleanWords(words, keyWord); 
 
+		// Nettoyage des mots (suppréssion des majuscules, accents, caractères spéciaux)
+		List<String> cleanedWords = cleanWords(words, keyWord);
+
+        // Récupération des top words utilisé dans les tweets  (issue de cleanedWords et avec la barre de progression)
         Map<String, Integer> topWords = listWordToPonderatedMap(cleanedWords,shared);
-        // ponderation
+
+        // Convertion de la map en list de TweetWord ponderation (et vérifie que la pondération soit bien égale à 100)
         List<TweetWord> tweetWords = mapPonderatedToTweetWord(topWords);
         return new KeyWord(keyWord, tweetWords);
     }
 
+    /**
+     * Récupere une list de mots
+     * @param keyWord {String}  mot cible utilisé pour la recherche
+     * @param shared {Shared_component} bar de progression utilisé pour l'affiche
+     * @return {List<String>} List des tweets issues des requetes
+     */
     private static List<String> getTweets(String keyWord, Shared_component shared) {
     	// Récupération des identifiants Twitter
         TwitterFactory tf = new TwitterFactory(config().build());
@@ -120,8 +134,8 @@ public abstract class TweetParser {
         shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
         Query query = new Query(keyWord + " exclude:retweets");
 
-        query.setLang("fr"); // On ne récup que les tweets en français
-        query.count(100); // 100 tweets/requete
+        query.setLang(language); // On ne récup que les tweets en français
+        query.count(nbTweetParRequest); // 100 tweets/requete
         QueryResult result;
         try {
             result = twitter.search(query);
@@ -135,7 +149,7 @@ public abstract class TweetParser {
                 if (query != null) {
                     result = twitter.search(query);
                 }
-                
+
             }
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
@@ -145,6 +159,12 @@ public abstract class TweetParser {
         return listTweets;
     }
 
+    /**
+     * Recuperer les 10 premiers mot utilisé pour avoir keyWord
+     * @param words {List<String>} :
+     * @param shared {Shared_component}  : barre de progression a utiliser pour l'affichage
+     * @return {Map<String, Integer>} 10 top words avec leur pondération
+     */
     private static Map<String, Integer> listWordToPonderatedMap(List<String> words, Shared_component shared) {
         Map<String, Integer> ponderatedWords = new HashMap<>();
         // Génération d'une map<mot, nombre_occurence)
@@ -155,13 +175,13 @@ public abstract class TweetParser {
 
         // Tri de la map par ordre décroissant d'occurence
         Map<String, Integer> sortPonderatedWord = sortByComparator(ponderatedWords);
-        
+
         // Fusion des mots similaires dans la map
         Map<String, Integer> sortMergedPonderatedWord = mergeSimilarWords(sortPonderatedWord,shared);
-        
-        //Recuperation des 10 mots les plus représentatifs 
+
+        //Recuperation des X mots les plus représentatifs  (X = nbWordToGet)
         Map<String, Integer> topPonderatedWord = new HashMap<>();
-        int nbWord = 10;
+        int nbWord = nbWordToGet;
         for (Map.Entry<String, Integer> entry : sortMergedPonderatedWord.entrySet()) {
             if (nbWord <= 0) break;
             topPonderatedWord.put(entry.getKey(), entry.getValue());
@@ -169,7 +189,13 @@ public abstract class TweetParser {
         }
         return topPonderatedWord;
     }
-    
+
+    /**
+     * Fusion des mots proche en augmentant leur pondération en fonction
+     * @param sortedMapWords {Map<String, Integer>} Map de String pondération pré-triée a utilisé
+     * @param shared {Shared_component}  : barre de progression a utiliser pour l'affichage
+     * @return {Map<String, Integer>}
+     */
     private static Map<String, Integer> mergeSimilarWords(Map<String, Integer> sortedMapWords, Shared_component shared) {
     	Map<String, Integer> mergedMapWords = new HashMap<>();
 
@@ -177,7 +203,7 @@ public abstract class TweetParser {
     	shared._progressbar.setMinimum(0);
     	shared._progressbar.setMaximum(sortedMapWords.size());
     	for (String word : new ArrayList<>(sortedMapWords.keySet())) {
-    		// On parcourt la map triée des mots. 
+    		// On parcourt la map triée des mots.
     		// La map triée nous permet de s'assurer qu'en cas de fusion de 2 mots, on garde l'orthographe du plus utilisé
     		boolean match = false;
     		for (String mergedWord : new ArrayList<>(mergedMapWords.keySet())) {
@@ -196,9 +222,9 @@ public abstract class TweetParser {
     		}
     		shared._progressbar.setValue(shared._progressbar.getValue()+1);
     		shared.txt_line1.settext("Générations des mots... " + shared._progressbar.getValue() + "/" + shared._progressbar.getMaximum() + " (3/3)");
-	    	  
+
     	}
-    	// On tri de nouveau la map
+    	// On tri de nouveau la map , et return le résultat
     	return sortByComparator(mergedMapWords);
     }
 
@@ -247,7 +273,7 @@ public abstract class TweetParser {
                 continue;
             }
             cleanedWords.add(word);
-            
+
         }
         return cleanedWords;
     }
@@ -286,21 +312,21 @@ public abstract class TweetParser {
         return sortedMap;
     }
 
-    
+
     private static String cleanTweet(String tweet) {
     	String cleanedTweet = removeEmojiAndSymbolFromString(tweet);
     	cleanedTweet = cleanedTweet
-    			// On remplace les url par un token identifiable (pour garder la structure grammaicale de la phrase)
+    			// On remplace les url par un token identifiable (pour garder la structure grammaticale de la phrase)
     			.replaceAll("http(s)?://[^ ]+", " " + urlToken) // On ajoute un espace car Twitter permet d'acoller une mot et u
     			.replaceAll("#", "") // On enlève les hashtag devant les mots
     			.replaceAll("\n", " ") // On enlève les retours ligne
     			.replaceAll("\r", " ") // On enlève les retours ligne
     			.replaceAll("\"", "") // On enlève les guillemets *
-    			.replaceAll("@[^ ]+", "") // On enlève les mensions (@le_compte_d_une_personne)
+                .replaceAll("@[^ ]+", "") // On enlève les mensions (@le_compte_d_une_personne)
     			.replaceAll("…", ""); // On enlève le caractère 3-points très utilisé sur twitter (un seul char au leu de 3)
     	return cleanedTweet;
     }
-    
+
     private static String removeEmojiAndSymbolFromString(String content) {
         String utf8tweet = "";
         try {
@@ -321,8 +347,8 @@ public abstract class TweetParser {
         utf8tweet = unicodeOutlierMatcher.replaceAll(" ");
         return utf8tweet;
     }
-    
-    
+
+
     public static void main(String argc[]) {
         KeyWord keyw = findWords("ski",new Shared_component());
         System.out.println(keyw);
