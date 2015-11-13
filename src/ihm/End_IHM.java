@@ -36,8 +36,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	private int _points; // nb point gained
 
 	public static void main(String[] args){		
-		
-		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test",new Shared_component());
+		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test", new Shared_component());
 		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
 		new End_IHM(new JFrame(""),0,listword,"test",666);
 	}

@@ -17,6 +17,7 @@
 * Décompressez le fichier où bon vous semble (Attention à ne pas le commit)
 * Installer le jar : http://mvnrepository.com/artifact/org.annolab.tt4j/org.annolab.tt4j/1.2.1
 * Définir le chemin du répertoire de tree-tagger via la variable d'environnement TREE_TAGGER_PATH  (ex: /usr/share/tree-tagger/ ou C:\workspace\TreeTagger)
+* Sous Eclipse, allez dans run > run configuration > [Selectionner le main] > Environment > New
 
 
 # Configuration des identifiants Twitter
