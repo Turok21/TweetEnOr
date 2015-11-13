@@ -215,13 +215,18 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
     	ToolTipManager.sharedInstance().setInitialDelay(0);
         Bt b = new Bt("?");
         b.setToolTipText(("<html><p width=\"500\">"
-                + "<strong>1 - Choisir un thème d'actualité</strong> <br />"
-                + "<strong>2 - Trouver les dix mots en rapport avec le thème</strong>"
+                + "<strong>1 - commence par choisir un thème d'actualité</strong> <br />"
+                + "<strong>2 - Trouve les dix mots en rapport avec le thème</strong>"
                 + "<ul>"
-                + "<li>Tu perds une vie si le mot n'est pas present</li>"
-                + "<li>Tu gagnes les points correspondant au mot s'il est present</li>"
+                + "<li>Tu perds une vie si le mot n'est pas présent</li>"
+                + "<li>Tu gagnes les points correspondant au mot s'il est présent</li>"
                 + "</ul>"
                 + "<strong>Ton nombre de vie dépends du niveau de difficulté</strong>"
+                + "<ul>"
+                + "<li>EASY   : 15</li>"
+                + "<li>MEDIUM : 10</li>"
+                + "<li>HARD   :  8</li>"
+                + "</ul>"
                 + "<br /><strong>Bonne partie !</strong>"
                 + "</p></html>"));
 
