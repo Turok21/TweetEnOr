@@ -18,7 +18,7 @@ public abstract class WordComparator {
         }
     }
 
-    /**
+    /** // polymorphysme sur le pourcentage de "proximité"
      * @param alpha      {String} Word to compare from the other
      * @param beta       {String} Word to compare from the other
      * @param percentage {double} tell what percentage of resemblance you want
@@ -34,22 +34,24 @@ public abstract class WordComparator {
 
     private static double similarity(String s1, String s2) {
         String longer = s1, shorter = s2;
-        if (s1.length() < s2.length()) { // longer should always have greater length
+        if (s1.length() < s2.length()) { // tri des deux mots (plus grand et plus petit)
             longer = s2;
             shorter = s1;
         }
         int longerLength = longer.length();
         if (longerLength == 0) {
-            return 1.0; /* both strings are zero length */
+            return 1.0;
         }
-        /* // If you have StringUtils, you can use it to calculate the edit distance:
-        return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) /                                                             (double) longerLength; */
         return (longerLength - levenshteinDistance(longer, shorter)) / (double) longerLength;
 
     }
 
-    // Example implementation of the Levenshtein Edit Distance
-    // See http://r...content-available-to-author-only...e.org/wiki/Levenshtein_distance#Java
+    /**
+     * Utilisation de l'algorythme de la distance de levenshtein pour comparer deux mots
+     * @param s1 {String} Mot a comparer
+     * @param s2 {String} Mot a comparer
+     * @return {int} "distance de difference" entre les 2 mots
+     */
     private static int levenshteinDistance(String s1, String s2) {
         s1 = s1.toLowerCase();
         s2 = s2.toLowerCase();
