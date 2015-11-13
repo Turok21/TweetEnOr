@@ -215,7 +215,7 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
     	ToolTipManager.sharedInstance().setInitialDelay(0);
         Bt b = new Bt("?");
         b.setToolTipText(("<html><p width=\"500\">"
-                + "<strong>1 - commence par choisir un thème d'actualité</strong> <br />"
+                + "<strong>1 - Commence par choisir un thème d'actualité</strong> <br />"
                 + "<strong>2 - Trouve les dix mots en rapport avec le thème</strong>"
                 + "<ul>"
                 + "<li>Tu perds une vie si le mot n'est pas présent</li>"
