@@ -7,11 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JToggleButton;
-import javax.swing.ToolTipManager;
 
 import ihm.components.Bt;
 import ihm.components.Tbt;
@@ -27,12 +26,17 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private List<Tbt> _list_theme;
     private Bt        _b_play, _b_help;
 
-    int    _difficulte;
+    LEVEL    _difficulte;
     String _hastag_theme;
 
-    static int EASY   = 15;
-    static int MEDIUM = 10;
-    static int HARD   = 8;
+
+    private static List<String> proposedKeywords = new ArrayList<>(Arrays.asList(
+			"Ski", "Politique", "Russie", "GOT", "Syrie", "Migrants", "Mail", "Informatique", "Microsoft",
+			"Apple", "Playstation", "Xbox", "Pollution", "AirCocaine", "Volkswagen", "France", "Fallout",
+			"Noel", "Chine", "COP21", "NASA", "DonDuSang"
+	));
+
+
 
     public static void main(String[] args) {
         new Config_IHM(new JFrame("test"));
@@ -40,7 +44,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
     public Config_IHM(JFrame fram) {
     	
-    	_difficulte = 10;
+    	_difficulte = LEVEL.MEDIUM;
 
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         /*************** TITLE ***************/
@@ -103,40 +107,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _jp_principal.add(_title_theme);
 
         _list_theme = new ArrayList<>();
-        _list_theme.add(new Tbt("Ski"));
-        _list_theme.add(new Tbt("Politique"));
-        _list_theme.add(new Tbt("Grec"));
-        _list_theme.add(new Tbt("russie"));
-        _list_theme.add(new Tbt("GOT"));
-        _list_theme.add(new Tbt("Syrie"));
-        _list_theme.add(new Tbt("Migrants"));
-        _list_theme.add(new Tbt("Mail"));
-        _list_theme.add(new Tbt("Informatique"));
-        _list_theme.add(new Tbt("Microsoft"));
-        _list_theme.add(new Tbt("Apple"));
-        _list_theme.add(new Tbt("Playsation"));
-        _list_theme.add(new Tbt("Xbox"));
-        _list_theme.add(new Tbt("Réalité"));
-        _list_theme.add(new Tbt("Pollution"));
-        _list_theme.add(new Tbt("Aircocaine"));
-        _list_theme.add(new Tbt("Volkswagen"));
-        _list_theme.add(new Tbt("Pokemon"));
-        _list_theme.add(new Tbt("France"));
-        _list_theme.add(new Tbt("Licorne"));
-        _list_theme.add(new Tbt("Fallout"));
-        _list_theme.add(new Tbt("Noel"));
-        _list_theme.add(new Tbt("Chine"));
-        _list_theme.add(new Tbt("COP21"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
+        for(String keyword: proposedKeywords) {
+        	_list_theme.add(new Tbt(keyword));
+        }
 
 
         int x = 30, y = 35,i=1;
@@ -148,10 +121,10 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             key.auto_resize();
             _jp_principal.add(key);
             
-            x+=8;
+            x+=10;
             if (i == 6) {
             	x=30;
-                y+=7;
+                y+=5;
                 i=0;
             }
             i++;
@@ -182,15 +155,15 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         } else if (e.getSource() == _tbt_easy) {
             _tbt_medium.setSelected(false);
             _tbt_hard.setSelected(false);
-            _difficulte = Config_IHM.EASY;
+            _difficulte = LEVEL.EASY;
         } else if (e.getSource() == _tbt_medium) {
             _tbt_easy.setSelected(false);
             _tbt_hard.setSelected(false);
-            _difficulte = Config_IHM.MEDIUM;
+            _difficulte = LEVEL.MEDIUM;
         } else if (e.getSource() == _tbt_hard) {
             _tbt_easy.setSelected(false);
             _tbt_medium.setSelected(false);
-            _difficulte = Config_IHM.HARD;
+            _difficulte = LEVEL.HARD;
         }else {
         
             for (Tbt lab : _list_theme) {
@@ -212,7 +185,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private void lauchegame() {
         try {
             new InGame_IHM(_difficulte, _hastag_theme, _fenetre);
-        } catch (FontFormatException e1) {
         } catch (IOException e1) {}
     }
 }

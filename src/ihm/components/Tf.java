@@ -7,6 +7,12 @@ import java.awt.Toolkit;
 
 import javax.swing.JTextField;
 
+/**
+ * surdéfinition du JTextField
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Tf extends JTextField implements composent{
 	
 	private int _center_x,_center_y;

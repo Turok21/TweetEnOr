@@ -13,6 +13,13 @@ import javax.swing.JToggleButton;
 
 import ihm.components.composent.GRAVITY;
 
+
+/**
+ * surdéfinition du JToggleButton
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Tbt extends JToggleButton {
 	
 

@@ -3,7 +3,6 @@ package ihm;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -25,12 +24,37 @@ import javax.swing.ToolTipManager;
 import ihm.components.Bt;
 import ihm.components.composent.GRAVITY;
 
+/**
+ * class servant de base a toute l'interface
+ * @author Guilhem Eyraud
+ *
+ */
 public class IHM_Iterface extends JFrame implements KeyListener, ActionListener {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * Enumeration des niveau de difficulter avec leur paramètre
+     * @author Guilhem Eyraud
+     *
+     */
+    public enum LEVEL {
+		  EASY(15),
+		  MEDIUM(10),
+		  HARD(8);  
+    	  private int value = 10;
+    	  LEVEL(int val){
+    	    this.value = val;
+    	  }
+    	  
+    	  public int getvalue(){
+    		  return value;
+    	  }
+
+	};
 
     protected JFrame _fenetre;
 
@@ -46,6 +70,10 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
 
     private String _fond_path;
 
+    /**
+     * Constructeur
+     * définie les variable de bases et surtout les font utiliser partous pour les texts !
+     */
     public IHM_Iterface() {
 
         _screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -89,7 +117,16 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
 	
 
 
-
+    /**
+     * load_fenetre_and_panel_principale : 
+     * crée( ou recrée si nécésaire) la fenetre et le panel principale d'affichage ,
+     *  puis prépare les information pour charger l'image de fond
+     * @param title
+     * @param fond
+     * @param fram
+     * @param donotremove
+     * @return
+     */
     protected JPanel load_fenetre_and_panel_principale(String title, String fond, JFrame fram, boolean donotremove) {
 
         if (fram != null && !donotremove)
@@ -138,7 +175,10 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
 
         return _jp_principal;
     }
-
+    /**
+     * charge l'image darrière plan et l'affiche puis rend visible toutes l'interface doit etre appeler en dernier!
+     * show_windows
+     */
     protected void show_windows() {
 
         JLabel image = new JLabel(
@@ -154,31 +194,23 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
         _fenetre.getContentPane().repaint();
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
+    
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            close_all();
-        }
-    }
-
+    /**
+     * quitte l'application et efface tout.
+     */
     protected void close_all() {
         _fenetre.dispose();
         _fenetre.setVisible(false);
         this.dispose();
         System.exit(0);
-
     }
 
-    @Override
-    public void keyTyped(KeyEvent arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
+    /**
+     * getTooltip 
+     * 
+     * @return un boutton contenant le tootip avec les regles du jeu
+     */
     public static Bt getTooltip() {
     	ToolTipManager.sharedInstance().setInitialDelay(0);
         Bt b = new Bt("?");
@@ -201,22 +233,22 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
         if (e.getSource() == _quit)
             close_all();
     }
+    @Override
+    public void keyTyped(KeyEvent arg0) {}
+    @Override
+    public void keyPressed(KeyEvent e) {
+    	if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            close_all();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            close_all();
+        }
+    }
+
 }
 
-class TestImagePanel extends JPanel {
 
-    private static final long serialVersionUID = 1L;
-    private Image img;
-
-    public TestImagePanel(String img) {
-        this(new ImageIcon(img).getImage());
-    }
-
-    public TestImagePanel(Image img) {
-        this.img = img;
-    }
-
-    public void paintComponent(Graphics g) {
-        g.drawImage(img, 0, 0, this);
-    }
-}

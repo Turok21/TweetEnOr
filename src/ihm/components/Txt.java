@@ -10,6 +10,13 @@ import javax.swing.JLabel;
 
 import ihm.components.composent.GRAVITY;
 
+
+/**
+ * surdéfinition du JLabel
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Txt extends JLabel {
 	
 	private int _center_x,_center_y;
@@ -89,6 +96,8 @@ public class Txt extends JLabel {
 	    }
 		
 		setLocation((int)(_screen.width*(_Px/100))-_center_x,(int)(_screen.height*(_Py/100))-_center_y);
+		// à dupliquer et à adapter au référentiel
+		
 	}
 	
 	

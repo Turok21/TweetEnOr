@@ -2,7 +2,6 @@ package ihm;
 
 import ihm.components.Bt;
 import ihm.components.composent;
-import sun.net.www.content.text.plain;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
