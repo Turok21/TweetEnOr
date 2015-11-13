@@ -7,11 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JToggleButton;
-import javax.swing.ToolTipManager;
 
 import ihm.components.Bt;
 import ihm.components.Tbt;
@@ -29,6 +28,15 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
     LEVEL    _difficulte;
     String _hastag_theme;
+
+
+    private static List<String> proposedKeywords = new ArrayList<>(Arrays.asList(
+			"Ski", "Politique", "Russie", "GOT", "Syrie", "Migrants", "Mail", "Informatique", "Microsoft",
+			"Apple", "Playstation", "Xbox", "Pollution", "AirCocaine", "Volkswagen", "France", "Fallout",
+			"Noel", "Chine", "COP21", "NASA", "DonDuSang"
+	));
+
+
 
     public static void main(String[] args) {
         new Config_IHM(new JFrame("test"));
@@ -99,40 +107,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _jp_principal.add(_title_theme);
 
         _list_theme = new ArrayList<>();
-        _list_theme.add(new Tbt("Ski"));
-        _list_theme.add(new Tbt("Politique"));
-        _list_theme.add(new Tbt("Grec"));
-        _list_theme.add(new Tbt("russie"));
-        _list_theme.add(new Tbt("GOT"));
-        _list_theme.add(new Tbt("Syrie"));
-        _list_theme.add(new Tbt("Migrants"));
-        _list_theme.add(new Tbt("Mail"));
-        _list_theme.add(new Tbt("Informatique"));
-        _list_theme.add(new Tbt("Microsoft"));
-        _list_theme.add(new Tbt("Apple"));
-        _list_theme.add(new Tbt("Playsation"));
-        _list_theme.add(new Tbt("Xbox"));
-        _list_theme.add(new Tbt("Réalité"));
-        _list_theme.add(new Tbt("Pollution"));
-        _list_theme.add(new Tbt("Aircocaine"));
-        _list_theme.add(new Tbt("Volkswagen"));
-        _list_theme.add(new Tbt("Pokemon"));
-        _list_theme.add(new Tbt("France"));
-        _list_theme.add(new Tbt("Licorne"));
-        _list_theme.add(new Tbt("Fallout"));
-        _list_theme.add(new Tbt("Noel"));
-        _list_theme.add(new Tbt("Chine"));
-        _list_theme.add(new Tbt("COP21"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
-        _list_theme.add(new Tbt("NASA"));
+        for(String keyword: proposedKeywords) {
+        	_list_theme.add(new Tbt(keyword));
+        }
 
 
         int x = 30, y = 35,i=1;
