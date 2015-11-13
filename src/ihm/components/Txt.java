@@ -10,6 +10,13 @@ import javax.swing.JLabel;
 
 import ihm.components.composent.GRAVITY;
 
+
+/**
+ * surdéfinition du JLabel
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Txt extends JLabel {
 	
 	private int _center_x,_center_y;

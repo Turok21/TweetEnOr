@@ -11,6 +11,13 @@ import javax.swing.JFrame;
 
 import ihm.components.composent.GRAVITY;
 
+
+/**
+ * surdéfinition du JButton
+ * voir composent.java pour les commentaires
+ * @author Guilhem Eyraud
+ *
+ */
 public class Bt extends JButton {
 	
 
