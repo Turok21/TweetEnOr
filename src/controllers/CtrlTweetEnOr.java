@@ -57,7 +57,6 @@ public class CtrlTweetEnOr {
 				oos.writeObject(this._keyWords) ;
 				oos.close();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
     	}

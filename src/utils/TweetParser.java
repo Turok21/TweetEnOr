@@ -41,7 +41,7 @@ public abstract class TweetParser {
 		"fois", "hors", "ici", "juste", "maintenant", "moins",
 		"même", "notre", "par", "parce", "pas",
 		"peu", "plupart", "pour", "pourquoi", "quand", "quel", "quelle",
-		"sans", "seulement", "si", "sien", "meme", "plus",
+		"sans", "seulement", "si", "sien", "meme", "plus","bien",
 		"sous", "sur", "tandis", "tellement", "tels",
 		"tous", "tout", "trop", "tres", "vu", "sinon",
 		"jui", "RT", "via", "the", "tweet", "jsuis", "dun", // Specific Twitter words
