@@ -39,6 +39,9 @@ public class Txt extends JLabel {
 		contruct();
 		
 		setwh(im.getIconWidth(),im.getIconHeight());
+
+		_gravity = GRAVITY.CENTER;
+		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		
 	}
 	
@@ -75,8 +78,10 @@ public class Txt extends JLabel {
 	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
-		auto_resize();
-		setxy(_Px,_Py);
+		if(_screen != null){
+			auto_resize();
+			setxy(_Px,_Py);
+		}
 	}
 	
 

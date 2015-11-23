@@ -59,8 +59,10 @@ public class Bt extends JButton {
 	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
-		auto_resize();
-		setxy(_Px,_Py);
+		if(_screen != null){
+			auto_resize();
+			setxy(_Px,_Py);
+		}
 	}
 	
 
