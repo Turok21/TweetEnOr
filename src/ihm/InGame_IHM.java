@@ -119,7 +119,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			@Override
 			public void run() {
 				_listword_label = new ArrayList<Txt>();
-			    _verifier = new CtrlTweetEnOr(hasttag,_shared);
+			    try {
+					_verifier = new CtrlTweetEnOr(hasttag,_shared);
+				} catch (Exception e) {
+					if(e instanceof IllegalStateException)
+					{
+						System.out.println("sdffffffffff");
+					}
+					e.printStackTrace();
+				}
 				_listword = _verifier.getListWords();
 				
 				draw_play_screen(0);//affiche l'ecran de jeu
