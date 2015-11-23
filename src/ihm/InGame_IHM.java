@@ -398,8 +398,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			lettres.setwh(p.getWidth(), nbLetters.getHeight() + 5);
 			
-			nbPts.setxyin(100, 50, lettres);
-			nbLetters.setxyin(0, 50, lettres);
+			nbPts.setxyin(95, 50, lettres);
+			nbLetters.setxyin(5, 50, lettres);
 			tiret.setxyin(50, 50, lettres);
 			
 			
