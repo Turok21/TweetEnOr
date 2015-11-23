@@ -45,6 +45,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Tf _tf_saisie;
 	
 	private Bt _b_verifier;
+	private Bt _b_hint;
 	
 	private Txt _loader;
 	private Txt _info_player;
@@ -283,6 +284,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
+	    
+	    _b_hint = new Bt("Hint");
+	    _b_hint.setFont(arista_light.deriveFont(Font.BOLD,20));
+	    _b_hint.setGravity(GRAVITY.CENTER);
+	    _b_hint.setwh(75, 75);
+	    _b_hint.auto_resize();
+	    _b_hint.setxy(5, 93);
+	    _b_hint.addActionListener(this);
+	    _jp_principal.add(_b_hint);
+	    
 	 
 	
 	    
@@ -370,12 +381,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			Txt nbPts = new Txt ("nb"+ word.getWord().length());
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			nbPts.setForeground(new Color(255, 255, 255,255));
+			nbPts.setForeground(new Color(29, 202, 255,255));
 			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
 			
 			Txt tiret = new Txt ("-");
 			tiret.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			tiret.setForeground(new Color(255, 255, 255,255));
+			tiret.setForeground(new Color(29, 202, 255,255));
 			tiret.setGravity(GRAVITY.CENTER);
 			
 			_listLetters.add(nbLetters);
@@ -619,6 +630,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_compteur_de_point.auto_resize();
 	}
 	
+	private void show_hint_letters(){
+		for (Txt l : _listLetters){
+			l.setForeground(new Color(29, 202, 255,255));
+		}
+	}
+	
 
 	@Override
 	/**
@@ -628,6 +645,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		super.actionPerformed(e);
         if( e.getSource() == _b_verifier)
         	verifier( _tf_saisie.getText());
+        if( e.getSource() == _b_hint){
+        	show_hint_letters();
+        	
+        }
 	}
 	
 	
