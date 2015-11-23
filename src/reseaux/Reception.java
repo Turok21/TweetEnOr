@@ -19,6 +19,7 @@ public class Reception implements Runnable {
     public void run() {
         while(true){
             try {
+            	// Action a effectuer sur reception d'un message
 	            message = (String) in.readObject();
 	            System.out.println("message reçu: " + message);
             } catch (IOException e) {
