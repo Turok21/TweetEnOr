@@ -101,8 +101,20 @@ public class CtrlTweetEnOr {
         return new TweetWord(null, -1);
     }
 
+    /**
+     * les mot avec leur ponderation
+     * @return
+     */
     public List<TweetWord> getListWords() {
-        return this._keyWords.getListWords();
+    	List<TweetWord>  tw = this._keyWords.getListWords();
+    	List<TweetWord>  rtnTW = this._keyWords.getListWords();
+    	rtnTW.clear();
+        for( TweetWord twTmp :  tw){
+        	rtnTW.add((isMotValid(twTmp.getWord())));
+        }
+        _invalidWords.clear();;
+        _validWords.clear();;
+    	return rtnTW;
     }
 
     public boolean isMotAlreadyUse(String Mot) {
