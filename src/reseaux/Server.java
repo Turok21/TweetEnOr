@@ -5,10 +5,12 @@ package reseaux;
  */
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
 
  public static ServerSocket ss = null;
+ private static Socket socket = null;
 
  public static Thread t;
 
@@ -16,8 +18,10 @@ public class Server {
         try {
             ss = new ServerSocket(14429);
             System.out.println("Le serveur est à l'écoute du port "+ss.getLocalPort());
-            t = new Thread(new Accepter_connexion(ss));
-            t.start();
+			socket = ss.accept();
+			System.out.println("Un client s'est connecté");
+			t = new Thread(new DataExchange(socket));
+			t.start();
 
         } catch (IOException e) {
             System.err.println("Le port "+ss.getLocalPort()+" est déjà utilisé !");
