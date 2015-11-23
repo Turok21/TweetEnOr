@@ -80,7 +80,6 @@ public class Txt extends JLabel {
 		super.setFont(font);
 		System.out.println(_screen);
 		if(_screen != null){
-			System.out.println("kjfdskfkldsjfkljk "+_Px+" " +_Py);
 			auto_resize();
 			setxy(_Px,_Py);
 		}
