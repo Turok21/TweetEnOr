@@ -51,6 +51,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private Txt _hashtag;
 	private ArrayList<Txt> _vie;
 	private ArrayList<Txt> _listword_label;
+	private ArrayList<Txt> _listLetters;
 	
 	private JFrame _fram_given;
 	
@@ -119,7 +120,19 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			@Override
 			public void run() {
 				_listword_label = new ArrayList<Txt>();
-			    _verifier = new CtrlTweetEnOr(hasttag,_shared);
+
+				_listLetters = new ArrayList<Txt>();
+
+			    try {
+					_verifier = new CtrlTweetEnOr(hasttag,_shared);
+				} catch (Exception e) {
+					if(e instanceof IllegalStateException)
+					{
+						System.out.println("sdffffffffff");
+					}
+					e.printStackTrace();
+				}
+
 				_listword = _verifier.getListWords();
 				
 				draw_play_screen(0);//affiche l'ecran de jeu
@@ -272,7 +285,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
-		float wline=0,hline=0,wline2=0,hline2=0;
+	    List<Pa> ALletters = new ArrayList<Pa>();
+		float wline=0,hline=0,wline2=0,hline2=0, wline3=0,hline3=0, wline4=0,hline4=0;
 
 	    int i = 0;
 		for(TweetWord word : _listword){
@@ -294,14 +308,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			        graphics.setColor(getBackground());
 			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
 			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			       
+			       
+			       
 			     }
 			  };
-			  p.setBounds(10,10,100,30);
-			  p.setOpaque(false);
-			
-			  p.setBackground(new Color(29, 202, 255,255));
-			
-			
+		
+		  p.setBounds(10,10,100,30);
+	      p.setOpaque(false);
+	      p.setBackground(new Color(29, 202, 255,255));
+	      
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
@@ -310,21 +326,80 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 			p.add(txt);
 			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
+			System.out.println("taille "+txt.getWidth() +", " + txt.getHeight() );
 			txt.setxyin(50,50,p.getWidth(),p.getHeight());
 			
+			
 			words.add(p);
+			
+/***Nombre de lettres***/
+			
+			Pa lettres = new Pa(null) {
+			     
+				private static final long serialVersionUID = 1L;
+
+				@Override
+			     protected void paintComponent(Graphics g) {
+			        super.paintComponent(g);
+			        Dimension arcs = new Dimension(15,15);
+			        int width = getWidth();
+			        int height = getHeight();
+			        Graphics2D graphics = (Graphics2D) g;
+			        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+			        graphics.setColor(getBackground());
+			        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
+			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+			       
+			       
+			       
+			     }
+			  };
+			  lettres.setBounds(10,10,100,30);
+			  lettres.setOpaque(false);
+			  lettres.setBackground(new Color(255, 255, 255,255));
+			Txt nbLetters = new Txt(""+ word.getWord().length() + " - " +"nb");
+			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+			nbLetters.setForeground(new Color(0, 0, 0,255));
+			nbLetters.setGravity(GRAVITY.CENTER);		
+			_listLetters.add(nbLetters);
+			
+			System.out.println(nbLetters.getText());
+			 
+			lettres.add(nbLetters);
+			lettres.setwh(nbLetters.getWidth()+5,nbLetters.getHeight()+5);
+			System.out.println("taille "+lettres.getWidth() +", " + lettres.getHeight() );
+			nbLetters.setxyin(50,50,lettres.getWidth(),lettres.getHeight());
+			
+			ALletters.add(lettres);
+			
+			
 			if(i < 5){
 				wline += p.getWidth()+15;
-				hline = p.getHeight()+5;
+				hline = p.getHeight()+15+lettres.getHeight();
 			}else {
 				wline2 += p.getWidth()+15;
-				hline2 = p.getHeight()+5;
+				hline2 = p.getHeight()+45+lettres.getHeight();
+			}
+			  
+			  
+		
+			
+			if(i < 5){
+				wline3 += p.getWidth()+15;
+				hline3 = lettres.getHeight()+10+p.getHeight();
+			}else {
+				wline4 += p.getWidth()+15;
+				hline4 = lettres.getHeight()+45+p.getHeight();
 			}
 			
 			i++;
 		}
 		
-		float x_decalage = 0,y_de=64;
+		
+		//Placement des mots
+		float x_decalage = 0,y_de=70;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
@@ -348,11 +423,44 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		pline.setGravity(GRAVITY.CENTER);
 	    		x_decalage = 0;
 	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
-	    		System.out.println(y_de);
+	    		//y_de += hline3 +15;
+	    		System.out.println("mots" +y_de + " nb word" + words.size());
 	    	}
 			
 			i++;
 		}
+		
+		//Placement du nb de lettres
+		x_decalage = 0;
+		y_de=78;
+		i=1;
+		pline = new Pa(null);
+		pline.setwh(wline, hline3);
+		pline.setGravity(GRAVITY.CENTER);
+		for(Pa plettre : ALletters){
+			
+			plettre.setGravity(GRAVITY.TOP_LEFT);
+			plettre.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
+	    	x_decalage += (((float)words.get(i-1).getWidth()+15)/(float)pline.getWidth())*100;
+	    	
+			pline.add(plettre);
+			
+			if(i == 5 || i == 10){
+	    		pline.setxy(50,y_de);
+	    		pline.setOpaque(false);
+	    		_jp_principal.add(pline);
+	    		
+	    		pline = new Pa(null);
+	    		pline.setwh(wline, hline3);
+	    		pline.setGravity(GRAVITY.CENTER);
+	    		x_decalage = 0;
+	    		y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
+	    		System.out.println("lettre" + y_de);
+	    	}
+			
+			i++;
+		}
+		
 		
 		_fenetre.repaint();
 		

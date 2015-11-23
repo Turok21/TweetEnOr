@@ -61,7 +61,7 @@ public abstract class TweetParser {
     		"PRP", "NUM", "PUN", "SENT", "DET", "VER", "KON", "PRO"
     ));     // natures des mots à exclure (en utilisant la librairie "TreeTagger")
 
-	public static KeyWord findWords(String keyWord, final Shared_component shared) {
+	public static KeyWord findWords(String keyWord, final Shared_component shared) throws Exception {
     	// Récupération des tweets
     	List<String> listTweets = getTweets(keyWord, shared);
 
@@ -123,8 +123,9 @@ public abstract class TweetParser {
      * @param keyWord {String}  mot cible utilisé pour la recherche
      * @param shared {Shared_component} bar de progression utilisé pour l'affiche
      * @return {List<String>} List des tweets issues des requetes
+     * @throws TwitterException 
      */
-    private static List<String> getTweets(String keyWord, Shared_component shared) {
+    private static List<String> getTweets(String keyWord, Shared_component shared) throws TwitterException, Exception {
     	// Récupération des identifiants Twitter
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance();
@@ -155,7 +156,10 @@ public abstract class TweetParser {
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            //e1.printStackTrace();
+        	throw e1;
+        } catch (Exception e1){
+        	throw e1;
         }
         return listTweets;
     }
@@ -351,8 +355,20 @@ public abstract class TweetParser {
 
 
     public static void main(String argc[]) {
-        KeyWord keyw = findWords("ski",new Shared_component());
-        System.out.println(keyw);
+        KeyWord keyw;
+        
+		try {
+			keyw = findWords("ski",new Shared_component());
+			System.out.println(keyw);
+		
+		} catch(Exception e){
+			if(e instanceof IllegalStateException)
+			{
+				System.out.println("sdffffffffff");
+			}
+			e.printStackTrace();
+		}
+       
     }
 }
 
