@@ -13,20 +13,20 @@ public class Client {
     public static Thread t;
 
     public static void main(String[] args) {
-    	try {
-	        System.out.println("Demande de connexion");
+        try {
+            System.out.println("Demande de connexion");
 
-	        socket = new Socket("127.0.0.1", 14429);
+            socket = new Socket(Server.url, Server.port);
 
-	        System.out.println("Connexion établie avec le serveur"); // Si le message s'affiche c'est que je suis connecté
-	        DataExchange de = new DataExchange(socket);
-			t = new Thread(de);
-	        t.start();
+            System.out.println("Connexion établie avec le serveur"); // Si le message s'affiche c'est que je suis connecté
+            DataExchange de = new DataExchange(socket);
+            t = new Thread(de);
+            t.start();
 
-	    } catch (UnknownHostException e) {
-	      System.err.println("Impossible de se connecter à l'adresse "+socket.getLocalAddress());
-	    } catch (IOException e) {
-	      System.err.println("Aucun serveur à l'écoute du port "+socket.getLocalPort());
-	    }
+        } catch (UnknownHostException e) {
+            System.err.println("Impossible de se connecter à l'adresse " + socket.getLocalAddress());
+        } catch (IOException e) {
+            System.err.println("Aucun serveur à l'écoute du port " + socket.getLocalPort());
+        }
     }
 }
