@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 /**
- * Created by Arié on 23/11/2015.
+ * Created by Ariï¿½ on 23/11/2015.
  */
 public class Sockets {
 

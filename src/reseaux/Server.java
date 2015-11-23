@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 /**
- * Created by Arié on 23/11/2015.
+ * Created by AriÃ© on 23/11/2015.
  */
 public class Server {
     private ServerSocket   _serveurSocket;
@@ -23,7 +23,7 @@ public class Server {
             this._serveurSocket = new ServerSocket(port);
             this._socketOfServeur = new Socket(InetAddress.getLocalHost(), port);
             this._in = _in;
-            this._out = new PrintWriter(_socketOfServeur.getOutputStream();
+            this._out = new PrintWriter(_socketOfServeur.getOutputStream());
 
         } catch (IOException e) {
             e.printStackTrace();

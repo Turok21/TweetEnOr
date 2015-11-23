@@ -1,10 +1,12 @@
 package reseaux;
 
+import ihm.Accueil_IHM;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 /**
- * Created by Arié on 23/11/2015.
+ * Created by AriÃ© on 23/11/2015.
  */
 public class Client {
     private Socket         _socket;
