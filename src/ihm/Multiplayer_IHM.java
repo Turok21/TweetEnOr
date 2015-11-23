@@ -146,22 +146,22 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_joint.setxy(0, 20);
 		_p_joint.setwh(_screen.width,(float) ( _screen.height-(_screen.height*(_p_joint.gety()/100)) ));
 		_p_joint.setGravity(GRAVITY.TOP_LEFT);
-		_p_joint.setOpaque(false);
+		_p_joint.setOpaque(true);
 		_jp_principal.add(_p_joint);
 		
 		
 		_tf_pseudo = new Tf();
 		_tf_pseudo.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		_tf_pseudo.setGravity(GRAVITY.CENTER_LEFT);
-		_tf_pseudo.setxyin(10,5,_p_joint);		
 		_tf_pseudo.auto_resize();
 		_tf_pseudo.setwh(100, 40);
+		_tf_pseudo.setxyin(10,5,_p_joint);		
 		_p_joint.add(_tf_pseudo);
 		Txt txt_pseudo_joint = new Txt("Pseudo : ");
 		txt_pseudo_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		txt_pseudo_joint.setGravity(GRAVITY.CENTER_RIGHT);
-		txt_pseudo_joint.setxyin(10,5,_p_joint);
 		txt_pseudo_joint.auto_resize();
+		txt_pseudo_joint.setxyin(10,5,_p_joint);
 		_p_joint.add(txt_pseudo_joint);
 		
 		
@@ -213,7 +213,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_create.setxy(0, 20);
 		_p_create.setwh(_screen.width,(float) ( _screen.height-(_screen.height*(_p_joint.gety()/100)) ));
 		_p_create.setGravity(GRAVITY.TOP_LEFT);
-		_p_create.setOpaque(false);
+		_p_create.setOpaque(true);
 		_jp_principal.add(_p_create);
 		
 		
