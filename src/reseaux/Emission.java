@@ -1,17 +1,18 @@
 package reseaux;
 
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 
 
 public class Emission implements Runnable {
 
-    private PrintWriter out;
+    private ObjectOutputStream out;
     private String message = null;
     private Scanner sc = null;
 
-    public Emission(PrintWriter out) {
+    public Emission(ObjectOutputStream out) {
         this.out = out;
     }
 
@@ -21,8 +22,12 @@ public class Emission implements Runnable {
           while(true){
                 System.out.println("Votre message :");
                 message = sc.nextLine();
-                out.println(message);
-                out.flush();
+                try {
+					out.writeObject(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
           }
     }
 
