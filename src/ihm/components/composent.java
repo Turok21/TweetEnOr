@@ -19,9 +19,15 @@ public interface composent {
 	public enum GRAVITY {
 		  TOP_LEFT,
 		  TOP_RIGHT,
-		  CENTER;  
-		  //BOTTOM_LEFT,
-		  //BOTTOM_RIGHT;
+		  TOP_CENTER,
+		  
+		  CENTER,
+		  CENTER_RIGHT,
+		  CENTER_LEFT,
+		  
+		  BOTTOM_CENTER,
+		  BOTTOM_LEFT,
+		  BOTTOM_RIGHT;
 	};
 	
 	/**
