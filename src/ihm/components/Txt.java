@@ -73,7 +73,7 @@ public class Txt extends JLabel {
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
 		if(getText() != null){
-		    int width = metrics.stringWidth( getText() );
+		    int width = metrics.stringWidth( getText().replaceAll("\\<[^>]*>","") );
 		    int height = metrics.getHeight();
 		    Dimension newDimension =  new Dimension(width+0,height+10);
 		    setPreferredSize(newDimension);

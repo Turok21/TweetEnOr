@@ -1,5 +1,6 @@
 package ihm;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -28,9 +29,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	/** */
 	private static final long serialVersionUID = 1L;
 	
-	private Tf _tf_ip,_tf_port;
+	private Tf _tf_ip,_tf_port,_tf_pseudo;
 	
-	private Tbt _b_create,_b_joint;
+	private Tbt _b_create, _b_wait_client
+				,_b_joint;
 	
 	private Txt _loader;
 	
@@ -67,7 +69,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_create = new Tbt("créer une partie en ligne.");
 		_b_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 30));
 		_b_create.setGravity(GRAVITY.TOP_LEFT);
-		_b_create.setxy(20, 10);
+		_b_create.setxy(10, 10);
 		_b_create.auto_resize();
 		_b_create.addActionListener(this);
 		_jp_principal.add(_b_create);
@@ -76,10 +78,17 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_joint = new Tbt("rejoidre une partie.");
 		_b_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 30));
 		_b_joint.setGravity(GRAVITY.TOP_RIGHT);
-		_b_joint.setxy(80, 10);
+		_b_joint.setxy(90, 10);
 		_b_joint.auto_resize();
 		_b_joint.addActionListener(this);
 		_jp_principal.add(_b_joint);
+		
+		
+		Txt hastag = new Txt("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hasttag+"</font></html>");
+		hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+		hastag.auto_resize();
+		hastag.setxy(50,5);
+		_jp_principal.add(hastag);
 		
 		
 		
@@ -90,6 +99,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_joint.setwh(_screen.width,(float) ( _screen.height-(_screen.height*(_p_joint.gety()/100)) ));
 		_p_joint.setGravity(GRAVITY.TOP_LEFT);
 		_jp_principal.add(_p_joint);
+		
+		
+		_tf_pseudo = new Tf();
+		_tf_pseudo.setGravity(GRAVITY.TOP_LEFT);
+		_tf_pseudo.setxyin(10,5,_p_joint.getWidth(),_p_joint.getHeight());
+		_tf_pseudo.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_pseudo.auto_resize();
+		_tf_pseudo.setwh(100, 40);
+		_p_joint.add(_tf_pseudo);
+		Txt txt_pseudo_joint = new Txt("Pseudo : ");
+		txt_pseudo_joint.setGravity(GRAVITY.TOP_RIGHT);
+		txt_pseudo_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		txt_pseudo_joint.auto_resize();
+		txt_pseudo_joint.setxyin(10,5,_p_joint.getWidth(),_p_joint.getHeight());
+		_p_joint.add(txt_pseudo_joint);
 		
 		
 		_tf_ip = new Tf();
@@ -106,6 +130,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		txt_ip_joint.setxyin(10,15,_p_joint.getWidth(),_p_joint.getHeight());
 		_p_joint.add(txt_ip_joint);
 		
+		
+		
 		_tf_port = new Tf();
 		_tf_port.setGravity(GRAVITY.TOP_LEFT);
 		_tf_port.setxyin(10,25,_p_joint.getWidth(),_p_joint.getHeight());
@@ -113,7 +139,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_port.auto_resize();
 		_tf_port.setwh(100, 40);
 		_p_joint.add(_tf_port);
-		
 		Txt txt_port_joint = new Txt("Port : ");
 		txt_port_joint.setGravity(GRAVITY.TOP_RIGHT);
 		txt_port_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
@@ -134,19 +159,25 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_jp_principal.add(_p_create);
 		
 		
-		_tf_ip = new Tf();
-		_tf_ip.setGravity(GRAVITY.TOP_LEFT);
-		_tf_ip.setxyin(10,15,_p_joint.getWidth(),_p_joint.getHeight());
-		_tf_ip.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_tf_ip.auto_resize();
-		_tf_ip.setwh(300, 40);
-		_p_joint.add(_tf_ip);
-		Txt txt_ip_create = new Txt("IgfdgfdgfP : ");
-		txt_ip_create.setGravity(GRAVITY.TOP_RIGHT);
-		txt_ip_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		txt_ip_create.auto_resize();
-		txt_ip_create.setxyin(10,15,_p_create.getWidth(),_p_create.getHeight());
-		_p_create.add(txt_ip_create);
+		
+		_tf_pseudo = new Tf();
+		_tf_pseudo.setGravity(GRAVITY.TOP_LEFT);
+		_tf_pseudo.setxyin(10,15,_p_joint.getWidth(),_p_joint.getHeight());
+		_tf_pseudo.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_pseudo.auto_resize();
+		_tf_pseudo.setwh(100, 40);
+		_p_create.add(_tf_pseudo);
+		
+		Txt txt_pseudo_create = new Txt("Pseudo : ");
+		txt_pseudo_create.setGravity(GRAVITY.TOP_RIGHT);
+		txt_pseudo_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		txt_pseudo_create.auto_resize();
+		txt_pseudo_create.setxyin(10,15,_p_create.getWidth(),_p_create.getHeight());
+		_p_create.add(txt_pseudo_create);
+		
+		
+		
+		
 		
 		_tf_port = new Tf();
 		_tf_port.setGravity(GRAVITY.TOP_LEFT);
@@ -156,7 +187,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_port.setwh(100, 40);
 		_p_create.add(_tf_port);
 		
-		Txt txt_port_create = new Txt("Port sgdsfdsf: ");
+		Txt txt_port_create = new Txt("Port : ");
 		txt_port_create.setGravity(GRAVITY.TOP_RIGHT);
 		txt_port_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		txt_port_create.auto_resize();
@@ -164,6 +195,11 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_create.add(txt_port_create);
 		
 		
+		_b_wait_client = new Tbt("Start serveur");
+		_b_wait_client.setxyin(50,90,_p_create.getWidth(),_p_create.getHeight());
+		_b_wait_client.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_b_wait_client.auto_resize();
+		_p_create.add(_b_wait_client);
 		
 		
 		
