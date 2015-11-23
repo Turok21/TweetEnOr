@@ -182,12 +182,10 @@ public class Txt extends JLabel {
 		apply_gravity();
 	}
 	public void setw(float w){
-		_Pw=w;
 		setwh((int) w,getHeight());
 		apply_gravity();
 	}
 	public void seth(float h){
-		_Ph=h;
 		setwh(getWidth(),(int) h);
 		apply_gravity();
 	}
