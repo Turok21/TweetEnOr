@@ -53,6 +53,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private ArrayList<Txt> _vie;
 	private ArrayList<Txt> _listword_label;
 	private ArrayList<Txt> _listLetters;
+	private ArrayList<Txt> _listPts;
 	
 	private JFrame _fram_given;
 	
@@ -123,6 +124,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				_listword_label = new ArrayList<Txt>();
 
 				_listLetters = new ArrayList<Txt>();
+				_listPts = new ArrayList<Txt>();
 
 			    try {
 					_verifier = new CtrlTweetEnOr(hasttag,_shared);
@@ -366,7 +368,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			nbLetters.setForeground(new Color(255, 255, 255,255));
 			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
 			
-			Txt nbPts = new Txt ("nb");
+			Txt nbPts = new Txt ("nb"+ word.getWord().length());
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbPts.setForeground(new Color(255, 255, 255,255));
 			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
@@ -377,6 +379,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			tiret.setGravity(GRAVITY.CENTER);
 			
 			_listLetters.add(nbLetters);
+			_listPts.add(nbPts);
 			
 			
 			lettres.setwh(p.getWidth(), nbLetters.getHeight() + 5);
@@ -601,13 +604,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			}
 		}).start();
 		
-		
+		int i = 0;
 		for(Txt label : _listword_label){
 			if(label.getText().compareTo(mots.getWord()) == 0){
 				label.setForeground(new Color(255,255,255));
+				_listPts.get(i).setForeground(new Color(29, 202, 255,255));
 				_fenetre.repaint();
 				break;
 			}
+			i++;
 		}
 		_nb_point += nb_point;
 		_compteur_de_point.setText("Points "+_nb_point);
