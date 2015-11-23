@@ -20,7 +20,8 @@ public class Server {
             System.out.println("Le serveur est à l'écoute du port "+ss.getLocalPort());
 			socket = ss.accept();
 			System.out.println("Un client s'est connecté");
-			t = new Thread(new DataExchange(socket));
+			DataExchange de = new DataExchange(socket);
+			t = new Thread(de);
 			t.start();
 
         } catch (IOException e) {

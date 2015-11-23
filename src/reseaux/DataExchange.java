@@ -11,24 +11,32 @@ public class DataExchange implements Runnable {
 
 	public DataExchange(Socket s){
 		socket = s;
+		try {
+			out = new ObjectOutputStream(socket.getOutputStream());
+			out.flush(); // Flush to avoid blocking until first data
+			in = new ObjectInputStream(socket.getInputStream());
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
-		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-			out.flush();
-			in = new ObjectInputStream(socket.getInputStream());
-
-
 			System.out.println("Demarrage de l'échange");
 
 			Thread t3 = new Thread(new Reception(in));
 			t3.start();
 			Thread t4 = new Thread(new Emission(out));
 			t4.start();
+	}
 
+	public void emit(Object obj) {
+		try {
+			out.writeObject(obj);
 		} catch (IOException e) {
-			System.err.println("l'autre s'est déconnecté ");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
