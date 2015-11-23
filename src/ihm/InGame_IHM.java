@@ -23,6 +23,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import Sounds.Player;
@@ -359,28 +360,49 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			  lettres.setBounds(10,10,100,30);
 			  lettres.setOpaque(false);
 			  lettres.setBackground(new Color(255, 255, 255,255));
-			Txt nbLetters = new Txt(""+ word.getWord().length() + " - " +"nb");
+			  
+			Txt nbLetters = new Txt(" "+ word.getWord().length());
 			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			nbLetters.setForeground(new Color(0, 0, 0,255));
-			nbLetters.setGravity(GRAVITY.CENTER);		
+			nbLetters.setForeground(new Color(255, 255, 255,255));
+			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
+			
+			Txt nbPts = new Txt ("nb");
+			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+			nbPts.setForeground(new Color(255, 255, 255,255));
+			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
+			
+			Txt tiret = new Txt ("-");
+			tiret.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+			tiret.setForeground(new Color(255, 255, 255,255));
+			tiret.setGravity(GRAVITY.CENTER);
+			
 			_listLetters.add(nbLetters);
+			
+			
+			lettres.setwh(p.getWidth(), nbLetters.getHeight() + 5);
+			
+			nbPts.setxyin(100, 50, lettres);
+			nbLetters.setxyin(0, 50, lettres);
+			tiret.setxyin(50, 50, lettres);
 			
 			System.out.println(nbLetters.getText());
 			 
+			
+			lettres.add(nbPts);
 			lettres.add(nbLetters);
-			lettres.setwh(nbLetters.getWidth()+5,nbLetters.getHeight()+5);
+			lettres.add(tiret);
+			
 			System.out.println("taille "+lettres.getWidth() +", " + lettres.getHeight() );
-			nbLetters.setxyin(50,50,lettres.getWidth(),lettres.getHeight());
 			
 			ALletters.add(lettres);
 			
 			
 			if(i < 5){
 				wline += p.getWidth()+15;
-				hline = p.getHeight()+15+lettres.getHeight();
+				hline = (float) (p.getHeight()+lettres.getHeight()*1.5);
 			}else {
 				wline2 += p.getWidth()+15;
-				hline2 = p.getHeight()+45+lettres.getHeight();
+				hline2 = (float) (p.getHeight()+lettres.getHeight()*1.5);
 			}
 			  
 			  
@@ -388,10 +410,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			if(i < 5){
 				wline3 += p.getWidth()+15;
-				hline3 = lettres.getHeight()+10+p.getHeight();
+				hline3 = hline;//p.getHeight()+lettres.getHeight();
 			}else {
 				wline4 += p.getWidth()+15;
-				hline4 = lettres.getHeight()+45+p.getHeight();
+				hline4 = hline; //p.getHeight()+lettres.getHeight();
 			}
 			
 			i++;
@@ -431,8 +453,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 		
 		//Placement du nb de lettres
-		x_decalage = 0;
-		y_de=78;
+		x_decalage = 0 ;
+		y_de-= 1.5*(((float)hline+15)/(float)_screen.getHeight())*100;
 		i=1;
 		pline = new Pa(null);
 		pline.setwh(wline, hline3);

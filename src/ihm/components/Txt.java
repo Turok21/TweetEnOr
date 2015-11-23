@@ -2,6 +2,7 @@ package ihm.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -38,6 +39,9 @@ public class Txt extends JLabel {
 		contruct();
 		
 		setwh(im.getIconWidth(),im.getIconHeight());
+
+		_gravity = GRAVITY.CENTER;
+		_screen = Toolkit.getDefaultToolkit().getScreenSize();
 		
 	}
 	
@@ -70,6 +74,19 @@ public class Txt extends JLabel {
 		
 		auto_resize();
 	}
+
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font);
+		if(_screen != null){
+			auto_resize();
+			setxy(_Px,_Py);
+		}
+	}
+	
+
+	
+
 	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
