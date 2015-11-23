@@ -31,9 +31,9 @@ public class DataExchange implements Runnable {
 			t4.start();
 	}
 
-	public void emit(Object obj) {
+	public void emit(String type, Object obj) {
 		try {
-			out.writeObject(obj);
+			out.writeObject(new Data(type, obj));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -23,7 +23,7 @@ public class Emission implements Runnable {
                 System.out.println("Votre message :");
                 message = sc.nextLine();
                 try {
-					out.writeObject(message);
+					out.writeObject(new Data("message", message));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -8,7 +8,6 @@ import java.io.ObjectInputStream;
 public class Reception implements Runnable {
 
     private ObjectInputStream in;
-    private String message = null;
 
 
     public Reception(ObjectInputStream in){
@@ -20,13 +19,16 @@ public class Reception implements Runnable {
         while(true){
             try {
             	// Action a effectuer sur reception d'un message
-	            message = (String) in.readObject();
-	            System.out.println("message reçu: " + message);
+	            Data data = (Data) in.readObject();
+	            if(data.getType().equals("message")) {
+	            	 System.out.println("message reçu: " + (String)data.getContent());
+	            }
+
             } catch (IOException e) {
-                e.printStackTrace();
+            	System.out.println("Partner probably deconnected. Leaving");
+            	break;
             } catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+            	System.out.println("Unable a understand the message");
 			}
         }
     }
