@@ -23,6 +23,10 @@ public class Reception implements Runnable {
 	            if(data.getType().equals("message")) {
 	            	 System.out.println("message reçu: " + (String)data.getContent());
 	            }
+	            if(data.getType().equals("test")) {
+	            	 System.out.println("test reçu: " + (String)data.getContent());
+	            }
+
 
             } catch (IOException e) {
             	System.out.println("Partner probably deconnected. Leaving");

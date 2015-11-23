@@ -23,7 +23,7 @@ public class Server {
 			DataExchange de = new DataExchange(socket);
 			t = new Thread(de);
 			t.start();
-
+			de.emit("test", "Ceci est un envoie de données");
         } catch (IOException e) {
             System.err.println("Le port "+ss.getLocalPort()+" est déjà utilisé !");
         }
