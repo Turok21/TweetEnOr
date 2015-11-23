@@ -27,3 +27,4 @@ hs_err_pid*
 *.sublime-project
 *.sublime-workspace
 
+/bin/
