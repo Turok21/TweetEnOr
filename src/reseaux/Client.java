@@ -10,7 +10,7 @@ import java.net.UnknownHostException;
 public class Client {
 
     public static Socket socket = null;
-    public static Thread t;
+    public static Thread th1;
 
     public static void main(String[] args) {
         try {
@@ -20,8 +20,8 @@ public class Client {
 
             System.out.println("Connexion établie avec le serveur"); // Si le message s'affiche c'est que je suis connecté
             DataExchange de = new DataExchange(socket);
-            t = new Thread(de);
-            t.start();
+            th1 = new Thread(de);
+            th1.start();
 
         } catch (UnknownHostException e) {
             System.err.println("Impossible de se connecter à l'adresse " + socket.getLocalAddress());

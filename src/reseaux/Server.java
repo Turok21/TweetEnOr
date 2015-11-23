@@ -14,7 +14,7 @@ public class Server {
     public static  ServerSocket ss     = null;
     private static Socket       socket = null;
 
-    public static Thread t;
+    public static Thread th;
 
     public static void main(String[] args) {
         try {
@@ -23,8 +23,8 @@ public class Server {
             socket = ss.accept();
             System.out.println("Un client s'est connecté");
             DataExchange de = new DataExchange(socket);
-            t = new Thread(de);
-            t.start();
+            th = new Thread(de);
+            th.start();
             de.emit("test", "Ceci est un envoie de données");
         } catch (IOException e) {
             System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");

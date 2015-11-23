@@ -25,10 +25,10 @@ public class DataExchange implements Runnable {
 	public void run() {
 			System.out.println("Demarrage de l'échange");
 
-			Thread t3 = new Thread(new Reception(in));
-			t3.start();
-			Thread t4 = new Thread(new Emission(out));
-			t4.start();
+			Thread th3 = new Thread(new Reception(in));
+			th3.start();
+			Thread th4 = new Thread(new Emission(out));
+			th4.start();
 	}
 
 	public void emit(String type, Object obj) {
