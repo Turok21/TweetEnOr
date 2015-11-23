@@ -360,25 +360,39 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			  lettres.setBounds(10,10,100,30);
 			  lettres.setOpaque(false);
 			  lettres.setBackground(new Color(255, 255, 255,255));
+			  
 			Txt nbLetters = new Txt(" "+ word.getWord().length());
-			nbLetters.setHorizontalTextPosition(JLabel.LEFT);
 			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			nbLetters.setForeground(new Color(0, 0, 0,255));
-			nbLetters.setGravity(GRAVITY.TOP_LEFT);
-			Txt nbPts = new Txt (" nb");
-			nbPts.setHorizontalTextPosition(JLabel.RIGHT);
+			nbLetters.setForeground(new Color(255, 255, 255,255));
+			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
+			
+			Txt nbPts = new Txt ("nb");
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			nbPts.setForeground(new Color(0, 0, 0,255));
-			nbPts.setGravity(GRAVITY.TOP_RIGHT);
+			nbPts.setForeground(new Color(255, 255, 255,255));
+			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
+			
+			Txt tiret = new Txt ("-");
+			tiret.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+			tiret.setForeground(new Color(255, 255, 255,255));
+			tiret.setGravity(GRAVITY.CENTER);
+			
 			_listLetters.add(nbLetters);
+			
+			
+			lettres.setwh(p.getWidth(), nbLetters.getHeight() + 5);
+			
+			nbPts.setxyin(100, 50, lettres);
+			nbLetters.setxyin(0, 50, lettres);
+			tiret.setxyin(50, 50, lettres);
 			
 			System.out.println(nbLetters.getText());
 			 
-			lettres.add(nbLetters);
+			
 			lettres.add(nbPts);
-			lettres.setwh(p.getWidth(),nbLetters.getHeight()+5);
+			lettres.add(nbLetters);
+			lettres.add(tiret);
+			
 			System.out.println("taille "+lettres.getWidth() +", " + lettres.getHeight() );
-			nbLetters.setxyin(50,50,lettres.getWidth(),lettres.getHeight());
 			
 			ALletters.add(lettres);
 			
