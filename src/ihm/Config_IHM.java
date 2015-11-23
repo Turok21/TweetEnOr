@@ -53,7 +53,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         
-        
+       /* 
         Pa t = new Pa(null);
     	t.setOpaque(true);
     	t.setBackground(Color.red);
@@ -73,7 +73,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
      	
      	t.add(c);
-        
+        */
         
         /*************** TITLE ***************/
         _title_frame = new Txt("Paramétrages");
