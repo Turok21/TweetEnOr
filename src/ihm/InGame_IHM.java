@@ -359,9 +359,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			  lettres.setBounds(10,10,100,30);
 			  lettres.setOpaque(false);
 			  lettres.setBackground(new Color(255, 255, 255,255));
-			Txt nbLetters = new Txt(""+ word.getWord().length()+ " lettres");
+			Txt nbLetters = new Txt(""+ word.getWord().length() + " - " +"nb");
 			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-			nbLetters.setForeground(new Color(255, 255, 255,255));
+			nbLetters.setForeground(new Color(0, 0, 0,255));
 			nbLetters.setGravity(GRAVITY.CENTER);		
 			_listLetters.add(nbLetters);
 			
@@ -377,10 +377,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			if(i < 5){
 				wline += p.getWidth()+15;
-				hline = p.getHeight()+10+lettres.getHeight();
+				hline = p.getHeight()+15+lettres.getHeight();
 			}else {
 				wline2 += p.getWidth()+15;
-				hline2 = p.getHeight()+30+lettres.getHeight();
+				hline2 = p.getHeight()+45+lettres.getHeight();
 			}
 			  
 			  
@@ -391,7 +391,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				hline3 = lettres.getHeight()+10+p.getHeight();
 			}else {
 				wline4 += p.getWidth()+15;
-				hline4 = lettres.getHeight()+10+p.getHeight();
+				hline4 = lettres.getHeight()+45+p.getHeight();
 			}
 			
 			i++;
@@ -399,7 +399,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 		//Placement des mots
-		float x_decalage = 0,y_de=64;
+		float x_decalage = 0,y_de=70;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
@@ -432,16 +432,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		//Placement du nb de lettres
 		x_decalage = 0;
-		y_de=70;
+		y_de=78;
 		i=1;
 		pline = new Pa(null);
-		pline.setwh(wline3, hline3);
+		pline.setwh(wline, hline3);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa plettre : ALletters){
 			
 			plettre.setGravity(GRAVITY.TOP_LEFT);
 			plettre.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
-	    	x_decalage += (((float)plettre.getWidth()+15)/(float)pline.getWidth())*100;
+	    	x_decalage += (((float)words.get(i-1).getWidth()+15)/(float)pline.getWidth())*100;
 	    	
 			pline.add(plettre);
 			
@@ -451,7 +451,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		_jp_principal.add(pline);
 	    		
 	    		pline = new Pa(null);
-	    		pline.setwh(wline3, hline3);
+	    		pline.setwh(wline, hline3);
 	    		pline.setGravity(GRAVITY.CENTER);
 	    		x_decalage = 0;
 	    		y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
