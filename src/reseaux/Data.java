@@ -3,31 +3,35 @@ package reseaux;
 import java.io.Serializable;
 
 public class Data implements Serializable {
-	private static final long serialVersionUID = 1350092881346723569L;
+    private static final long serialVersionUID = 1350092881346723569L;
 
-	private String type;
-	private Object content;
+    private String _type;
+    // can be => "Nickname"
+    // can be => "Word"
+    // can be => "KeyWord"
+    // can be => "Score"
+    // can be => "NbWordFounded":
+    private Object _content;
 
-	public Data(String type, Object content) {
-		this.type = type;
-		this.content = content;
-	}
+    public Data(String type, Object content) {
+        this._type = type;
+        this._content = content;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String get_type() {
+        return _type;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void set_type(String _type){
+        this._type = _type;
+    }
 
-	public Object getContent() {
-		return content;
-	}
+    public Object get_content() {
+        return _content;
+    }
 
-	public void setContent(Object content) {
-		this.content = content;
-	}
-
+    public void set_content(Object _content) {
+        this._content = _content;
+    }
 
 }
