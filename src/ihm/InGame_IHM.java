@@ -295,7 +295,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _jp_principal.add(_b_hint);
 	    
 	 
-	
+	    System.out.println("Les mots ");
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
@@ -335,18 +335,19 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			Txt txt = new Txt(""+word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
-			txt.setGravity(GRAVITY.CENTER);		
+			txt.setGravity(GRAVITY.CENTER);	
+			
+			System.out.println(txt.getText());
 			_listword_label.add(txt);
 
 			p.add(txt);
 			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
-			System.out.println("taille "+txt.getWidth() +", " + txt.getHeight() );
 			txt.setxyin(50,50,p.getWidth(),p.getHeight());
 			
 			
 			words.add(p);
 			
-/***Nombre de lettres***/
+/************Hints*****************************************************************************************/
 			
 			Pa lettres = new Pa(null) {
 			     
@@ -373,13 +374,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			  lettres.setBounds(10,10,100,30);
 			  lettres.setOpaque(false);
 			  lettres.setBackground(new Color(255, 255, 255,255));
-			  
+			
+			  //Nombre de letttre
 			Txt nbLetters = new Txt(" "+ word.getWord().length());
 			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbLetters.setForeground(new Color(255, 255, 255,255));
 			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
 			
-			Txt nbPts = new Txt (""+ word.getPonderation());
+			//Nombre de points
+			Txt nbPts = new Txt ("" + word.getPonderation());
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbPts.setForeground(new Color(29, 202, 255,255));
 			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
@@ -399,14 +402,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			nbLetters.setxyin(0, 50, lettres);
 			tiret.setxyin(50, 50, lettres);
 			
-			System.out.println(nbLetters.getText());
-			 
 			
 			lettres.add(nbPts);
 			lettres.add(nbLetters);
 			lettres.add(tiret);
-			
-			System.out.println("taille "+lettres.getWidth() +", " + lettres.getHeight() );
 			
 			ALletters.add(lettres);
 			
@@ -424,10 +423,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			if(i < 5){
 				wline3 += p.getWidth()+15;
-				hline3 = hline;//p.getHeight()+lettres.getHeight();
+				hline3 = hline;
 			}else {
 				wline4 += p.getWidth()+15;
-				hline4 = hline; //p.getHeight()+lettres.getHeight();
+				hline4 = hline; 
 			}
 			
 			i++;
@@ -459,8 +458,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		pline.setGravity(GRAVITY.CENTER);
 	    		x_decalage = 0;
 	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
-	    		//y_de += hline3 +15;
-	    		System.out.println("mots" +y_de + " nb word" + words.size());
 	    	}
 			
 			i++;
@@ -491,7 +488,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    		pline.setGravity(GRAVITY.CENTER);
 	    		x_decalage = 0;
 	    		y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
-	    		System.out.println("lettre" + y_de);
 	    	}
 			
 			i++;
