@@ -110,14 +110,13 @@ public class CtrlTweetEnOr {
 
 
     	List<TweetWord>  rtnTW = new ArrayList();
-
         for( TweetWord twTmp :  tw){
         	rtnTW.add((isMotValid(twTmp.getWord())));
         }
      
         _invalidWords.clear();
         _validWords.clear();
-    	return tw;
+    	return rtnTW;
     }
 
     public boolean isMotAlreadyUse(String Mot) {
