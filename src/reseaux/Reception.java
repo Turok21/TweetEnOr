@@ -17,20 +17,25 @@ public class Reception implements Runnable {
                 // Action a effectuer sur reception d'un message
                 Data data = (Data) in.readObject();
                 switch (data.get_type()) {
-                    case "Nickname":
-                        System.out.println("Message Nickname recu : " + data.get_content());
+                    case NICKNAME:
+                        System.out.println("Message NICKNAME recu : " + data.get_content());
                         break;
-                    case "Word":
-                        System.out.println("Message Word recu : " + data.get_content());
+                    case PROPOSED_KEYWORD:
+                        System.out.println("Message PROPOSED_KEYWORD recu : " + data.get_content());
                         break;
-                    case "KeyWord":
-                        System.out.println("Message KeyWord recu : " + data.get_content());
+                    case KEYWORD:
+                        System.out.println("Message KEYWORD recu : " + data.get_content());
                         break;
-                    case "Score":
-                        System.out.println("Message Score recu : " + data.get_content());
+                    case SCORE:
+                        System.out.println("Message SCORE recu : " + data.get_content());
                         break;
-                    case "NbWordFounded":
-                        System.out.println("Message NbWordFounded recu : " + data.get_content());
+                    case WORD_FOUND:
+                        System.out.println("Message WORD_FOUND recu : " + data.get_content());
+                        break;
+                    case START:
+                        System.out.println("Message START recu : " + data.get_content());
+                    default:
+                        System.out.println("Unknown message recu : " + data.get_content());
                         break;
                 }
 

@@ -25,7 +25,7 @@ public class Server {
             DataExchange de = new DataExchange(socket);
             th = new Thread(de);
             th.start();
-            de.emit("test", "Ceci est un envoie de données");
+            de.emit(DataType.TEST, "Ceci est un envoie de données");
         } catch (IOException e) {
             System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");
         }
