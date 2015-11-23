@@ -44,6 +44,27 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     }
 
     public Config_IHM(JFrame fram) {
+    	/*
+    	Tf t = new Tf();
+    	t.setOpaque(true);
+    	t.setBackground(Color.red);
+        t.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+    	t.setGravity(GRAVITY.TOP_RIGHT);
+    	t.auto_resize();
+    	t.setxy(50, 50);
+    	t.setwh(400, 400);
+    	_jp_principal.add(t);
+    	
+    	Tf c = new Tf();
+        c.setOpaque(true);
+        c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+     	c.setGravity(GRAVITY.BOTTOM_RIGHT);
+     	c.auto_resize();
+     	
+     	c.setxyin(100,100, t);
+     	t.add(c);
+    	
+    	*/
     	
     	_difficulte = LEVEL.MEDIUM;
 
