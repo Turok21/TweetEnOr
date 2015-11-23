@@ -199,8 +199,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		_b_connexion = new Tbt("Start connexion");
 		_b_connexion.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_b_connexion.setxyin(50,90,_p_joint);
 		_b_connexion.auto_resize();
+		_b_connexion.setxyin(50,90,_p_joint);
 		_b_connexion.addActionListener(this);
 		_p_joint.add(_b_connexion);
 		
@@ -210,8 +210,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		_p_create = new Pa(null);
 		_p_create.setVisible(false);
-		_p_create.setxy(00, 20);
-		_p_create.setwh(_screen.width,(float) ( _screen.height-(_screen.height*(_p_create.gety()/100)) ));
+		_p_create.setxy(0, 20);
+		_p_create.setwh(_screen.width,(float) ( _screen.height-(_screen.height*(_p_joint.gety()/100)) ));
 		_p_create.setGravity(GRAVITY.TOP_LEFT);
 		_p_create.setOpaque(false);
 		_jp_principal.add(_p_create);
