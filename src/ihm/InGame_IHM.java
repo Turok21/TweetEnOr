@@ -379,7 +379,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			nbLetters.setForeground(new Color(255, 255, 255,255));
 			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
 			
-			Txt nbPts = new Txt ("nb"+ word.getWord().length());
+			Txt nbPts = new Txt (""+ word.getPonderation());
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbPts.setForeground(new Color(29, 202, 255,255));
 			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
