@@ -2,6 +2,7 @@ package ihm.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.Rectangle;
@@ -54,6 +55,17 @@ public class Bt extends JButton {
 		super.setText(txt);
 		auto_resize();
 	}
+
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font);
+		auto_resize();
+		setxy(_Px,_Py);
+	}
+	
+
+	
+
 	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
@@ -108,10 +120,6 @@ public class Bt extends JButton {
 	}
 	
 	
-
-
-	
-
 	public void setxyin(float x,float y,int in_w,int in_h){
 		_in_h = in_h;
 		_in_w = in_w;

@@ -2,6 +2,7 @@ package ihm.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Frame;
 import java.awt.LayoutManager;
@@ -49,6 +50,17 @@ public class Pa extends JPanel implements composent{
 		_gravity = flag;
 		auto_resize();
 	}
+
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font);
+		auto_resize();
+		setxy(_Px,_Py);
+	}
+	
+
+	
+
 	
 	
 	public void auto_resize(){
@@ -116,7 +128,6 @@ public class Pa extends JPanel implements composent{
 		_Px=x;
 		_Py=y;
 		apply_gravity();
-		System.out.println(x+" "+_in_w);
 		setLocation((int)(_in_w*(x/100))-_center_x,(int)(_in_h*(y/100))-_center_y);
 	}
 	public void setx(float x){

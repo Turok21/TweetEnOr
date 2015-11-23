@@ -54,6 +54,17 @@ public class Tbt extends JToggleButton {
 		super.setText(txt);
 		auto_resize();
 	}
+
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font);
+		auto_resize();
+		setxy(_Px,_Py);
+	}
+	
+
+	
+
 	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
