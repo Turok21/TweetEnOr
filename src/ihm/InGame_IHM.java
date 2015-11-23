@@ -82,7 +82,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 
 	public static void main(String[] args) throws FontFormatException, IOException{
-		new InGame_IHM(LEVEL.MEDIUM,"test",new JFrame());
+		new InGame_IHM(LEVEL.MEDIUM,"Russie",new JFrame());
 	}
 	
 
