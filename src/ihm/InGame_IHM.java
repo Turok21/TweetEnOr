@@ -36,6 +36,7 @@ import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Shared_component;
+import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
@@ -43,14 +44,17 @@ import utils.TweetParser;
 import utils.TweetWord;
 
 
-public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener{
+public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener, MouseListener{
 
 	private static final long serialVersionUID = 1L;
 
 	private Tf _tf_saisie;
 	
 	private Bt _b_verifier;
-	private Bt _b_hint;
+	
+	private Tbt _b_hintShuffle;
+	private Bt _b_hintNbLetters;
+	private Tbt _b_hintColor;
 	
 	private Txt _loader;
 	private Txt _info_player;
@@ -88,7 +92,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	private Bt retourConfig;
 
-	private MouseListener[] mLtab;
+	private MouseListener ml;
 
 	public static void main(String[] args) throws FontFormatException, IOException{
 		new InGame_IHM(LEVEL.MEDIUM,"Russie",new JFrame());
@@ -308,15 +312,25 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
+	    /*************** Anagramme ***************/
+	    _b_hintShuffle = new Tbt("Anagramme");
+	    _b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
+	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
+	    _b_hintShuffle.setwh(75, 75);
+	    _b_hintShuffle.auto_resize();
+	    _b_hintShuffle.setxy(1, 85);
+	    _b_hintShuffle.addActionListener(this);
+	    _jp_principal.add(_b_hintShuffle);
 	    
-	    _b_hint = new Bt("Hint");
-	    _b_hint.setFont(arista_light.deriveFont(Font.BOLD,20));
-	    _b_hint.setGravity(GRAVITY.CENTER);
-	    _b_hint.setwh(75, 75);
-	    _b_hint.auto_resize();
-	    _b_hint.setxy(5, 93);
-	    _b_hint.addActionListener(this);
-	    _jp_principal.add(_b_hint);
+	    /*************** Nombre de lettres ***************/
+	    _b_hintNbLetters = new Bt("Nombre de Lettre");
+	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
+	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_LEFT);
+	    _b_hintNbLetters.setwh(75, 75);
+	    _b_hintNbLetters.auto_resize();
+	    _b_hintNbLetters.setxy(1, 90);
+	    _b_hintNbLetters.addActionListener(this);
+	    _jp_principal.add(_b_hintNbLetters);
 	    
 	 
 	    System.out.println("Les mots ");
@@ -325,7 +339,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    List<Pa> words = new ArrayList<Pa>();
 	    List<Pa> ALletters = new ArrayList<Pa>();
 	    wordAna = new HashMap<>();
-	    
+	   
 		float wline=0,hline=0,wline2=0,hline2=0, wline3=0,hline3=0, wline4=0,hline4=0;
 
 	    int i = 0;
@@ -350,10 +364,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			       graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
 			       
 			       
-			       
 			     }
 			  };
-		
+		  p.addMouseListener(this);
 		  p.setBounds(10,10,100,30);
 	      p.setOpaque(false);
 	      p.setBackground(new Color(29, 202, 255,255));
@@ -363,10 +376,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
 			txt.setGravity(GRAVITY.CENTER);	
-			//txt.addMouseListener(mLtab[i]);
 			_listword_label.add(txt);
 
 			p.add(txt);
+			p.setName(word.getWord());
+			
 			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
 			txt.setxyin(50,50,p.getWidth(),p.getHeight());
 			
@@ -679,32 +693,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    return builder.toString();
 	}
 	
-	private void mixWords(){
-		int i = 0;
-		Iterator<String> keySetIterator = wordAna.keySet().iterator();
-
-		while(keySetIterator.hasNext()){
-		  String key = keySetIterator.next();
-		  _listword_label.get(i).setText(wordAna.get(key));
-		  _listword_label.get(i).setForeground(new Color(255, 255, 255,255));
-		  i++;
-		}
-	}
-	private boolean mixWordsAgain(){
-		boolean ret = false;
-		Iterator<String> keySetIterator = wordAna.keySet().iterator();
-		
-		for(Txt w : _listword_label){
-		
-			while(keySetIterator.hasNext()){
-			  String key = keySetIterator.next();
-			  if(wordAna.get(key) == w.getText())
-				  return true;
-			  else
-				  ret = false;
+	private void mixWords(String pan_name){
+		int j = 0;
+		while(j < _listword_label.size()){
+			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
+				_listword_label.get(j).setText(wordAna.get(pan_name));
+				_listword_label.get(j).setForeground(new Color(255, 255, 255, 255));
 			}
+			j++;
 		}
-		return ret;
 	}
 /************************Mettre le mot correct ******************************/
 	private void setAnswer(String mot)
@@ -731,22 +728,33 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		super.actionPerformed(e);
         if( e.getSource() == _b_verifier)
         	verifier( _tf_saisie.getText());
-        if( e.getSource() == _b_hint){
+        
+        	
+        if( e.getSource() == _b_hintNbLetters){
+        	System.out.println("nb lettre");
         	show_hint_letters();
-        	if(!mixWordsAgain()){
-        		mixWords();
-        	}
-        			
         }
+        
         if( e.getSource() == retourConfig){
         	new Config_IHM(_fenetre);
         }
 	}
 	
-	/*public void mousePressed(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		
-		System.out.println(e.getSource().toString());
-	    }*/
+		if(_b_hintShuffle.isSelected()){
+			Pa panel = (Pa)e.getSource();
+		    String c = panel.getName();
+			mixWords(c);
+			_b_hintShuffle.setSelected(false);
+			_b_hintShuffle.setEnabled(false);
+		}
+		else
+		{
+			System.out.println("\nMouse clicked\n");
+		}
+		
+	    }
 
 	@Override
 	/**
@@ -784,4 +792,40 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         }else
         	_tab = 0;
     }
+
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
