@@ -29,7 +29,7 @@ public class Server extends AbstractUser {
         }
     }
 
-    public void server_sendKeyWord(KeyWord _keyWord) {
+    public void server_sendKeyword(KeyWord _keyWord) {
         sendObject(DataType.KEYWORD, _keyWord);
     }
 
