@@ -139,33 +139,32 @@ public abstract class TweetParser {
         query.setLang(language); // On ne récup que les tweets en français
         query.count(nbTweetParRequest); // 100 tweets/requete
         QueryResult result;
+        int nbtweet = 0;
         try {
             result = twitter.search(query);
-            if(result.getCount()  >= nbTweetsToGet)
-            {
-	            do {
-	                for (Status status : result.getTweets()) {
-	                    listTweets.add(status.getText());
-	                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
-	                    shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
-	                }
-	                query = result.nextQuery();
-	                if (query != null) {
-	                    result = twitter.search(query);
-	                }
-	
-	            }
-	            while (query != null && listTweets.size() < nbTweetsToGet);
-            }else{
-            	return listTweets;
+            do {
+                for (Status status : result.getTweets()) {
+                    listTweets.add(status.getText());
+                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
+                    shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
+                }
+                query = result.nextQuery();
+                if (query != null) {
+                    result = twitter.search(query);
+                    nbtweet += result.getCount();
+                }
+
             }
+            while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
-            // TODO Auto-generated catch block
-            //e1.printStackTrace();
         	throw e1;
         } catch (Exception e1){
         	throw e1;
         }
+        
+        if(nbtweet  < nbTweetsToGet)
+        	return new ArrayList<String>();
+        
         return listTweets;
     }
 
