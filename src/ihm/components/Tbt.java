@@ -1,5 +1,6 @@
 package ihm.components;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -25,7 +26,7 @@ public class Tbt extends JToggleButton {
 
 	private int _center_x,_center_y;
 	private GRAVITY _gravity;
-	private float _Px,_Py,_Ph,_Pw;
+	private float _Px,_Py,_Ph,_Pw,_in_h,_in_w;
 	private Dimension _screen;
 
 	public Tbt(){
@@ -53,11 +54,24 @@ public class Tbt extends JToggleButton {
 		super.setText(txt);
 		auto_resize();
 	}
+
+	@Override
+	public void setFont(Font font) {
+		super.setFont(font);
+		if(_screen != null){
+			auto_resize();
+			setxy(_Px,_Py);
+		}
+	}
+	
+
+	
+
 	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
 		if(getText() != null){
-		    int width = metrics.stringWidth( getText() );
+		    int width = metrics.stringWidth( getText().replaceAll("\\<[^>]*>","") );
 		    int height = metrics.getHeight();
 		    Dimension newDimension =  new Dimension(width+40,height+10);
 		    setPreferredSize(newDimension);
@@ -72,6 +86,17 @@ public class Tbt extends JToggleButton {
 		if(_gravity == GRAVITY.CENTER){
 	    	_center_x = getWidth()/2;
 	    	_center_y = getHeight()/2;
+	    }else if(_gravity == GRAVITY.CENTER_LEFT){
+	    	_center_x = 0;
+	    	_center_y = getHeight()/2;
+	    }else if(_gravity == GRAVITY.CENTER_RIGHT){
+	    	_center_x = getWidth();
+	    	_center_y = getHeight()/2;
+	    }
+	    
+	    else if(_gravity == GRAVITY.TOP_CENTER){
+	    	_center_x = getWidth()/2;
+	    	_center_y = 0;
 	    }else if(_gravity == GRAVITY.TOP_RIGHT){
 	    	_center_x = getWidth();
 	    	_center_y = 0;
@@ -79,32 +104,54 @@ public class Tbt extends JToggleButton {
 	    	_center_x = 0;
 	    	_center_y = 0;
 	    }
+	    
+	    else if(_gravity == GRAVITY.BOTTOM_CENTER){
+	    	_center_x = getWidth()/2;
+	    	_center_y = getHeight();
+	    }else if(_gravity == GRAVITY.BOTTOM_RIGHT){
+	    	_center_x = getWidth();
+	    	_center_y = getHeight();
+	    }else if(_gravity == GRAVITY.BOTTOM_LEFT){
+	    	_center_x = 0;
+	    	_center_y = getHeight();
+	    }
+		
+		setLocation((int)(_screen.width*(_Px/100))-_center_x,(int)(_screen.height*(_Py/100))-_center_y);
+
 	}
 	
 	
 
+	
+
 	public void setxyin(float x,float y,int in_w,int in_h){
+		_in_h = in_h;
+		_in_w = in_w;
 		_Px=x;
 		_Py=y;
 		apply_gravity();
 		setLocation((int)(in_w*(x/100))-_center_x,(int)(in_h*(y/100))-_center_y);
 	}
+	public void setxyin(float x,float y,Component comp){
+		setxyin(x, y, comp.getWidth(), comp.getHeight());
+	}
 	public void setxy(float x,float y){
+		_in_h = _screen.height;
+		_in_w = _screen.width;
 		_Px=x;
 		_Py=y;
 		apply_gravity();
-		setLocation((int)(_screen.width*(x/100))-_center_x,(int)(_screen.height*(y/100))-_center_y);
+		System.out.println(x+" "+_in_w);
+		setLocation((int)(_in_w*(x/100))-_center_x,(int)(_in_h*(y/100))-_center_y);
 	}
 	public void setx(float x){
-		_Px=x;
-		apply_gravity();
-		setxy((int) x+_center_x,getLocation().y-_center_y);
+		setxy( x,_Py);
 	}
 	public void sety(float y){
-		_Py=y;
-		apply_gravity();
-		setxy(getLocation().x-_center_x,(int) y+_center_y);
+		setxy(_Px,y);
 	}
+	
+	
 	
 	public void setwh(float w,float h){
 		_Ph=h;

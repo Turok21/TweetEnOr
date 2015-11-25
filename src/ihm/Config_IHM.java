@@ -24,7 +24,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private Txt _title_frame, _title_dif, _title_theme;
     private Tbt _tbt_easy, _tbt_medium, _tbt_hard;
     private List<Tbt> _list_theme;
-    private Bt        _b_play, _b_help;
+    private Bt        _b_play,_b_play_online, _b_help;
 
     LEVEL    _difficulte;
     String _hastag_theme;
@@ -44,6 +44,27 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     }
 
     public Config_IHM(JFrame fram) {
+    	/*
+    	Tf t = new Tf();
+    	t.setOpaque(true);
+    	t.setBackground(Color.red);
+        t.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+    	t.setGravity(GRAVITY.TOP_RIGHT);
+    	t.auto_resize();
+    	t.setxy(50, 50);
+    	t.setwh(400, 400);
+    	_jp_principal.add(t);
+    	
+    	Tf c = new Tf();
+        c.setOpaque(true);
+        c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+     	c.setGravity(GRAVITY.BOTTOM_RIGHT);
+     	c.auto_resize();
+     	
+     	c.setxyin(100,100, t);
+     	t.add(c);
+    	
+    	*/
     	
     	_difficulte = LEVEL.MEDIUM;
 
@@ -139,8 +160,18 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _b_play.auto_resize();
         _b_play.setEnabled(false);
         _b_play.addActionListener(this);
-        _b_play.setxy(50, 85);
+        _b_play.setxy(40, 85);
         _jp_principal.add(_b_play);
+        
+        /*************** Play Online ***************/
+        _b_play_online = new Bt("#Jouer en ligne !");
+        _b_play_online.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 35));
+        _b_play_online.setGravity(GRAVITY.CENTER);
+        _b_play_online.auto_resize();
+        _b_play_online.setEnabled(false);
+        _b_play_online.addActionListener(this);
+        _b_play_online.setxy(60, 85);
+        _jp_principal.add(_b_play_online);
 
 
 
@@ -153,6 +184,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         super.actionPerformed(e);
         if (e.getSource() == _b_play) {
             lauchegame();
+        } else if (e.getSource() == _b_play_online) {
+        	lauche_online_game();
         } else if (e.getSource() == _tbt_easy) {
             _tbt_medium.setSelected(false);
             _tbt_hard.setSelected(false);
@@ -175,6 +208,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
                             lab2.setSelected(false);
                     }
                     _b_play.setEnabled(true);
+                    _b_play_online.setEnabled(true);
                 }
             }
         }
@@ -187,6 +221,10 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         try {
             new InGame_IHM(_difficulte, _hastag_theme, _fenetre);
         } catch (IOException e1) {}
+    }
+    
+    private void lauche_online_game() {
+    	new Multiplayer_IHM(_hastag_theme, _fenetre);
     }
 }
 

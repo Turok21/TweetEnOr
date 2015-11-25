@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JProgressBar;
 
 import ihm.components.Shared_component;
+import twitter4j.TwitterException;
 import utils.KeyWord;
 import utils.TweetParser;
 import utils.TweetWord;
@@ -26,7 +27,7 @@ public class CtrlTweetEnOr {
     private List<String> _validWords;
     private Shared_component _shared;
     
-    public CtrlTweetEnOr(String word,Shared_component shared) {
+    public CtrlTweetEnOr(String word,Shared_component shared) throws TwitterException, Exception {
     	// Create "cache" directory if does not exist
     	_shared = shared;
     	
@@ -51,13 +52,14 @@ public class CtrlTweetEnOr {
 			_shared._progressbar.setValue(_shared._progressbar.getMaximum());
     	}
     	else {
-    		this._keyWords = TweetParser.findWords(word,_shared);
 			try {
+				this._keyWords = TweetParser.findWords(word,_shared);
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 				oos.writeObject(this._keyWords) ;
 				oos.close();
 			} catch (Exception e) {
 				e.printStackTrace();
+				throw e;
 			}
     	}
         this._invalidWords = new ArrayList<>();
@@ -110,13 +112,23 @@ public class CtrlTweetEnOr {
 
     public static void main(String[] args) {
         System.out.println("CLASS CtrlTweetEnOr IS NOW RUNNING !");
-        CtrlTweetEnOr ctrl = new CtrlTweetEnOr("Ski",new Shared_component());
+        CtrlTweetEnOr ctrl;
+		try {
+			ctrl = new CtrlTweetEnOr("Ski",new Shared_component());
+	        System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
+	        System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
+	        System.out.println("bbbbbbbbbb " + ctrl.isMotValid("bbbbbbbbbb"));
+	        System.out.println("alpha " + ctrl.isMotValid("AlPha"));
+	        System.out.println("alpha " + ctrl.isMotValid("alpha"));
+	        System.out.println("beta " + ctrl.isMotValid("beta"));
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
-        System.out.println("aaaaaaa " + ctrl.isMotValid("aaaaaaa"));
-        System.out.println("bbbbbbbbbb " + ctrl.isMotValid("bbbbbbbbbb"));
-        System.out.println("alpha " + ctrl.isMotValid("AlPha"));
-        System.out.println("alpha " + ctrl.isMotValid("alpha"));
-        System.out.println("beta " + ctrl.isMotValid("beta"));
+
     }
 }

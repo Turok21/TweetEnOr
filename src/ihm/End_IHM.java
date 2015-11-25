@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
+import java.lang.IllegalStateException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
@@ -36,9 +36,21 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	private int _points; // nb point gained
 
 	public static void main(String[] args){		
-		CtrlTweetEnOr verifier = new CtrlTweetEnOr("test", new Shared_component());
-		ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-		new End_IHM(new JFrame(""),0,listword,"test",666);
+		CtrlTweetEnOr verifier;
+		try {
+			verifier = new CtrlTweetEnOr("test", new Shared_component());
+			ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
+			new End_IHM(new JFrame(""),0,listword,"test",666);
+		} catch (Exception e) {
+			if(e instanceof IllegalStateException)
+			{
+				System.out.println("sdffffffffff");
+			}
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	/**
