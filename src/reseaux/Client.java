@@ -11,7 +11,7 @@ public class Client {
 
     public static Socket socket = null;
     public static Thread th1;
-    public static DataExchange de;
+    public DataExchange de;
 
     public Client(String url, int port) {
         System.out.println("Initialisation de la connexion");
@@ -27,7 +27,11 @@ public class Client {
     }
 
     public DataExchange getDataExchange() {
-        return Client.de;
+        return this.de;
+    }
+
+    public void sendObject(DataType type, Object obj) {
+        this.de._emit(type, obj);
     }
 
     public static void main(String[] args) {
@@ -37,7 +41,7 @@ public class Client {
             socket = new Socket(Server.url, Server.port);
 
             System.out.println("Connexion établie avec le serveur"); // Si le message s'affiche c'est que je suis connecté
-            de = new DataExchange(socket);
+            DataExchange de = new DataExchange(socket);
             th1 = new Thread(de);
             th1.start();
 

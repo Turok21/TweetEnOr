@@ -15,7 +15,7 @@ public class Server {
     private static Socket       socket = null;
 
     public static Thread th;
-    public static DataExchange de;
+    public DataExchange de;
 
     public Server(int port) {
         System.out.println("Initialisation de la connexion");
@@ -33,7 +33,11 @@ public class Server {
     }
 
     public DataExchange getDataExchange() {
-        return Client.de;
+        return this.de;
+    }
+
+    public void sendObject(DataType type, Object obj) {
+        this.de._emit(type, obj);
     }
 
     public static void main(String[] args) {
@@ -42,10 +46,10 @@ public class Server {
             System.out.println("Le serveur est à l'écoute du port " + ss.getLocalPort());
             socket = ss.accept();
             System.out.println("Un client s'est connecté");
-            de = new DataExchange(socket);
+            DataExchange de = new DataExchange(socket);
             th = new Thread(de);
             th.start();
-            de.emit(DataType.TEST, "Ceci est un envoie de données");
+            de._emit(DataType.TEST, "Ceci est un envoie de données");
         } catch (IOException e) {
             System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");
         }
