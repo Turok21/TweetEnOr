@@ -127,10 +127,10 @@ public abstract class TweetParser {
      */
     private static List<String> getTweets(String keyWord, Shared_component shared) throws TwitterException, Exception {
     	// Récupération des identifiants Twitter
+    	
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance();
         List<String> listTweets = new ArrayList<>();
-
         shared._progressbar.setMaximum(nbTweetsToGet);
         shared._progressbar.setValue(0);
         shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
@@ -141,19 +141,24 @@ public abstract class TweetParser {
         QueryResult result;
         try {
             result = twitter.search(query);
-            do {
-                for (Status status : result.getTweets()) {
-                    listTweets.add(status.getText());
-                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
-                    shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
-                }
-                query = result.nextQuery();
-                if (query != null) {
-                    result = twitter.search(query);
-                }
-
+            if(result.getCount()  >= nbTweetsToGet)
+            {
+	            do {
+	                for (Status status : result.getTweets()) {
+	                    listTweets.add(status.getText());
+	                    shared._progressbar.setValue(shared._progressbar.getValue()+1);
+	                    shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
+	                }
+	                query = result.nextQuery();
+	                if (query != null) {
+	                    result = twitter.search(query);
+	                }
+	
+	            }
+	            while (query != null && listTweets.size() < nbTweetsToGet);
+            }else{
+            	return listTweets;
             }
-            while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
             // TODO Auto-generated catch block
             //e1.printStackTrace();
@@ -352,8 +357,7 @@ public abstract class TweetParser {
         utf8tweet = unicodeOutlierMatcher.replaceAll(" ");
         return utf8tweet;
     }
-
-
+    
     public static void main(String argc[]) {
         KeyWord keyw;
         
