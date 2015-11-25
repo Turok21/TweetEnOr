@@ -385,6 +385,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		if(Integer.parseInt(_tf_port_joint.getText()) > 1024)
     		{
     			_tf_port_joint.setEditable(false);
+    			_tf_port_joint.setBackground(Color.WHITE);
 	        	return true;
     		}else{
     			_tf_port_joint.setBackground(Color.red);
@@ -403,6 +404,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_loader.setVisible(false);
 		_b_wait_client.setText("Start serveur");
 		_b_create.setEnabled(true);
+		_tf_port_creat.setEditable(true);
+		_tf_pseudo_creat.setEditable(true);
 		_b_joint.setEnabled(true);
 		_progression.setVisible(false);
 	}
@@ -413,6 +416,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_joint.setEnabled(true);
 		_b_create.setEnabled(true);
 		_progression.setVisible(false);
+		_tf_ip.setEditable(true);
+		_tf_port_joint.setEditable(true);
+		_tf_pseudo_joint.setEditable(true);
 	}
 
 	@Override
