@@ -35,7 +35,7 @@ public class Reception implements Runnable {
                     case START:
                         System.out.println("Message START recu : " + data.get_content());
                     default:
-                        System.out.println("Unknown message recu : " + data.get_content());
+                        System.out.println("Unknown = " + data.get_type() + " message recu : " + data.get_content());
                         break;
                 }
 
