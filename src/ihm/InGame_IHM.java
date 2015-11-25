@@ -205,10 +205,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         
         /*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
+        _shared.txt_line1.setGravity(GRAVITY.CENTER);
         _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
         _shared.txt_line1.setForeground(Color.white);
         _shared.txt_line1.settext("Création des données de jeux en cours ...");
         _shared.txt_line1.setxy(50, 64);
+        
         
 
        
@@ -326,17 +328,17 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
 	    _b_hintShuffle.setwh(75, 75);
 	    _b_hintShuffle.auto_resize();
-	    _b_hintShuffle.setxy(1, 85);
+	    _b_hintShuffle.setxy(10, 95);
 	    _b_hintShuffle.addActionListener(this);
 	    _jp_principal.add(_b_hintShuffle);
 	    
 	    /*************** Nombre de lettres ***************/
 	    _b_hintNbLetters = new Bt("Nombre de Lettre");
 	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_LEFT);
+	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
 	    _b_hintNbLetters.setwh(75, 75);
 	    _b_hintNbLetters.auto_resize();
-	    _b_hintNbLetters.setxy(1, 90);
+	    _b_hintNbLetters.setxy(90, 95);
 	    _b_hintNbLetters.addActionListener(this);
 	    _jp_principal.add(_b_hintNbLetters);
 	    
