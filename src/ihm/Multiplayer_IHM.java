@@ -117,10 +117,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_loader.add(_loader);
 		_p_loader.setVisible(false);
 		_jp_principal.add(_p_loader);
-		
-		
-		
-		
+
 		
 		/*************** Bouton crée une partie online ***************/
 		_b_create = new Tbt("Créer une partie en ligne.");
@@ -302,6 +299,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setVisible(true);
     		_progression.setText("Progression");
     		_b_create.setEnabled(false);
+    		_b_connexion.setText("Arreter");
 		}else{
 			_b_connexion.setSelected(false);
 		}
@@ -403,12 +401,18 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	
 	private void cancel_create() {
 		_p_loader.setVisible(false);
-		_progression.setText("Annulé");
+		_b_wait_client.setText("Start serveur");
+		_b_create.setEnabled(true);
+		_b_joint.setEnabled(true);
+		_progression.setVisible(false);
 	}
 	
 	private void cancel_joint() {
 		_p_loader.setVisible(false);
-		_progression.setText("Annulé");
+		_b_connexion.setText("Start connexion");
+		_b_joint.setEnabled(true);
+		_b_create.setEnabled(true);
+		_progression.setVisible(false);
 	}
 
 	@Override
