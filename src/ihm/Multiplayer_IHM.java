@@ -123,16 +123,16 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		
 		/*************** Bouton crée une partie online ***************/
-		_b_create = new Tbt("créer une partie en ligne.");
+		_b_create = new Tbt("Créer une partie en ligne.");
 		_b_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 30));
-		_b_create.setGravity(GRAVITY.CENTER_LEFT);
+		_b_create.setGravity(GRAVITY.TOP_LEFT);
 		_b_create.setxy(10, 10);
 		_b_create.auto_resize();
 		_b_create.addActionListener(this);
 		_jp_principal.add(_b_create);
 		
 		/*************** Bouton rejoidre une partie online  ***************/
-		_b_joint = new Tbt("rejoidre une partie.");
+		_b_joint = new Tbt("Rejoidre une partie.");
 		_b_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 30));
 		_b_joint.setGravity(GRAVITY.TOP_RIGHT);
 		_b_joint.setxy(90, 10);
@@ -141,9 +141,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_jp_principal.add(_b_joint);
 		
 		
-		Txt hastag = new Txt("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hasttag+"</font></html>");
-		hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
-		hastag.auto_resize();
+		Txt hastag = new Txt("");
+		hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 40));
+		hastag.settext("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hasttag+"</font></html>");
 		hastag.setxy(50,5);
 		_jp_principal.add(hastag);
 		
@@ -234,7 +234,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		txt_pseudo_create.setGravity(GRAVITY.CENTER_RIGHT);
 		txt_pseudo_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		txt_pseudo_create.auto_resize();
-		txt_pseudo_create.setOpaque(true);
+		txt_pseudo_create.setOpaque(false);
 		txt_pseudo_create.setxyin(10,5,_p_create);
 		_p_create.add(txt_pseudo_create);
 		
@@ -284,7 +284,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		{
     		_p_loader.setVisible(true);
     		_progression.setVisible(true);
+    		_progression.setText("Progression");
     		_b_joint.setEnabled(false);
+    		_b_wait_client.setText("Arreter");
 		}
 		else
 		{
@@ -296,12 +298,11 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	{	
 		if(pseudo_joint_controle() && port_joint_control() && ip_controle())
 		{		
-			System.out.println("TRUE");
 			_p_loader.setVisible(true);
     		_progression.setVisible(true);
+    		_progression.setText("Progression");
     		_b_create.setEnabled(false);
 		}else{
-			System.out.println("BON TRµOµub");
 			_b_connexion.setSelected(false);
 		}
 	}
