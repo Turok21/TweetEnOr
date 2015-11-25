@@ -79,8 +79,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		/*************** Loader ***************/
 		_loader = new Txt(new ImageIcon("./data/images/loader_ponte.gif"));
 		_loader.setGravity(GRAVITY.CENTER);
-		int width = _loader.getWidth() + 10 ;
-        int height = _loader.getHeight() + 10 ;
+		final int width = _loader.getWidth() + 10 ;
+        	final int height = _loader.getHeight() + 10 ;
 		_loader.setxyin(50,50,width,height);
 		
 		_p_loader = new Pa(null) {    
