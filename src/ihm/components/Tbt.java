@@ -141,7 +141,6 @@ public class Tbt extends JToggleButton {
 		_Px=x;
 		_Py=y;
 		apply_gravity();
-		System.out.println(x+" "+_in_w);
 		setLocation((int)(_in_w*(x/100))-_center_x,(int)(_in_h*(y/100))-_center_y);
 	}
 	public void setx(float x){

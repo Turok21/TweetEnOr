@@ -127,10 +127,10 @@ public abstract class TweetParser {
      */
     private static List<String> getTweets(String keyWord, Shared_component shared) throws TwitterException, Exception {
     	// Récupération des identifiants Twitter
+    	
         TwitterFactory tf = new TwitterFactory(config().build());
         Twitter twitter = tf.getInstance();
         List<String> listTweets = new ArrayList<>();
-
         shared._progressbar.setMaximum(nbTweetsToGet);
         shared._progressbar.setValue(0);
         shared.txt_line1.settext("Récupération des tweets ... " + shared._progressbar.getValue() + "/"+shared._progressbar.getMaximum() + " (1/3)");
@@ -139,6 +139,7 @@ public abstract class TweetParser {
         query.setLang(language); // On ne récup que les tweets en français
         query.count(nbTweetParRequest); // 100 tweets/requete
         QueryResult result;
+        int nbtweet = 0;
         try {
             result = twitter.search(query);
             do {
@@ -150,17 +151,20 @@ public abstract class TweetParser {
                 query = result.nextQuery();
                 if (query != null) {
                     result = twitter.search(query);
+                    nbtweet += result.getCount();
                 }
 
             }
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
-            // TODO Auto-generated catch block
-            //e1.printStackTrace();
         	throw e1;
         } catch (Exception e1){
         	throw e1;
         }
+        
+        if(nbtweet  < nbTweetsToGet)
+        	return new ArrayList<String>();
+        
         return listTweets;
     }
 
@@ -352,8 +356,7 @@ public abstract class TweetParser {
         utf8tweet = unicodeOutlierMatcher.replaceAll(" ");
         return utf8tweet;
     }
-
-
+    
     public static void main(String argc[]) {
         KeyWord keyw;
         

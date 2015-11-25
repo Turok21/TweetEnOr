@@ -3,8 +3,12 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,8 +105,26 @@ public class CtrlTweetEnOr {
         return new TweetWord(null, -1);
     }
 
+    /**
+     * les mot avec leur ponderation
+     * @return
+     */
     public List<TweetWord> getListWords() {
-        return this._keyWords.getListWords();
+    	
+    	if(netIsAvailable())
+    	{
+	    	List<TweetWord>  tw = this._keyWords.getListWords();
+	    	List<TweetWord>  rtnTW = new ArrayList<TweetWord>();
+	        for( TweetWord twTmp :  tw){
+	        	rtnTW.add((isMotValid(twTmp.getWord())));
+	        }
+	     
+	        _invalidWords.clear();
+	        _validWords.clear();
+	    	return rtnTW;
+    	}else{
+    		return null;
+    	}
     }
 
     public boolean isMotAlreadyUse(String Mot) {
@@ -110,6 +132,19 @@ public class CtrlTweetEnOr {
         return false;
     }
 
+    private static boolean netIsAvailable() {                                                                                                                                                                                                 
+        try {                                                                                                                                                                                                                                 
+            final URL url = new URL("https://twitter.com/");                                                                                                                                                                                 
+            final URLConnection conn = url.openConnection();                                                                                                                                                                                  
+            conn.connect();                                                                                                                                                                                                                   
+            return true;                                                                                                                                                                                                                      
+        } catch (MalformedURLException e) {                                                                                                                                                                                                   
+            throw new RuntimeException(e);                                                                                                                                                                                                    
+        } catch (IOException e) {                                                                                                                                                                                                             
+            return false;                                                                                                                                                                                                                     
+        }         
+    }
+    
     public static void main(String[] args) {
         System.out.println("CLASS CtrlTweetEnOr IS NOW RUNNING !");
         CtrlTweetEnOr ctrl;
