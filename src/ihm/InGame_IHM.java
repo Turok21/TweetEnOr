@@ -79,7 +79,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private int _nb_vie_total;
 	private int _maj,_tab;//cheat afficher/cacher les mots
 	
-	
+	private Bt retourConfig;
 
 	public static void main(String[] args) throws FontFormatException, IOException{
 		new InGame_IHM(LEVEL.MEDIUM,"Russie",new JFrame());
@@ -119,6 +119,15 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
 		/*************** chargement des données de jeu(twwets) dans un thread à pars pour ne pas freezer le loader ***************/
+
+	    retourConfig = new Bt("Retour à l'écrande paramètrage");
+	    retourConfig.setFont(arista_light.deriveFont(Font.BOLD,20));
+	    retourConfig.setGravity(GRAVITY.CENTER);
+	    retourConfig.setwh(100, 100);
+	    retourConfig.auto_resize();
+	    retourConfig.setxy(50, 75);
+	    retourConfig.addActionListener(this);
+	    
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -130,13 +139,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			    try {
 					_verifier = new CtrlTweetEnOr(hasttag,_shared);
 				} catch (Exception e) {
-					if(e instanceof IllegalStateException)
+					if(e instanceof IllegalStateException) //credentials missing
 					{
-						System.out.println("sdffffffffff");
+						System.out.println("credentials missing");
+						_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+						_jp_principal.add(retourConfig);
+						_jp_principal.repaint();
+						return;
 					}
 					e.printStackTrace();
+					
 				}
-
+			    
 				_listword = _verifier.getListWords();
 				
 				draw_play_screen(0);//affiche l'ecran de jeu
@@ -643,7 +657,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	verifier( _tf_saisie.getText());
         if( e.getSource() == _b_hint){
         	show_hint_letters();
-        	
+        }
+        if( e.getSource() == retourConfig){
+        	new Config_IHM(_fenetre);
         }
 	}
 	
