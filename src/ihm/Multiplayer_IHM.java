@@ -78,7 +78,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_fram_given = fram;
 	    _hasttag = hastag_theme;
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_Tweet_en_or.jpg",_fram_given,false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
 		
 		
 		
