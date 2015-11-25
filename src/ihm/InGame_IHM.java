@@ -685,7 +685,22 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		  i++;
 		}
 	}
-	
+	private boolean mixWordsAgain(){
+		boolean ret = false;
+		Iterator<String> keySetIterator = wordAna.keySet().iterator();
+		
+		for(Txt w : _listword_label){
+		
+			while(keySetIterator.hasNext()){
+			  String key = keySetIterator.next();
+			  if(wordAna.get(key) == w.getText())
+				  return true;
+			  else
+				  ret = false;
+			}
+		}
+		return ret;
+	}
 /************************Mettre le mot correct ******************************/
 	private void setAnswer(String mot)
 	{
@@ -713,7 +728,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	verifier( _tf_saisie.getText());
         if( e.getSource() == _b_hint){
         	show_hint_letters();
-        	mixWords();
+        	if(!mixWordsAgain()){
+        		mixWords();
+        	}
+        			
         }
         if( e.getSource() == retourConfig){
         	new Config_IHM(_fenetre);
