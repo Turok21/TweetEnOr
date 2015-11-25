@@ -128,18 +128,19 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
 		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
 
+		   retourConfig = new Bt("Retour à l'écran de paramètrage");
+		    retourConfig.setFont(arista_light.deriveFont(Font.BOLD,20));
+		    retourConfig.setGravity(GRAVITY.CENTER);
+		    retourConfig.setwh(100, 100);
+		    retourConfig.auto_resize();
+		    retourConfig.setxy(50, 75);
+		    retourConfig.addActionListener(this);
 		
-		
+		    
 		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
 		/*************** chargement des données de jeu(twwets) dans un thread à pars pour ne pas freezer le loader ***************/
-
-	    retourConfig = new Bt("Retour à l'écrande paramètrage");
-	    retourConfig.setFont(arista_light.deriveFont(Font.BOLD,20));
-	    retourConfig.setGravity(GRAVITY.CENTER);
-	    retourConfig.setwh(100, 100);
-	    retourConfig.auto_resize();
-	    retourConfig.setxy(50, 75);
-	    retourConfig.addActionListener(this);
+		
+	 
 	    
 		new Thread(new Runnable() {
 			@Override
@@ -149,15 +150,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				_listLetters = new ArrayList<Txt>();
 				_listPts = new ArrayList<Txt>();
 
+				
 			    try {
 					_verifier = new CtrlTweetEnOr(hasttag,_shared);
 				} catch (Exception e) {
 					if(e instanceof IllegalStateException) //credentials missing
 					{
-						System.out.println("credentials missing");
 						_shared.txt_line1.setText("Impossible de se connecter à Twitter");
-						_jp_principal.add(retourConfig);
-						_jp_principal.repaint();
+						retourConfig.setVisible(true);
 						return;
 					}
 					e.printStackTrace();
@@ -165,7 +165,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				}
 			    
 				_listword = _verifier.getListWords();
-				
+				if (_listword.size() == 0){
+					retourConfig.setVisible(true);
+					_shared.txt_line1.setText("Il n'y a pas assez de tweets");
+					return;
+				}
 				draw_play_screen(0);//affiche l'ecran de jeu
 
 				_fenetre.remove(_Panel_loader);
@@ -191,7 +195,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fram_given,false);
 		}
 		
-	
+		
 		
 		
 		/*************** chargement et paramétrage du loader twitter  ***************/
@@ -206,6 +210,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _shared.txt_line1.settext("Création des données de jeux en cours ...");
         _shared.txt_line1.setxy(50, 64);
         
+
+       
         
         /*************** ProgressBar ***************/
         _shared._progressbar = new JProgressBar();
@@ -220,6 +226,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         _Panel_loader = new Pa(null);
         _Panel_loader.setSize(_screen);
         _Panel_loader.setBackground(new Color(40, 170, 225));
+        _Panel_loader.add(retourConfig);
+		retourConfig.setVisible(false);
         _Panel_loader.add(_shared.txt_line1);
         _Panel_loader.add(_shared._progressbar);
         _Panel_loader.add(_loader);
@@ -331,9 +339,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_hintNbLetters.setxy(1, 90);
 	    _b_hintNbLetters.addActionListener(this);
 	    _jp_principal.add(_b_hintNbLetters);
-	    
-	 
-	    System.out.println("Les mots ");
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
@@ -731,7 +736,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         
         	
         if( e.getSource() == _b_hintNbLetters){
-        	System.out.println("nb lettre");
         	show_hint_letters();
         }
         
@@ -749,10 +753,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			_b_hintShuffle.setSelected(false);
 			_b_hintShuffle.setEnabled(false);
 		}
-		else
-		{
-			System.out.println("\nMouse clicked\n");
-		}
+		
 		
 	    }
 
@@ -766,7 +767,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         if (e.getKeyCode()==KeyEvent.VK_ENTER)
         	verifier(_tf_saisie.getText());
         /*************** Cheat pour afficher tout les mots non trouver ***************/
-        if (e.getKeyCode()==KeyEvent.VK_CAPS_LOCK){
+        if (e.getKeyCode()==KeyEvent.VK_DOWN){
         	_maj++;
         	if(_maj >= 24){
         		for(Txt mot: _listword_label) {
