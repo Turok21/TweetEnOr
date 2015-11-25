@@ -157,8 +157,6 @@ public abstract class TweetParser {
             }
             while (query != null && listTweets.size() < nbTweetsToGet);
         } catch (TwitterException e1) {
-            // TODO Auto-generated catch block
-            //e1.printStackTrace();
         	throw e1;
         } catch (Exception e1){
         	throw e1;
