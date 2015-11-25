@@ -23,6 +23,8 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.xml.soap.Text;
 
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
@@ -43,12 +45,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	/** */
 	private static final long serialVersionUID = 1L;
 	
-	private Tf _tf_ip,_tf_port,_tf_pseudo;
+	private Tf _tf_ip,_tf_port_joint,_tf_pseudo_joint, _tf_port_creat, _tf_pseudo_creat;
 	
 	private Tbt _b_create, _b_wait_client
 				,_b_joint,_b_connexion;
 	
-	private Txt _loader;
+	private Txt _loader, _progression;
 	
 	private JFrame _fram_given;
 	
@@ -80,7 +82,14 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		
 		
-		
+		/*************Progression **************/
+		_progression = new Txt("Progression");
+		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+		_progression.setForeground(Color.BLACK);
+		_progression.setGravity(GRAVITY.CENTER_LEFT);
+		_progression.setxy(70, 65);
+		_jp_principal.add(_progression);
+		_progression.setVisible(false);
 		
 		/*************** Loader ***************/
 		_loader = new Txt(new ImageIcon("./data/images/loader_ponte.gif"));
@@ -150,13 +159,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_jp_principal.add(_p_joint);
 		
 		
-		_tf_pseudo = new Tf();
-		_tf_pseudo.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_tf_pseudo.setGravity(GRAVITY.CENTER_LEFT);
-		_tf_pseudo.auto_resize();
-		_tf_pseudo.setwh(100, 40);
-		_tf_pseudo.setxyin(10,5,_p_joint);		
-		_p_joint.add(_tf_pseudo);
+		_tf_pseudo_joint = new Tf();
+		_tf_pseudo_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_pseudo_joint.setGravity(GRAVITY.CENTER_LEFT);
+		_tf_pseudo_joint.auto_resize();
+		_tf_pseudo_joint.setwh(100, 40);
+		_tf_pseudo_joint.setxyin(10,5,_p_joint);		
+		_p_joint.add(_tf_pseudo_joint);
 		Txt txt_pseudo_joint = new Txt("Pseudo : ");
 		txt_pseudo_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		txt_pseudo_joint.setGravity(GRAVITY.CENTER_RIGHT);
@@ -180,22 +189,20 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_joint.add(txt_ip_joint);
 		
 		
-		
-		_tf_port = new Tf();
-		_tf_port.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_tf_port.setGravity(GRAVITY.CENTER_LEFT);
-		_tf_port.setxyin(10,25,_p_joint);
-		_tf_port.auto_resize();
-		_tf_port.setwh(100, 40);
-		_p_joint.add(_tf_port);
+		_tf_port_joint = new Tf();
+		_tf_port_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_port_joint.setGravity(GRAVITY.CENTER_LEFT);
+		_tf_port_joint.setxyin(10,25,_p_joint);
+		_tf_port_joint.auto_resize();
+		_tf_port_joint.setwh(100, 40);
+		_p_joint.add(_tf_port_joint);
 		Txt txt_port_joint = new Txt("Port : ");
 		txt_port_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		txt_port_joint.setGravity(GRAVITY.CENTER_RIGHT);
 		txt_port_joint.setxyin(10,25,_p_joint);
 		txt_port_joint.auto_resize();
 		_p_joint.add(txt_port_joint);
-		
-		
+			
 		
 		_b_connexion = new Tbt("Start connexion");
 		_b_connexion.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
@@ -203,7 +210,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_connexion.setxyin(50,90,_p_joint);
 		_b_connexion.addActionListener(this);
 		_p_joint.add(_b_connexion);
-		
 		
 		
 	/************************************ create_ihm *********************************************/
@@ -216,15 +222,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_create.setOpaque(false);
 		_jp_principal.add(_p_create);
 		
-		
-		
-		_tf_pseudo = new Tf();
-		_tf_pseudo.setGravity(GRAVITY.CENTER_LEFT);
-		_tf_pseudo.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_tf_pseudo.auto_resize();
-		_tf_pseudo.setwh(100, 40);
-		_tf_pseudo.setxyin(10,5,_p_create);
-		_p_create.add(_tf_pseudo);
+		_tf_pseudo_creat = new Tf();
+		_tf_pseudo_creat.setGravity(GRAVITY.CENTER_LEFT);
+		_tf_pseudo_creat.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_pseudo_creat.auto_resize();
+		_tf_pseudo_creat.setwh(100, 40);
+		_tf_pseudo_creat.setxyin(10,5,_p_create);
+		_p_create.add(_tf_pseudo_creat);
 		
 		Txt txt_pseudo_create = new Txt("Pseudo : ");
 		txt_pseudo_create.setGravity(GRAVITY.CENTER_RIGHT);
@@ -234,16 +238,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		txt_pseudo_create.setxyin(10,5,_p_create);
 		_p_create.add(txt_pseudo_create);
 		
-	
-		
-		
-		_tf_port = new Tf();
-		_tf_port.setGravity(GRAVITY.CENTER_LEFT);
-		_tf_port.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
-		_tf_port.setxyin(10,15,_p_create);
-		_tf_port.auto_resize();
-		_tf_port.setwh(100, 40);
-		_p_create.add(_tf_port);
+		_tf_port_creat = new Tf();
+		_tf_port_creat.setGravity(GRAVITY.CENTER_LEFT);
+		_tf_port_creat.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+		_tf_port_creat.setxyin(10,15,_p_create);
+		_tf_port_creat.auto_resize();
+		_tf_port_creat.setwh(100, 40);
+		_p_create.add(_tf_port_creat);
 		
 		Txt txt_port_create = new Txt("Port : ");
 		txt_port_create.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
@@ -251,20 +252,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		txt_port_create.setxyin(10,15,_p_create);
 		txt_port_create.auto_resize();
 		_p_create.add(txt_port_create);
-		
-		
+			
 		_b_wait_client = new Tbt("Start serveur");
 		_b_wait_client.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		_b_wait_client.auto_resize();
 		_b_wait_client.setxyin(50,90,_p_create);
 		_b_wait_client.addActionListener(this);
 		_p_create.add(_b_wait_client);
-		
-		
-		
-		
-		
-		
 		
 		show_windows();
 	}
@@ -286,23 +280,134 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	 */
 	private void control_creat()
 	{    	
-    	Pattern rx_port_number = Pattern.compile("^[0-9]+$");
-    	Matcher rx_status = rx_port_number.matcher(_tf_port.getText());
+		if(port_creat_control() && pseudo_creat_controle())
+		{
+    		_p_loader.setVisible(true);
+    		_progression.setVisible(true);
+    		_b_joint.setEnabled(false);
+		}
+		else
+		{
+			_b_wait_client.setSelected(false);
+		}
+	}
+	
+	private void join_control()
+	{	
+		if(pseudo_joint_controle() && port_joint_control() && ip_controle())
+		{		
+			System.out.println("TRUE");
+			_p_loader.setVisible(true);
+    		_progression.setVisible(true);
+    		_b_create.setEnabled(false);
+		}else{
+			System.out.println("BON TRµOµub");
+			_b_connexion.setSelected(false);
+		}
+	}
+	
+	private boolean pseudo_creat_controle()
+	{
+		Pattern rx_pseudo = Pattern.compile("^[0-9]+[aA-zZ]|^[aA-zZ]|[0-9]");
+    	Matcher rx_status = rx_pseudo.matcher(_tf_pseudo_creat.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port.getText()) > 1024)
-    		{
-	    		_p_loader.setVisible(true);
-	        	_tf_pseudo.setEditable(false);
-	        	_tf_port.setEditable(false);
-    		}else{
-    			_tf_port.setBackground(Color.red);
-    			_tf_port.setToolTipText("Le numero de port doit être superieure à 1024");
-    		}
-    	}else{
-    		_tf_port.setBackground(Color.red);
-			_tf_port.setToolTipText("Un nombre entier est attandu !");
+    		_tf_pseudo_creat.setBackground(Color.WHITE);
+    		_tf_pseudo_creat.setEditable(false);
+    		return true;
     	}
-    	
+    	else{
+    		_tf_pseudo_creat.setBackground(Color.RED);
+    		_tf_pseudo_creat.setToolTipText("Nom d'utilisateur attandu");
+    		return false;
+    	}
+	}
+	
+	private boolean pseudo_joint_controle()
+	{
+		Pattern rx_pseudo = Pattern.compile("^[0-9]+[aA-zZ]|^[aA-zZ]|[0-9]");
+    	Matcher rx_status = rx_pseudo.matcher(_tf_pseudo_joint.getText());
+    	if(rx_status.find()){
+    		_tf_pseudo_joint.setEditable(false);
+    		_tf_pseudo_joint.setBackground(Color.WHITE);
+    		return true;
+    	}
+    	else{
+    		_tf_pseudo_joint.setBackground(Color.RED);
+    		_tf_pseudo_joint.setToolTipText("Nom d'utilisateur attandu");
+    		return false;
+    	}
+	}
+	
+	private boolean ip_controle()
+	{
+		Pattern rx_pseudo = Pattern.compile("([0-9]{1,3}\\.){3}[0-9]{1,3}");
+    	Matcher rx_status = rx_pseudo.matcher(_tf_ip.getText());
+    	if(rx_status.find()){
+    		_tf_ip.setEditable(false);
+    		_tf_ip.setBackground(Color.WHITE);
+    		return true;
+    	}
+    	else{
+    		_tf_ip.setBackground(Color.RED);
+    		_tf_ip.setToolTipText("L'adresse IP n'est pas valide");
+    		return false;
+    	}
+	}
+	
+	
+	private boolean port_creat_control()
+	{
+		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
+    	Matcher rx_status = rx_port_number.matcher(_tf_port_creat.getText());
+    	if(rx_status.find()){
+    		if(Integer.parseInt(_tf_port_creat.getText()) > 1024)
+    		{
+	        	_tf_port_creat.setEditable(false);
+	        	_tf_port_creat.setBackground(Color.WHITE);
+	        	return true;
+    		}else{
+    			_tf_port_creat.setBackground(Color.red);
+    			_tf_port_creat.setToolTipText("Le numero de port doit être superieure à 1024");
+    			return false;
+    		}
+    		
+    	}else{
+    		_tf_port_creat.setBackground(Color.red);
+			_tf_port_creat.setToolTipText("Un nombre entier est attandu !");
+			return false;
+    	}
+	}
+	
+	private boolean port_joint_control()
+	{
+		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
+    	Matcher rx_status = rx_port_number.matcher(_tf_port_joint.getText());
+    	if(rx_status.find()){
+    		if(Integer.parseInt(_tf_port_joint.getText()) > 1024)
+    		{
+    			_tf_port_joint.setEditable(false);
+	        	return true;
+    		}else{
+    			_tf_port_joint.setBackground(Color.red);
+    			_tf_port_joint.setToolTipText("Le numero de port doit être superieure à 1024");
+    			return false;
+    		}
+    		
+    	}else{
+    		_tf_port_joint.setBackground(Color.red);
+    		_tf_port_joint.setToolTipText("Un nombre entier est attandu !");
+			return false;
+    	}
+	}
+	
+	private void cancel_create() {
+		_p_loader.setVisible(false);
+		_progression.setText("Annulé");
+	}
+	
+	private void cancel_joint() {
+		_p_loader.setVisible(false);
+		_progression.setText("Annulé");
 	}
 
 	@Override
@@ -318,7 +423,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 			}else{
 				_b_create.setSelected(false);
 				show_joint_ihm();
-				
 			}
         }else if( e.getSource() == _b_create ){
 			if(!_b_create.isSelected()){
@@ -326,13 +430,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        }else{
 	        	_b_joint.setSelected(false);
 	        	show_create_ihm();
-	        	
 			}
-        	
         }else if( e.getSource() == _b_wait_client ){
-        	control_creat();
+        	if(_b_wait_client.isSelected())
+        	{
+        		control_creat();
+        	}else{
+        		cancel_create();
+        	}
         }else if( e.getSource() == _b_connexion ){
-        	_p_loader.setVisible(true);
+        	if(_b_connexion.isSelected())
+        	{
+        		join_control();
+        	}else{
+        		cancel_joint();
+        	}
         }
 		
 
