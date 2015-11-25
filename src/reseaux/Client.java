@@ -9,11 +9,11 @@ import java.net.UnknownHostException;
 
 public class Client extends AbstractUser {
 
-    public Client() {
+    public Client(String ip, int port) {
         super();
         System.out.println("Initialisation de la connexion");
         try {
-            _socket = new Socket(Server.url, Server.port);
+            _socket = new Socket(ip, port);
             System.out.println("Connexion établie avec le serveur");
             _de = new DataExchange(_socket);
             _th = new Thread(_de);
@@ -24,20 +24,14 @@ public class Client extends AbstractUser {
     }
 
     public static void main(String[] args) {
-        try {
-            System.out.println("Demande de connexion");
+        System.out.println("Creation Client");
+        Client clt = new Client("127.0.0.1", 14500);
 
-            _socket = new Socket(Server.url, Server.port);
-
-            System.out.println("Connexion établie avec le serveur"); // Si le message s'affiche c'est que je suis connecté
-            DataExchange de = new DataExchange(_socket);
-            _th = new Thread(de);
-            _th.start();
-
-        } catch (UnknownHostException e) {
-            System.err.println("Impossible de se connecter à l'adresse " + _socket.getLocalAddress());
-        } catch (IOException e) {
-            System.err.println("Aucun serveur à l'écoute du port " + _socket.getLocalPort());
-        }
+        WAIT(5);
+        clt.initData("CLIENTPSEUDO", "COP21");
+        WAIT(20);
+        clt.updateStatus(1, 15);
+        WAIT(10);
+        clt.updateStatus(8, 91);
     }
 }

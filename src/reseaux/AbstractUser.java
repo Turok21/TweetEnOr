@@ -46,4 +46,14 @@ public abstract class AbstractUser implements User {
         sendObject(DataType.WORD_FOUND, nbWordFound);
         sendObject(DataType.SCORE, score);
     }
+
+    public static boolean WAIT(int sec){
+        try {
+            Thread.sleep(sec*10);
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
