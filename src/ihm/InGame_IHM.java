@@ -18,6 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -55,6 +58,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	private ArrayList<Txt> _listword_label;
 	private ArrayList<Txt> _listLetters;
 	private ArrayList<Txt> _listPts;
+	
+	private HashMap<String, String> wordAna;
 	
 	private JFrame _fram_given;
 	
@@ -222,6 +227,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 * Affiche l'ecran de jeux  
 	 * @param redraw : si = 1 une nouvelle fram sera créé
 	 */
+	@SuppressWarnings("unchecked")
 	public void draw_play_screen(int redraw){
 		
 		
@@ -314,6 +320,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
 	    List<Pa> ALletters = new ArrayList<Pa>();
+	    wordAna = new HashMap<>();
+	    
 		float wline=0,hline=0,wline2=0,hline2=0, wline3=0,hline3=0, wline4=0,hline4=0;
 
 	    int i = 0;
@@ -346,12 +354,12 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	      p.setOpaque(false);
 	      p.setBackground(new Color(29, 202, 255,255));
 	      
-			Txt txt = new Txt(""+word.getWord());
+	        wordAna.put(word.getWord(), ""+shuffle(word.getWord()));
+			Txt txt = new Txt(""+ word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
 			txt.setGravity(GRAVITY.CENTER);	
 			
-			System.out.println(txt.getText());
 			_listword_label.add(txt);
 
 			p.add(txt);
@@ -360,6 +368,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			
 			
 			words.add(p);
+			
+			
+			
 			
 /************Hints*****************************************************************************************/
 			
@@ -570,6 +581,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
 	        	}else if(motVerifie.getPonderation() > 0){
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
+	        		setAnswer(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        	}
 	        	_info_player.setText(affichage);
@@ -640,12 +652,56 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_compteur_de_point.auto_resize();
 	}
 	
+/*************************Afficher les indices***********************************/	
 	private void show_hint_letters(){
 		for (Txt l : _listLetters){
 			l.setForeground(new Color(29, 202, 255,255));
 		}
 	}
 	
+	private static String shuffle(String sentence) {
+	    StringBuilder builder = new StringBuilder();
+	        List<Character> letters = new ArrayList<Character>();
+	        for (char letter : sentence.toCharArray()) {
+	            letters.add(letter);
+	        }
+	        if (letters.size() > 2) {
+	            Collections.shuffle(letters.subList(1, letters.size() - 1));
+	        }
+	        for (char letter : letters) {
+	            builder.append(letter);
+	        }
+	    return builder.toString();
+	}
+	
+	private void mixWords(){
+		int i = 0;
+		Iterator<String> keySetIterator = wordAna.keySet().iterator();
+
+		while(keySetIterator.hasNext()){
+		  String key = keySetIterator.next();
+		  _listword_label.get(i).setText(wordAna.get(key));
+		  _listword_label.get(i).setForeground(new Color(255, 255, 255,255));
+		  i++;
+		}
+	}
+	
+/************************Mettre le mot correct ******************************/
+	private void setAnswer(String mot)
+	{
+		int i = 0;
+		for(TweetWord w : _listword)
+		{
+			if (w.getWord().compareTo(mot) != 0)
+			{
+			i++;
+			}
+			else
+			{
+				_listword_label.get(i).setText(mot);
+			}
+		}
+	}
 
 	@Override
 	/**
@@ -657,6 +713,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	verifier( _tf_saisie.getText());
         if( e.getSource() == _b_hint){
         	show_hint_letters();
+        	mixWords();
         }
         if( e.getSource() == retourConfig){
         	new Config_IHM(_fenetre);
