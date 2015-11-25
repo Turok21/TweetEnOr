@@ -20,8 +20,6 @@ public class Emission implements Runnable {
         while (true) {
             System.out.println("Votre message :");
             message = sc.nextLine();
-            System.out.println(message.split(":")[0]);
-            System.out.println(message.split(":")[1]);
             try {
                 out.writeObject(new Data(DataType.TEST, message));
             } catch (IOException e) {

@@ -11,7 +11,7 @@ public class Data implements Serializable {
     // can be => "KeyWord"
     // can be => "Score"
     // can be => "NbWordFounded":
-    private Object _content;
+    private Object   _content;
 
     public Data(DataType type, Object content) {
         this._type = type;
@@ -22,7 +22,7 @@ public class Data implements Serializable {
         return _type;
     }
 
-    public void set_type(DataType _type){
+    public void set_type(DataType _type) {
         this._type = _type;
     }
 
