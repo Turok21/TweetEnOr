@@ -88,10 +88,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	protected String _hashtag;
 	
-	protected int _nb_point;
 	protected int _nb_vie;
 	protected LEVEL _difficulte;
 	protected int _maj,_tab;//cheat afficher/cacher les mots
+	
+	protected int _mots_trouver;
 	
 	protected Bt _retourConfig;
 
@@ -126,7 +127,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _hashtag = hastag_theme;
 	    _nb_vie = difficulte.getvalue();
 	    _difficulte = difficulte;
-		_nb_point = 0;
+	    _mots_trouver = 0;
 		
 		_j_local = new Joueur();
 		
@@ -305,7 +306,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    
 	  
 	    /*************** _compteur_de_point ***************/
-	    _compteur_de_point = new Txt("Points :"+_nb_point);	 
+	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
 	    _compteur_de_point.setxy((float)98.5,(float)3);
@@ -584,7 +585,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		 _fenetre.repaint();
 		 
 		 if(_nb_vie == 0)
-			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,_hashtag,_nb_point);
+			 new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,_hashtag,_j_local.getPoint());
 	}
 	/**
 	 * vérifier les mots tapé par l'utilisateur
@@ -623,16 +624,17 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		setAnswer(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
+	        		_mots_trouver ++;
 	        	}
 	        	_info_player.setText(affichage);
 	    	    _info_player.auto_resize();
 	    	    
-	        	if(_nb_point >= 100){
-					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,_hashtag,_nb_point);
+	        	if(_mots_trouver >= 10){
+					new End_IHM(_fenetre, 1,(ArrayList<TweetWord>)_listword,_hashtag,_j_local.getPoint());
 					dorepaite = false;
 				}
 				if(_nb_vie == 0){
-					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,_hashtag,_nb_point);
+					new End_IHM(_fenetre, 0,(ArrayList<TweetWord>)_listword,_hashtag,_j_local.getPoint());
 					dorepaite = false;
 				}
 	        	_tf_saisie.setText("");
@@ -687,8 +689,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			}
 			i++;
 		}
-		_nb_point += nb_point;
-		_compteur_de_point.setText("Points "+_nb_point);
+		_j_local.addPoint(nb_point);
+		_compteur_de_point.setText("Points "+_j_local.getPoint());
 		_compteur_de_point.auto_resize();
 	}
 	

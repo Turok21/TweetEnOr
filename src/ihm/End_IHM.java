@@ -16,6 +16,7 @@ import ihm.components.Bt;
 import ihm.components.Shared_component;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import utils.Joueur;
 import utils.TweetWord;
 import Sounds.Player;
 
@@ -101,25 +102,24 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * @param hastag hashtag played
 	 * @param point nb point gained
 	 */
-	public End_IHM(JFrame fram,ArrayList<TweetWord> listword,String hastag,String pseudo, int point,
-			String pseudo_adversaire,int points_adversaire) {
+	public End_IHM(JFrame fram, CtrlTweetEnOr cteo,Joueur local,Joueur distant) {
 		super();
-		_pseudo_adversaire = pseudo_adversaire;
-		_pseudo = pseudo;
-		_hastag = hastag;
-		_points = point;
-		_points_adversaire = points_adversaire;
+		_pseudo_adversaire = distant.getPseudo();
+		_points_adversaire = distant.getPoint();
+		_pseudo = local.getPseudo();
+		_points = local.getPoint();
+		_hastag = cteo.getWord();
 		
 		int fin = 0;
 		
-		if(point < points_adversaire){
-			loose_screen_multi(fram, listword);
+		if(_points < _points_adversaire){
+			loose_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 0;
-		}else if(point == points_adversaire){
-			equality_screen_multi(fram, listword);
+		}else if(_points == _points_adversaire){
+			equality_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 2;
 		}else{
-			win_screen_multi(fram, listword);
+			win_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 1;
 		}
 	    
@@ -218,8 +218,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * @param fram the main JFrame
 	 * @param fin she wan
 	 * @param listword liste of all xord
-	 */
-	
+	 */	
 	private void win_screen(JFrame fram,ArrayList<TweetWord> listword){
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram, false);

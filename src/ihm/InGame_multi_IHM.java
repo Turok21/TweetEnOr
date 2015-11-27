@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,6 +30,7 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import twitter4j.TwitterException;
 import utils.Joueur;
 import utils.TweetParser;
@@ -38,13 +41,15 @@ public class InGame_multi_IHM extends InGame_IHM{
 	
 	protected Joueur _j_distant;
 	
+	protected boolean _timer_is_running;
+	
+	Txt _timer;
 	
 	
 	@Override protected void load_vie_img(){}
 	@Override protected void drawloader(int redraw){}
 	@Override protected void load_game_data(){}
 	@Override protected void redraw_vie(){}
-	@Override protected void loose_vie(){}
 	
 	
 	public static void main(String[] args) throws TwitterException, Exception{
@@ -80,14 +85,119 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_j_local = j_local;
 		_j_distant = j_distant;
 
+
+		_timer_is_running = false;
 		
 		
 		draw_multiplayer_screen();//affiche l'ecran de jeu
+		
+		start_timer();
 
 	}
 	
 
-	@Override protected void verifier(String mot_a_CTEO){}
+	@Override protected void loose_vie(){
+		 
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playDie();
+			}
+		}).start();
+	}
+	@Override protected void verifier(String mot_a_CTEO){
+
+		boolean dorepaite = true;
+		player = new Player();
+		mot_a_CTEO = mot_a_CTEO.trim();
+		if(mot_a_CTEO.isEmpty()){
+			_info_player.setText("Veuillez saisir un (ou plusieurs) mot !");
+		    _info_player.auto_resize();
+		}
+		else {
+			List<String> mots_a_CTEO = Arrays.asList(mot_a_CTEO.split(" "));
+			String affichage  = "";
+			for(String mot: mots_a_CTEO) {
+				mot = TweetParser.cleanWord(mot);
+				if(mot.isEmpty()) {
+					affichage += "Un des mots proposé est invalide, il a été ignoré ! ";
+					continue;
+				}
+	        	TweetWord motVerifie = _CTEO.isMotValid(mot);
+	        	
+	        	if(motVerifie.getPonderation() == -1){
+	        		affichage += "Le mot " + mot + " est incorrect ! ";
+	        		loose_vie();
+	        	}else if(motVerifie.getPonderation() == -2){
+	        		player.playBadAnswer();
+	        		affichage += "Le mot " + mot + " a déja été proposé ! ";
+	        	}else if(motVerifie.getPonderation() == -3){
+	        		player.playBadAnswer();
+	        		affichage += "Le mot " + mot  + " a déja été proposé et correspond à " + motVerifie.getWord() + " ! ";
+	        	}else if(motVerifie.getPonderation() > 0){
+	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
+	        		setAnswer(motVerifie.getWord());
+	        		add_point(motVerifie.getPonderation(), motVerifie);
+	        		_mots_trouver ++;
+	        	}
+	        	_info_player.setText(affichage);
+	    	    _info_player.auto_resize();
+	    	    
+	        	if(_mots_trouver >= 10){
+	        		end_game();
+					dorepaite = false;
+				}
+	        	_tf_saisie.setText("");
+			}
+		}
+		
+		if(dorepaite)
+			_fenetre.repaint();
+		
+		
+	}
+	
+	private void start_timer(){
+		
+		if(!_timer_is_running){
+			_timer_is_running = true;
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					long limit = 16;
+					long t0 = System.currentTimeMillis();
+					long old = 0;
+					while((System.currentTimeMillis())-(t0)  < (limit)*1000 ){
+						
+						long t = (System.currentTimeMillis())-(t0);
+						
+						long tm = (limit-(t/1000)-1);
+						if(tm < 5 && old != tm){
+							old = tm;
+							_timer.setFont(arista.deriveFont(Font.TRUETYPE_FONT,30+((6-tm)*5)));
+							_timer.setForeground(new Color((int)(125+((5-tm)*25)), (int)0, (int)0));
+							_jp_principal.repaint();
+						}
+						
+						
+						_timer.settext((limit-(t/1000)-1) +"."+ ((100-(t%1000)/10)-1) );
+						try {
+							Thread.sleep(2);
+						} catch (InterruptedException e) {}
+					}
+					end_game();
+					_timer_is_running = false;
+				}
+			}).start();
+		}
+		
+	}
+	
+	public void end_game(){
+		new End_IHM(_fenetre, _CTEO,_j_local,_j_distant);
+	}
+	
 	
 	
 	public void draw_multiplayer_screen(){
@@ -109,7 +219,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _jp_principal.add(_tf_saisie);
 
 	    
-	  
+		  _timer = new Txt();
+		  _timer.setxy(5, 10);
+		  _timer.setGravity(GRAVITY.BOTTOM_LEFT);
+		  _timer.setFont(arista.deriveFont(Font.TRUETYPE_FONT,30));
+		  _jp_principal.add(_timer);
+	    
 	    /*************** _compteur_de_point ***************/
 	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
@@ -358,11 +473,6 @@ public class InGame_multi_IHM extends InGame_IHM{
 		show_windows();
 	}
 	
-
-
-	@Override protected void add_point(int nb_point,TweetWord mots){
-		
-	}
 	
 	
 	
