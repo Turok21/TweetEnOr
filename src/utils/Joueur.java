@@ -14,10 +14,10 @@ public class Joueur {
 	}
 	
 	private void construct(String pseudo,int point){
-		if(pseudo != "") {
+		if(pseudo != "") 
 			_pseudo = pseudo;
-		}
-		_pseudo = "Player";	
+		else
+			_pseudo = "unknown";	
 		_points = point;	
 	}
 	

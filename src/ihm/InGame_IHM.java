@@ -61,7 +61,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	protected Txt _loader;
 	protected Txt _info_player;
-	protected Txt _compteur_de_point;
+	protected Txt _compteur_de_point,_compteur_de_point_adversaire;
 	protected Txt _t_hashtag;
 	protected ArrayList<Txt> _vie;
 	protected ArrayList<Txt> _listword_label;
@@ -753,6 +753,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 */
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
+		
         if( e.getSource() == _b_verifier)
         	verifier( _tf_saisie.getText());
         
@@ -800,6 +801,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	_tab = 0;	
         }else
         	_maj = 0;
+        
+        if (e.getKeyCode() == KeyEvent.VK_EQUALS)
+        	_b_hintShuffle.setSelected(true);
         
 
         /*************** Cheat pour cacher tout les mots non trouver ***************/

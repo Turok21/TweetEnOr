@@ -219,18 +219,27 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _jp_principal.add(_tf_saisie);
 
 	    
-		  _timer = new Txt();
-		  _timer.setxy(5, 10);
-		  _timer.setGravity(GRAVITY.BOTTOM_LEFT);
-		  _timer.setFont(arista.deriveFont(Font.TRUETYPE_FONT,30));
-		  _jp_principal.add(_timer);
-	    
+	    /*********** Timer ***********/
+		 _timer = new Txt();
+		 _timer.setxy(5, 10);
+		 _timer.setGravity(GRAVITY.BOTTOM_LEFT);
+		 _timer.setFont(arista.deriveFont(Font.TRUETYPE_FONT,30));
+		 _jp_principal.add(_timer);
+
+		 
 	    /*************** _compteur_de_point ***************/
-	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
+	    _compteur_de_point = new Txt(_j_local.getPseudo()+" : "+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
-	    _compteur_de_point.setxy((float)98.5,(float)3);
+	    _compteur_de_point.setxy((float)95,(float)3);
 	    _jp_principal.add(_compteur_de_point);
+	    
+	    /*************** _compteur_de_point ***************/ 
+	    _compteur_de_point_adversaire = new Txt(_j_distant.getPseudo()+" : "+_j_distant.getPoint());	 
+	    _compteur_de_point_adversaire.setFont(arista_light.deriveFont(32));
+	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_LEFT);
+	    _compteur_de_point_adversaire.setxy((float)96,(float)3);
+	    _jp_principal.add(_compteur_de_point_adversaire);
 	    
 
 	    /*************** _t_hashtag ***************/
