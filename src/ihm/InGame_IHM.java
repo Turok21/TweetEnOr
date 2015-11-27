@@ -49,66 +49,59 @@ import utils.TweetWord;
 
 public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListener, MouseListener{
 
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
-	private Tf _tf_saisie;
+	protected Tf _tf_saisie;
 	
-	private Bt _b_verifier;
+	protected Bt _b_verifier;
 	
-	private Tbt _b_hintShuffle;
-	private Bt _b_hintNbLetters;
-	private Tbt _b_hintColor;
+	protected Tbt _b_hintShuffle;
+	protected Bt _b_hintNbLetters;
+	protected Tbt _b_hintColor;
 	
-	private Txt _loader;
-	private Txt _info_player;
-	private Txt _compteur_de_point;
-	private Txt _t_hashtag;
-	private ArrayList<Txt> _vie;
-	private ArrayList<Txt> _listword_label;
-	private ArrayList<Txt> _listLetters;
-	private ArrayList<Txt> _listPts;
+	protected Txt _loader;
+	protected Txt _info_player;
+	protected Txt _compteur_de_point;
+	protected Txt _t_hashtag;
+	protected ArrayList<Txt> _vie;
+	protected ArrayList<Txt> _listword_label;
+	protected ArrayList<Txt> _listLetters;
+	protected ArrayList<Txt> _listPts;
 	
-	private HashMap<String, String> wordAna;
+	protected HashMap<String, String> wordAna;
 	
-	private JFrame _fram_given;
+	protected JFrame _fram_given;
 	
-	private Pa _Panel_loader;
+	protected Pa _Panel_loader;
 	
-	private Shared_component _shared;//objet d'échange avec CtrlTweetEnOr pour la bar de progression du loader
+	protected Shared_component _shared;//objet d'échange avec CtrlTweetEnOr pour la bar de progression du loader
 	
-	private BufferedImage _Buffered_image_mort,_Buffered_image_vie;
+	protected BufferedImage _Buffered_image_mort,_Buffered_image_vie;
 	
-	private Image _image_mort,_image_vie;
+	protected Image _image_mort,_image_vie;
 	
-	private Player player;//gestionnaire des sons
+	protected Player player;//gestionnaire des sons
 	
-	private CtrlTweetEnOr _CTEO;
+	protected List<TweetWord> _listword;
 	
-	private List<TweetWord> _listword;
+	protected Joueur _j_local;
 	
-	private Joueur _j_local,_j_distant;
+	protected String _hashtag;
 	
-	private String _hashtag;
+	protected int _nb_point;
+	protected int _nb_vie;
+	protected LEVEL _difficulte;
+	protected int _maj,_tab;//cheat afficher/cacher les mots
 	
-	private int _nb_point;
-	private int _nb_vie;
-	private LEVEL _difficulte;
-	private int _maj,_tab;//cheat afficher/cacher les mots
-	
-	private boolean _is_multi;
-	
-	private Bt _retourConfig;
+	protected Bt _retourConfig;
 
-	private MouseListener ml;
+	protected CtrlTweetEnOr _CTEO;
+	
+	protected MouseListener ml;
 
 	public static void main(String[] args) throws TwitterException, Exception{
-		//new InGame_IHM(LEVEL.MEDIUM,"StarWars",new JFrame());
-		Shared_component shared = new Shared_component();
-		shared._progressbar = new JProgressBar();
-		shared.txt_line1 = new Txt(); 
-		try {
-			new InGame_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
-		} catch (Exception e) {};
+		new InGame_IHM(LEVEL.MEDIUM,"StarWars",new JFrame());
+		
 	}
 	
 
@@ -134,32 +127,45 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _nb_vie = difficulte.getvalue();
 	    _difficulte = difficulte;
 		_nb_point = 0;
-		_is_multi = false;
 		
 		_j_local = new Joueur();
-		_j_distant = null;
 		
-		/*************** chargement des images pour les vies ***************/
-		_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
-		_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
-		_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
-		_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		_listword_label = new ArrayList<Txt>();
+
+		_listLetters = new ArrayList<Txt>();
+		_listPts = new ArrayList<Txt>();
 		
+		
+		load_vie_img();
 		    
 		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
 		
+		load_game_data();
 		
 		
+		
+	}
+	
+	
+	
+	protected void load_vie_img(){
+		/*************** chargement des images pour les vies ***************/
+		try {
+			_Buffered_image_mort = ImageIO.read(new File("./data/images/dead_bullet.png"));
+			_Buffered_image_vie = ImageIO.read(new File("./data/images/vie.png"));
+			_image_mort = _Buffered_image_mort.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+			_image_vie = _Buffered_image_vie.getScaledInstance(45, 94, Image.SCALE_SMOOTH);
+		} catch (IOException e) {
+			System.out.println("ERROR : images vie oiseaux impossible à charger => "+ e.getMessage());
+		}
+		
+	}
+	protected void load_game_data(){
 		/*************** chargement des données de jeu(twwets) dans un thread à pars pour ne pas freezer le loader ***************/	    
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				_listword_label = new ArrayList<Txt>();
-
-				_listLetters = new ArrayList<Txt>();
-				_listPts = new ArrayList<Txt>();
-
-				
+								
 			    try {
 					_CTEO = new CtrlTweetEnOr(_hashtag,_shared);
 				} catch (Exception e) {
@@ -173,7 +179,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 					
 				}
 			    
+			  
 				_listword = _CTEO.getListWords();
+				System.out.println(_listword);
 				if (_listword.size() == 0){
 					_retourConfig.setVisible(true);
 					_shared.txt_line1.setText("Il n'y a pas assez de tweets");
@@ -185,140 +193,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				_fenetre.getContentPane().repaint();
 			}
 		}).start();
-		
-		
 	}
-	
-	
-	
-	/**
-	 * Constructeur 
-	 * 
-	 * @param hastag_theme
-	 * @param fram
-	 * @param j_local
-	 * @param j_distant
-	 * @throws IOException
-	 */
-	public InGame_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,JFrame fram) throws IOException {
-		/*************** initialisation des variables ***************/
-		super();
-		_maj = 0;
-		_tab = 0;
-		_fram_given = fram;
-		
-		_CTEO = cteo;
-	    _hashtag = "jhghjgjhgh";//_CTEO.gethashtag();
-	    _listword = _CTEO.getListWords();
-	    
-		_is_multi = true;
-
-		_j_local = j_local;
-		_j_distant = j_distant;
-
-		
-		
-		draw_multiplayer_screen();//affiche l'ecran de jeu
-
-		
-		
-	}
-	
-	/**
-	 * Affiche l'ecran de jeux multijoueur
-	 */
-	public void draw_multiplayer_screen(){
-		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
-		
-
-	    _fenetre.addKeyListener(this);
-		_jp_principal.addKeyListener(this);
-		
-		
-		 /*************** _tf_saisie ***************/
-	    _tf_saisie = new Tf(50);
-	    _tf_saisie.setVisible(true);
-	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
-	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
-	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50, 45);
-	    _tf_saisie.setFocusable(true);
-	    _jp_principal.add(_tf_saisie);
-
-	    
-	  
-	    /*************** _compteur_de_point ***************/
-	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
-	    _compteur_de_point.setFont(arista_light.deriveFont(32));
-	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
-	    _compteur_de_point.setxy((float)98.5,(float)3);
-	    _jp_principal.add(_compteur_de_point);
-	    
-
-	    /*************** _t_hashtag ***************/
-	    _t_hashtag = new Txt("#"+_hashtag);
-	    _t_hashtag.setForeground(Color.blue);
-	    _t_hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
-	    _t_hashtag.auto_resize();
-	    _t_hashtag.setxy(50, 33);
-	    _jp_principal.add(_t_hashtag);
-
-	
-	    /*************** _info_player déchange avec l'utilisateur ***************/
-	    _info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
-	    _info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
-	    _info_player.auto_resize();
-	    _info_player.setxy(50, 56);
-	    _jp_principal.add(_info_player);
-	    
-	    
-	    /*************** _b_verifier ***************/
-	    _b_verifier = new Bt("vérifier");
-	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
-	    _b_verifier.setGravity(GRAVITY.CENTER);
-	    _b_verifier.setwh(150, 75);
-	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 52);
-		_b_verifier.addActionListener(this);
-	    _jp_principal.add(_b_verifier);
-	    
-	    /*************** Anagramme ***************/
-	    _b_hintShuffle = new Tbt("Anagramme");
-	    _b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
-	    _b_hintShuffle.setwh(75, 75);
-	    _b_hintShuffle.auto_resize();
-	    _b_hintShuffle.setxy(10, 95);
-	    _b_hintShuffle.addActionListener(this);
-	    _jp_principal.add(_b_hintShuffle);
-	    
-	    /*************** Nombre de lettres ***************/
-	    _b_hintNbLetters = new Bt("Nombre de Lettre");
-	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
-	    _b_hintNbLetters.setwh(75, 75);
-	    _b_hintNbLetters.auto_resize();
-	    _b_hintNbLetters.setxy(90, 95);
-	    _b_hintNbLetters.addActionListener(this);
-	    _jp_principal.add(_b_hintNbLetters);
-	    
-		
-		
-		
-		
-		
-		show_windows();
-	}
-	
-	
 	
 	/**
 	 * drawloader
 	 * @param redraw : si = 1 une nouvelle fram sera créé
 	 * @param redraw
 	 */
-	public void drawloader(int redraw){
+	protected void drawloader(int redraw){
 		
 		
 		if(redraw == 1){
@@ -391,7 +273,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 * Affiche l'ecran de jeux  
 	 * @param redraw : si = 1 une nouvelle fram sera créé
 	 */
-	public void draw_play_screen(int redraw){
+	protected void draw_play_screen(int redraw){
 		
 		
 		if(redraw == 1){
@@ -405,6 +287,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	    _fenetre.addKeyListener(this);
 		_jp_principal.addKeyListener(this);
+		
+		
+		
 		
 		
 		 /*************** _tf_saisie ***************/
@@ -679,19 +564,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		show_windows();
 	}
-	
-	
-	
-	private void draw_hint(){
-		
-	}
-	
+
 	
 	/**
 	 * reraw vie 
 	 * Rafraichie les vies(oiseaux en haut a gauche) 
 	 */
-	private void redraw_vie(){		
+	protected void redraw_vie(){		
 		 for(int i = 0;i<_difficulte.getvalue();i++){
 			 Image myPicture = null;
 		    	if(i < _nb_vie){
@@ -711,7 +590,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 * vérifier les mots tapé par l'utilisateur
 	 * @param mot_a_CTEO
 	 */
-	public void verifier(String mot_a_CTEO){
+	protected void verifier(String mot_a_CTEO){
 
 		boolean dorepaite = true;
 		player = new Player();
@@ -770,7 +649,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 * loose_vie
 	 * enleve une vie au joueur
 	 */
-	private void loose_vie(){
+	protected void loose_vie(){
 	 
 		new Thread(new Runnable() {
 			@Override
@@ -788,7 +667,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 * @param nb_point
 	 * @param mots
 	 */
-	private void add_point(int nb_point,TweetWord mots){
+	protected void add_point(int nb_point,TweetWord mots){
 		
 		new Thread(new Runnable() {
 			@Override
@@ -814,13 +693,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	}
 	
 /*************************Afficher les indices***********************************/	
-	private void show_hint_letters(){
+	protected void show_hint_letters(){
 		for (Txt l : _listLetters){
 			l.setForeground(new Color(29, 202, 255,255));
 		}
 	}
 	
-	private static String shuffle(String sentence) {
+	protected static String shuffle(String sentence) {
 	    StringBuilder builder = new StringBuilder();
         List<Character> letters = new ArrayList<Character>();
         for (char letter : sentence.toCharArray()) {
@@ -835,7 +714,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    return builder.toString();
 	}
 	
-	private void mixWords(String pan_name){
+	protected void mixWords(String pan_name){
 		int j = 0;
 		while(j < _listword_label.size()){
 			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
@@ -846,7 +725,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 	}
 /************************Mettre le mot correct ******************************/
-	private void setAnswer(String mot)
+	protected void setAnswer(String mot)
 	{
 		int i = 0;
 		for(TweetWord w : _listword)
@@ -862,6 +741,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}
 	}
 
+	
+	
+	
+	
 	@Override
 	/**
 	 * gère le click sur un bouton
@@ -931,17 +814,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	_tab = 0;
     }
 
-
-
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -949,17 +826,11 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 	}
 
-
-
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {

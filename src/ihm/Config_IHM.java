@@ -60,9 +60,12 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         
         boolean is_net = true;
 		try {
-			URL url = new URL("http://www.google.fr");
+			URL url = new URL("https://twitter.com/");
 			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
 			urlConn.connect();
+			if(	urlConn.getResponseCode() != 200){
+				is_net = false;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			is_net = false;
