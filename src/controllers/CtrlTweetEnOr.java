@@ -36,7 +36,6 @@ public class CtrlTweetEnOr {
     public CtrlTweetEnOr(String word,Shared_component shared) throws TwitterException, Exception {
     	// Create "cache" directory if does not exist
     	_shared = shared;
-    	
     	_word = word;
     	File directory = new File("cache");
     	directory.mkdirs();
@@ -119,20 +118,14 @@ public class CtrlTweetEnOr {
      */
     
     private void listeWordsPonderee() {
-    	if(netIsAvailable())
-    	{
-	    	List<TweetWord>  tw = this._keyWords.getListWords();
-	    	_liste_word_pondere = new ArrayList<TweetWord>();
-	        for( TweetWord twTmp :  tw){
-	        	_liste_word_pondere.add((isMotValid(twTmp.getWord())));
-	        }
-	     
-	        _invalidWords.clear();
-	        _validWords.clear();
-	    	
-    	}else{
-    		_liste_word_pondere = null;
-    	}
+    	List<TweetWord>  tw = this._keyWords.getListWords();
+    	_liste_word_pondere = new ArrayList<TweetWord>();
+        for( TweetWord twTmp :  tw){
+        	_liste_word_pondere.add((isMotValid(twTmp.getWord())));
+        }
+     
+        _invalidWords.clear();
+        _validWords.clear();
 	}
     public List<TweetWord> getListWords() {
     	
