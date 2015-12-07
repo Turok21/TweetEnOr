@@ -571,8 +571,6 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.setxy(50,70);
 		_jp_principal.add(_b_again);
 		
-		
-	    
 	}
 
 	@Override
