@@ -68,11 +68,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener, KeyListe
 	protected ArrayList<Txt> _listLetters;
 	protected ArrayList<Txt> _listPts;
 
-	protected String _coloredPan;
+	protected ArrayList<String> _coloredPan;
 	protected ArrayList<String> _AnaPan;
 	protected Txt _msg;
 	protected Integer _nbAna;
 	protected Txt _nbAnaCpt;
+	protected Integer _nbColor;
+	protected Txt _nbColorCpt;
 
 	protected HashMap<String, String> wordAna;
 
@@ -132,7 +134,22 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener, KeyListe
 		_nb_vie = difficulte.getvalue();
 		_difficulte = difficulte;
 		_mots_trouver = 0;
-		_nbAna = 3;
+		
+		switch(_difficulte){ 
+			case EASY:
+				_nbAna = 3;
+				_nbColor = 3;
+			break;
+			case MEDIUM :
+				_nbAna = 2;
+				_nbColor = 2;
+			break;
+			case HARD :
+				_nbAna = 1;
+				_nbColor = 1;
+			break;
+		}
+		
 
 		_j_local = new Joueur();
 
@@ -396,6 +413,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener, KeyListe
 		_nbAnaCpt.setVisible(true);
 
 		_AnaPan = new ArrayList<String>();
+		
+		/********************** Cpt Couleur ****************************/
+		_nbColorCpt = new Txt();
+		_nbColorCpt.settext(_nbColor.toString());
+		_nbColorCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
+		_nbColorCpt.setForeground(new Color(0, 0, 0, 255));
+		_nbColorCpt.setGravity(GRAVITY.CENTER);
+		_nbColorCpt.setxy(60, 95);
+		_jp_principal.add(_nbColorCpt);
+		_nbColorCpt.setVisible(true);
+
+		 _coloredPan = new ArrayList<String>();
 
 		/***************
 		 * Gestion de l'affichage des mots à trouver
@@ -825,7 +854,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener, KeyListe
 			Pa panel = (Pa) e.getSource();
 			String c = panel.getName();
 			_AnaPan.add(c);
-			if (_coloredPan != c) {
+			if (!_coloredPan.contains(c)) {
 				mixWords(c);
 				_msg.setVisible(false);
 				_nbAna--;
@@ -853,7 +882,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener, KeyListe
 				Color(pan_name);
 				_b_hintColor.setSelected(false);
 				_b_hintColor.setEnabled(false);
-				_coloredPan = pan_name;
+				_coloredPan.add(pan_name);
 			} else {
 				_msg.setText("Choisissez un autre mot");
 				_msg.auto_resize();
