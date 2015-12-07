@@ -16,6 +16,7 @@ import ihm.components.Bt;
 import ihm.components.Shared_component;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import utils.Joueur;
 import utils.TweetWord;
 import Sounds.Player;
 
@@ -40,8 +41,12 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		try {
 			verifier = new CtrlTweetEnOr("Microsoft", new Shared_component());
 			ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-			new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
-			//new End_IHM(new JFrame(""),listword,"Microsoft","Player 1",100,"un autre ",180);
+			//new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
+			Joueur j1 = new Joueur("J1");
+			Joueur j2 = new Joueur("J2");
+			j1.addPoint(20);
+			j2.addPoint(20);
+			new End_IHM(new JFrame(""),verifier,j1,j2);
 		} catch (Exception e) {
 			if(e instanceof IllegalStateException){
 				System.out.println("sdffffffffff");
@@ -96,30 +101,29 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	/**
 	 * 
 	 * @param fram the maine JFrame
-	 * @param fin did She win (1) or loose(0)
+	 * @param fin did he win (1) or loose(0)
 	 * @param listword liste of the word she had to found
 	 * @param hastag hashtag played
 	 * @param point nb point gained
 	 */
-	public End_IHM(JFrame fram,ArrayList<TweetWord> listword,String hastag,String pseudo, int point,
-			String pseudo_adversaire,int points_adversaire) {
+	public End_IHM(JFrame fram, CtrlTweetEnOr cteo,Joueur local,Joueur distant) {
 		super();
-		_pseudo_adversaire = pseudo_adversaire;
-		_pseudo = pseudo;
-		_hastag = hastag;
-		_points = point;
-		_points_adversaire = points_adversaire;
+		_pseudo_adversaire = distant.getPseudo();
+		_points_adversaire = distant.getPoint();
+		_pseudo = local.getPseudo();
+		_points = local.getPoint();
+		_hastag = cteo.getWord();
 		
 		int fin = 0;
 		
-		if(point < points_adversaire){
-			loose_screen_multi(fram, listword);
+		if(_points < _points_adversaire){
+			loose_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 0;
-		}else if(point == points_adversaire){
-			equality_screen_multi(fram, listword);
+		}else if(_points == _points_adversaire){
+			equality_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 2;
 		}else{
-			win_screen_multi(fram, listword);
+			win_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 1;
 		}
 	    
@@ -218,8 +222,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * @param fram the main JFrame
 	 * @param fin she wan
 	 * @param listword liste of all xord
-	 */
-	
+	 */	
 	private void win_screen(JFrame fram,ArrayList<TweetWord> listword){
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram, false);
@@ -340,7 +343,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        	txt.setxy(20, 22+(9*k));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(78, 22+(9*(k-1)));
+	        	txt.setxy(78, 22+(50*(k-1)));
 	        }
 	        k++;
 			_jp_principal.add(txt);
@@ -368,7 +371,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private void equality_screen_multi(JFrame fram,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram, false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_reseau_egalite.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 			
