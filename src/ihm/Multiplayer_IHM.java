@@ -487,7 +487,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         			new Thread(new Runnable() {
         				@Override
         				public void run() {
-        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText(),_shared));
+        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared));
         					if(!se.create_server()){
 	    						cancel_joint();
 	    						_progression.setVisible(true);
@@ -496,8 +496,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.settext("Serveur créer, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							//se. 
-	    							se.initData(_tf_pseudo_creat.getText(), _hashtag);
+	    							 
+	    							//se.initData(_tf_pseudo_creat.getText(), _hashtag);
 	    							
 	    							try {
 										CtrlTweetEnOr cteo= new CtrlTweetEnOr(_hashtag,_shared);
