@@ -73,7 +73,8 @@ public class Server extends AbstractUser {
         Server srv = new Server(14500, shr);
         srv.connect();
 
-        WAIT(5);
+        srv.newMessage();
+        System.out.println("new message getting in main server");
         srv.initData("SRVBOSS", "bière");
 
         /** CALCUL DU SERVEUR  **/

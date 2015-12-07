@@ -36,6 +36,7 @@ public abstract class AbstractUser implements User {
         while(!this._shared._is_message){
             WAIT(0.10);
         }
+        this._shared._is_message = false;
         return true;
     }
 
