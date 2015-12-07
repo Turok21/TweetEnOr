@@ -61,7 +61,7 @@ public class Bt extends JButton {
 		super.setFont(font);
 		if(_screen != null){
 			auto_resize();
-			setxy(_Px,_Py);
+			setxyin(_Px,_Py,(int)_in_h,(int)_in_w);
 		}
 	}
 	
@@ -139,7 +139,6 @@ public class Bt extends JButton {
 		_Px=x;
 		_Py=y;
 		apply_gravity();
-		System.out.println(x+" "+_in_w);
 		setLocation((int)(_in_w*(x/100))-_center_x,(int)(_in_h*(y/100))-_center_y);
 	}
 	public void setx(float x){
@@ -159,12 +158,10 @@ public class Bt extends JButton {
 		apply_gravity();
 	}
 	public void setw(float w){
-		_Pw=w;
 		setwh((int) w,getHeight());
 		apply_gravity();
 	}
 	public void seth(float h){
-		_Ph=h;
 		setwh(getWidth(),(int) h);
 		apply_gravity();
 	}

@@ -3,8 +3,12 @@ package controllers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +29,14 @@ public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
     private List<String> _invalidWords;
     private List<String> _validWords;
+    List<TweetWord>  _liste_word_pondere;
     private Shared_component _shared;
+    private String _word;
     
     public CtrlTweetEnOr(String word,Shared_component shared) throws TwitterException, Exception {
     	// Create "cache" directory if does not exist
     	_shared = shared;
-    	
-    	
+    	_word = word;
     	File directory = new File("cache");
     	directory.mkdirs();
     	
@@ -64,10 +69,16 @@ public class CtrlTweetEnOr {
     	}
         this._invalidWords = new ArrayList<>();
         this._validWords = new ArrayList<>();
+        listeWordsPonderee();
     }
 
     public KeyWord getKeyWords() {
         return _keyWords;
+    }
+    
+    public String getWord()
+    {
+    	return _word;
     }
 
     /**
@@ -101,8 +112,24 @@ public class CtrlTweetEnOr {
         return new TweetWord(null, -1);
     }
 
+    /**
+     * les mot avec leur ponderation
+     * @return
+     */
+    
+    private void listeWordsPonderee() {
+    	List<TweetWord>  tw = this._keyWords.getListWords();
+    	_liste_word_pondere = new ArrayList<TweetWord>();
+        for( TweetWord twTmp :  tw){
+        	_liste_word_pondere.add((isMotValid(twTmp.getWord())));
+        }
+     
+        _invalidWords.clear();
+        _validWords.clear();
+	}
     public List<TweetWord> getListWords() {
-        return this._keyWords.getListWords();
+    	
+    	return _liste_word_pondere;
     }
 
     public boolean isMotAlreadyUse(String Mot) {
@@ -110,6 +137,19 @@ public class CtrlTweetEnOr {
         return false;
     }
 
+    private static boolean netIsAvailable() {                                                                                                                                                                                                 
+        try {                                                                                                                                                                                                                                 
+            final URL url = new URL("https://twitter.com/");                                                                                                                                                                                 
+            final URLConnection conn = url.openConnection();                                                                                                                                                                                  
+            conn.connect();                                                                                                                                                                                                                   
+            return true;                                                                                                                                                                                                                      
+        } catch (MalformedURLException e) {                                                                                                                                                                                                   
+            throw new RuntimeException(e);                                                                                                                                                                                                    
+        } catch (IOException e) {                                                                                                                                                                                                             
+            return false;                                                                                                                                                                                                                     
+        }         
+    }
+    
     public static void main(String[] args) {
         System.out.println("CLASS CtrlTweetEnOr IS NOW RUNNING !");
         CtrlTweetEnOr ctrl;
