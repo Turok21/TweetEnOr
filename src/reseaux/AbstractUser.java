@@ -3,7 +3,7 @@ package reseaux;
 import ihm.components.Shared_component;
 import java.net.Socket;
 /**
- * Created by Arié on 25/11/2015.
+ * Created by Ariï¿½ on 25/11/2015.
  */
 
 public abstract class AbstractUser implements User {
@@ -33,6 +33,7 @@ public abstract class AbstractUser implements User {
     }
 
     public boolean newMessage(){
+    	
         while(!this._shared._is_message){
             WAIT(0.10);
         }

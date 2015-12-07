@@ -497,16 +497,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
 	    							 
-	    							//se.initData(_tf_pseudo_creat.getText(), _hashtag);
+	    							se.newMessage();
+	    							System.out.println(se._shared._data_hash);
 	    							
+	    							se.initData(_tf_pseudo_creat.getText(), _hashtag);
+	    							
+	    							
+	    							/*
 	    							try {
-										CtrlTweetEnOr cteo= new CtrlTweetEnOr(_hashtag,_shared);
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(_hashtag,_shared);
+										se.server_sendKeyword(cteo.getKeyWords());
+										
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-	    							
-	    							//KeyWord key = new KeyWord("bière", ll);
-	    					        //srv.server_sendKeyword(key);
+*/
 	    							
 	    						}else{
 	    							_progression.settext("connexion client en echec...");
