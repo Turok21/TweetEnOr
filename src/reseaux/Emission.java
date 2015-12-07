@@ -16,7 +16,6 @@ public class Emission implements Runnable {
 
     public void run() {
         sc = new Scanner(System.in);
-
         while (true) {
             System.out.println("Votre message :");
             message = sc.nextLine();
@@ -26,15 +25,6 @@ public class Emission implements Runnable {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void sendData(DataType dataType, int newScore) {
-        try {
-            out.writeObject(new Data(dataType, newScore));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }

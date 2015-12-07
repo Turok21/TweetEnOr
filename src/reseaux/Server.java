@@ -15,8 +15,8 @@ import java.util.List;
 public class Server extends AbstractUser {
 
     //    public static int          port = 14429;
-    public static String       url = "127.0.0.1";
-    public static ServerSocket ss  = null;
+    //    public static String       url = "127.0.0.1";
+    public static ServerSocket ss = null;
 
     public Server(int port) {
         super();
