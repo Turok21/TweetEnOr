@@ -46,7 +46,7 @@ public abstract class TweetParser {
             "jui", "RT", "retweet", "retweetez", "via", "the", "tweet", "jsuis", "dun", // Specific Twitter words
             "francais", "france", // As we search in french tweet only, these words appear too much
             "itele", "lefigaro", "bfmtv", "lemonde", "tpmp", "lpj", "lesechos", // Spoil too much tweet with their hashtag
-            "demain", "aujourd", "hui"
+            "demain", "aujourd", "hui", "hier"
     ));
 
     private static int    nbTweetsToGet     = 1000;     // Nombre de tweet a récuperer (par partie) pour générer les mots

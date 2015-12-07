@@ -69,7 +69,6 @@ public class InGame_multi_IHM extends InGame_IHM{
 	 /**
 	 * Constructeur 
 	 * 
-	 * @param hastag_theme
 	 * @param fram
 	 * @param j_local
 	 * @param j_distant
