@@ -84,10 +84,6 @@ public class Txt extends JLabel {
 		}
 	}
 	
-
-	
-
-	
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
 		if(getText() != null){

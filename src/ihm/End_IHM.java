@@ -16,6 +16,7 @@ import ihm.components.Bt;
 import ihm.components.Shared_component;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import utils.Joueur;
 import utils.TweetWord;
 import Sounds.Player;
 
@@ -40,8 +41,12 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		try {
 			verifier = new CtrlTweetEnOr("Microsoft", new Shared_component());
 			ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-			new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
-			//new End_IHM(new JFrame(""),listword,"Microsoft","Player 1",100,"un autre ",180);
+			//new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
+			Joueur j1 = new Joueur("Guilhem");
+			Joueur j2 = new Joueur("Margaux");
+			j1.addPoint(20);
+			j2.addPoint(80);
+			new End_IHM(new JFrame(""),verifier,j1,j2);
 		} catch (Exception e) {
 			if(e instanceof IllegalStateException){
 				System.out.println("sdffffffffff");
@@ -96,30 +101,29 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	/**
 	 * 
 	 * @param fram the maine JFrame
-	 * @param fin did She win (1) or loose(0)
+	 * @param fin did he win (1) or loose(0)
 	 * @param listword liste of the word she had to found
 	 * @param hastag hashtag played
 	 * @param point nb point gained
 	 */
-	public End_IHM(JFrame fram,ArrayList<TweetWord> listword,String hastag,String pseudo, int point,
-			String pseudo_adversaire,int points_adversaire) {
+	public End_IHM(JFrame fram, CtrlTweetEnOr cteo,Joueur local,Joueur distant) {
 		super();
-		_pseudo_adversaire = pseudo_adversaire;
-		_pseudo = pseudo;
-		_hastag = hastag;
-		_points = point;
-		_points_adversaire = points_adversaire;
+		_pseudo_adversaire = distant.getPseudo();
+		_points_adversaire = distant.getPoint();
+		_pseudo = local.getPseudo();
+		_points = local.getPoint();
+		_hastag = cteo.getWord();
 		
 		int fin = 0;
 		
-		if(point < points_adversaire){
-			loose_screen_multi(fram, listword);
+		if(_points < _points_adversaire){
+			loose_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 0;
-		}else if(point == points_adversaire){
-			equality_screen_multi(fram, listword);
+		}else if(_points == _points_adversaire){
+			equality_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 2;
 		}else{
-			win_screen_multi(fram, listword);
+			win_screen_multi(fram, (ArrayList<TweetWord>) cteo.getListWords());
 			fin = 1;
 		}
 	    
@@ -218,8 +222,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 * @param fram the main JFrame
 	 * @param fin she wan
 	 * @param listword liste of all xord
-	 */
-	
+	 */	
 	private void win_screen(JFrame fram,ArrayList<TweetWord> listword){
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Win.jpg",fram, false);
@@ -294,42 +297,71 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private void loose_screen_multi(JFrame fram,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram, false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_fail_reseau.jpg",fram, false);
 		_fenetre.addKeyListener(this);
 	    
 	    
-	    //displaying the hashtag
-		Txt hash = new Txt("#"+_hastag);
-        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-        hash.setForeground(new Color(140, 0, 0 ,255));
-        hash.auto_resize();
-        hash.setxy(20, 12);
-        _jp_principal.add(hash);
+		//displaying J1
+		Txt pseudoLocal = new Txt(_pseudo);
+		pseudoLocal.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+		pseudoLocal.setForeground(new Color(255, 255, 255 ,255));
+		pseudoLocal.auto_resize();
+		pseudoLocal.setxy(10, 12);
+        _jp_principal.add(pseudoLocal);
         
-        // displaying the points she gained 
-        Txt point = new Txt(_pseudo+" : "+_points);
-        point.setGravity(GRAVITY.CENTER_LEFT);
-        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-        point.setForeground(new Color(140, 0, 0 ,255));
+     // displaying the points  
+        Txt point = new Txt("Score : "+_points);
+        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        point.setForeground(new Color(255, 255, 255 ,255));
         point.auto_resize();
-        point.setxy(5, 34);
+        point.setxy(25, 12);
         _jp_principal.add(point);
         
-        //displaying the points the other player gained 
-        Txt point_adversaire = new Txt(_pseudo_adversaire+" : "+_points_adversaire);
-        point_adversaire.setGravity(GRAVITY.CENTER_RIGHT);
-        point_adversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,72));
-        point_adversaire.setForeground(new Color(140, 0, 0 ,255));
-        point_adversaire.auto_resize();
-        point_adversaire.setxy(95, 34);
-        _jp_principal.add(point_adversaire);
+	    //displaying the hashtag
+	    Txt hash = new Txt("#"+_hastag);
+	    hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+	    hash.setForeground(new Color(36, 78, 124 ,255));
+	    hash.auto_resize();
+	    hash.setxy(50, 12);
+	    _jp_principal.add(hash);
         
-	    
+        // displayin j2
+        Txt pseudoAdversaire = new Txt(_pseudo_adversaire);
+        pseudoAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pseudoAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pseudoAdversaire.auto_resize();
+        pseudoAdversaire.setxy(75, 12);
+        _jp_principal.add(pseudoAdversaire);
+        
+        // displaying the points  
+        Txt pointAdversaire = new Txt("Score : "+_points);
+        pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pointAdversaire.auto_resize();
+        pointAdversaire.setxy(90, 12);
+        _jp_principal.add(pointAdversaire);
+        
+      //displaying J1
+  		Txt pseudoLocalFun = new Txt(_pseudo);
+  		pseudoLocalFun.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+  		pseudoLocalFun.setForeground(new Color(255, 255, 255 ,255));
+  		pseudoLocalFun.auto_resize();
+  		pseudoLocalFun.setxy(35, 57);
+        _jp_principal.add(pseudoLocalFun);
+          
+        //displaying J1
+  		Txt pseudoAdversaireFun = new Txt(_pseudo_adversaire);
+  		pseudoAdversaireFun.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+  		pseudoAdversaireFun.setForeground(new Color(255, 255, 255 ,255));
+  		pseudoAdversaireFun.auto_resize();
+  		pseudoAdversaireFun.setxy(68, 58);
+        _jp_principal.add(pseudoAdversaireFun);
+              
 	    int k = 0;
 		for(TweetWord word : listword){		
 		
 			// foreach word creating a new Txt and setting different properties
-			Txt txt = new Txt(""+word.getWord());
+			Txt txt = new Txt(""+word.getWord() );
 			txt.setForeground(new Color(87, 1, 8 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
@@ -340,12 +372,11 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        	txt.setxy(20, 22+(9*k));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(78, 22+(9*(k-1)));
+	        	txt.setxy(80, 22+(9*(k-1)));
 	        }
 	        k++;
 			_jp_principal.add(txt);
 
-			
 		}
 	    
 		// restart button
@@ -368,104 +399,74 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private void equality_screen_multi(JFrame fram,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram, false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_reseau_egalite.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 			
-	    boolean left = true; // playe the word at the leste
-	    float lastY = 23;
-	    boolean firtWordAtLef = true;
-	    boolean firtWordAtright = true;
 	    
-	    int k = 1;
-	    
-		for(TweetWord word : listword){		
-		
+		//displaying J1
+		Txt pseudoLocal = new Txt(_pseudo);
+		pseudoLocal.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+		pseudoLocal.setForeground(new Color(255, 255, 255 ,255));
+		pseudoLocal.auto_resize();
+		pseudoLocal.setxy(10, 12);
+        _jp_principal.add(pseudoLocal);
+        
+     // displaying the points  
+        Txt point = new Txt("Score : "+_points);
+        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        point.setForeground(new Color(255, 255, 255 ,255));
+        point.auto_resize();
+        point.setxy(25, 12);
+        _jp_principal.add(point);
+        
+	    //displaying the hashtag
+	    Txt hash = new Txt("#"+_hastag);
+	    hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
+	    hash.setForeground(new Color(36, 78, 124 ,255));
+	    hash.auto_resize();
+	    hash.setxy(50, 12);
+	    _jp_principal.add(hash);
+        
+        // displayin j2
+        Txt pseudoAdversaire = new Txt(_pseudo_adversaire);
+        pseudoAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pseudoAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pseudoAdversaire.auto_resize();
+        pseudoAdversaire.setxy(75, 12);
+        _jp_principal.add(pseudoAdversaire);
+        
+        // displaying the points  
+        Txt pointAdversaire = new Txt("Score : "+_points_adversaire);
+        pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pointAdversaire.auto_resize();
+        pointAdversaire.setxy(90, 12);
+        _jp_principal.add(pointAdversaire);
+        
+        int k1 = 0;
+        for(TweetWord word : listword){		
+    		
 			// foreach word creating a new Txt and setting different properties
-			Txt txt = new Txt(""+word.getWord());
+			Txt txt = new Txt(""+word.getWord() );
 			txt.setForeground(new Color(87, 1, 8 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
-			txt.auto_resize();
-			
-			//displaying the hashtag
-			Txt hash = new Txt("#"+_hastag);
-	        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-	        hash.setForeground(new Color(140, 0, 0 ,255));
-	        hash.auto_resize();
-	        hash.setxy(20, 12);
-	        _jp_principal.add(hash);
+			txt.auto_resize();	        
 	        
-	        // displaying the points she gained 
-	        Txt point = new Txt("Score : "+_points);
-	        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-	        point.setForeground(new Color(140, 0, 0 ,255));
-	        point.auto_resize();
-	        point.setxy(80, 12);
-	        _jp_principal.add(point);
-	        
-	        
-			// absolute positioning of all word
-			if(left)
-			{
-				if(firtWordAtLef)
-				{ // the first to be displayed
-					txt.setxy(11,  lastY);
-					firtWordAtLef = false;
-				}
-				else
-				{   // Adjusting all positioning to symmetric
-					if(k == 5)
-					{
-						txt.setxy(11, ( 23 + k*6) + k );
-					}
-					else if( k == 7)
-					{
-						txt.setxy(11 ,(23 + k*6) + (k -1)*2);
-					}
-					else if( k == 9)
-					{
-						txt.setxy(11 ,(23 + k*6) + k*2);
-					}
-					else
-					{
-						txt.setxy(11, 23 + k*6 );
-					}
-				}
-				left = false;
-			}
-			else
-			{
-				if(firtWordAtright)
-				{
-					txt.setxy(89 ,23);
-					firtWordAtright = false;
-				}
-				else
-				{
-					if(k == 6 )
-					{
-						txt.setxy(89 ,(23 + (k - 1)*6) + (k-1));
-					}
-					else if( k == 8)
-					{
-						txt.setxy(89 ,(23 + (k - 1)*6) + (k-2)*2);
-					}
-					else if( k == 10)
-					{
-						txt.setxy(89 ,(23 + (k - 1)*6) + (k-1)*2);
-					}
-					else
-					{
-						txt.setxy(89 ,(23 + (k - 1)*6));
-					}
-				}
-				left = true;
-			}
+	        if(k1%2 == 0){
+	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
+	        	txt.setxy(18, 22+(9*k1));
+	        }else{
+	        	txt.setGravity(GRAVITY.CENTER_LEFT);
+	        	txt.setxy(82, 22+(9*(k1-1)));
+	        }
+	        k1++;
 			_jp_principal.add(txt);
-			
-			k++;
+
 		}
+			
+		
 	    
 		// restart button
 		_b_again = new Bt();
@@ -488,65 +489,78 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private void win_screen_multi(JFrame fram,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_reseau.jpg",fram, false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_win_reseau.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 		
-		// displaying fancy images
+		/*/ displaying fancy images
 		Txt imgGagne = new Txt(new ImageIcon("./data/images/gagne.png"));
         imgGagne.setGravity(GRAVITY.CENTER);
         imgGagne.setxy(50, 12);
         imgGagne.auto_resize();
         _jp_principal.add(imgGagne);
-
-        //displaying the hashtag
-        Txt hash = new Txt("#"+_hastag);
-        hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-        hash.setForeground(new Color(255, 209, 0 ,255));
-        hash.auto_resize();
-        hash.setxy(50, 24);
-        _jp_principal.add(hash);
+		*/
+		//displaying J1
+		Txt pseudoLocal = new Txt(_pseudo);
+		pseudoLocal.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+		pseudoLocal.setForeground(new Color(255, 255, 255 ,255));
+		pseudoLocal.auto_resize();
+		pseudoLocal.setxy(10, 12);
+        _jp_principal.add(pseudoLocal);
         
-        // displaying the points she gained 
-        Txt point = new Txt(_pseudo+" : "+_points);
-        point.setGravity(GRAVITY.CENTER_LEFT);
-        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
-        point.setForeground(new Color(255, 209, 0 ,255));
+     // displaying the points  
+        Txt point = new Txt("Score : "+_points);
+        point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        point.setForeground(new Color(255, 255, 255 ,255));
         point.auto_resize();
-        point.setxy(5, 34);
+        point.setxy(25, 12);
         _jp_principal.add(point);
         
-        //displaying the points the other player gained 
-        Txt point_adversaire = new Txt(_pseudo_adversaire+" : "+_points_adversaire);
-        point_adversaire.setGravity(GRAVITY.CENTER_RIGHT);
-        point_adversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,72));
-        point_adversaire.setForeground(new Color(200, 149, 0 ,255));
-        point_adversaire.auto_resize();
-        point_adversaire.setxy(95, 34);
-        _jp_principal.add(point_adversaire);
+	    //displaying the hashtag
+	    Txt hash = new Txt("#"+_hastag);
+	    hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,50));
+	    hash.setForeground(new Color(36, 78, 124 ,255));
+	    hash.auto_resize();
+	    hash.setxy(44, 90);
+	    _jp_principal.add(hash);
         
-        	
-
-	    int k = 1;
-	    float lastX = 10;
-	    float lastY = 75;
-		for(TweetWord word : listword){		
+        // displayin j2
+        Txt pseudoAdversaire = new Txt(_pseudo_adversaire);
+        pseudoAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pseudoAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pseudoAdversaire.auto_resize();
+        pseudoAdversaire.setxy(75, 12);
+        _jp_principal.add(pseudoAdversaire);
+        
+        // displaying the points  
+        Txt pointAdversaire = new Txt("Score : "+_points_adversaire);
+        pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+        pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pointAdversaire.auto_resize();
+        pointAdversaire.setxy(90, 12);
+        _jp_principal.add(pointAdversaire);
+        
+      
+        int k1 = 0;
+        for(TweetWord word : listword){		
+    		
 			// foreach word creating a new Txt and setting different properties
-			Txt txt = new Txt(""+word.getWord());
-			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
-			txt.setForeground(new Color(242, 209, 0 ,255));
+			Txt txt = new Txt(""+word.getWord() );
+			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
-			txt.auto_resize();
-			txt.setxy(lastX, lastY);
-			// absolute positioning of all word
-			lastX += 9;
-			if(k < 5  )
-				lastY -= 7;
-			if( k > 5 )
-				lastY += 7;
-		
+			txt.auto_resize();	        
+	        
+	        if(k1%2 == 0){
+	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
+	        	txt.setxy(18, 22+(9*k1));
+	        }else{
+	        	txt.setGravity(GRAVITY.CENTER_LEFT);
+	        	txt.setxy(82, 22+(9*(k1-1)));
+	        }
+	        k1++;
 			_jp_principal.add(txt);
-			k++;
+
 		}
 		// restart button
 		_b_again = new Bt();
@@ -554,7 +568,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
 		_b_again.setText("Recommencer");
 		_b_again.setGravity(GRAVITY.TOP_RIGHT);
-		_b_again.setxy(98,90);
+		_b_again.setxy(75,90);
 		_jp_principal.add(_b_again);
 		
 		

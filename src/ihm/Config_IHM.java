@@ -6,7 +6,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,27 +58,18 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         
-       /* 
-        Pa t = new Pa(null);
-    	t.setOpaque(true);
-    	t.setBackground(Color.red);
-        //t.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
-    	t.setGravity(GRAVITY.CENTER);
-    	t.auto_resize();
-    	t.setxy(50, 50);
-    	t.setwh(400, 400);
-    	_jp_principal.add(t);
-    	
-    	
-    	Bt c = new Bt();
-    	c.settext("kfhdkhjkf");
-        c.setOpaque(true);
-     	c.setGravity(GRAVITY.BOTTOM_RIGHT);
-     	c.setxyin(100,100, 400,400);
-        c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
-     	
-     	t.add(c);
-        */
+        boolean is_net = true;
+		try {
+			URL url = new URL("https://twitter.com/");
+			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
+			urlConn.connect();
+			if(	urlConn.getResponseCode() != 200){
+				is_net = false;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			is_net = false;
+		}
         
         /*************** TITLE ***************/
         _title_frame = new Txt("Paramétrages");
@@ -137,6 +133,9 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _list_theme = new ArrayList<>();
         for(String keyword: proposedKeywords) {
         	_list_theme.add(new Tbt(keyword));
+        	if(!is_net && !(new File("./cache/"+keyword+".ser").exists())){
+        		_list_theme.get(_list_theme.size()-1).setEnabled(false);
+        	}
         }
 
 
