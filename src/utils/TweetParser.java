@@ -51,10 +51,10 @@ public abstract class TweetParser {
     ));
 
 
-    private static int nbTweetsToGet = 1000;        // Nombre de tweet a récuperer (par partie) pour générer les mots
-    private static String language = "fr"; // On ne récup que les tweets en français
-    private static int nbTweetParRequest = 100; // 100 tweets/requete (qui est en réalité le maximum de Twitter
-    private static int nbWordToGet = 10; // Nombre de mot a récuperer au final pour jouer
+    private static int nbTweetsToGet     = 1000;        // Nombre de tweet a récuperer (par partie) pour générer les mots
+    private static String language       = "fr";          // On ne récup que les tweets en français
+    private static int nbTweetParRequest = 100;     // 100 tweets/requete (qui est en réalité le maximum de Twitter
+    private static int nbWordToGet       = 10;            // Nombre de mot a récuperer au final pour jouer
 
     private static String urlToken = "urltoken";    // Token identifiable permettant lors du traitemant de garder la structure grammaticale des phrases
 

@@ -107,7 +107,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(1){
+				while(true){
 					_au.newMessage();
 					_compteur_de_point_adversaire.settext("adversaire : "+_au._shared._data_hash.get(_au._shared._datatype));
 				}
