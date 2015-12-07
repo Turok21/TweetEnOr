@@ -28,21 +28,6 @@ public class Server extends AbstractUser {
         sendObject(DataType.KEYWORD, _keyWord);
     }
 
-    public boolean connect() {
-        try {
-            ss = new ServerSocket(_port);
-            System.out.println("Le serveur est à l'écoute du port " + ss.getLocalPort());
-            _socket = ss.accept();
-            System.out.println("Un client s'est connecté");
-            DataExchange de = new DataExchange(_socket, this._shared);
-            _th = new Thread(de);
-            _th.start();
-            return true;
-        } catch (IOException e) {
-            System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");
-            return false;
-        }
-    }
 
     public boolean create_server() {
         try {
@@ -56,9 +41,8 @@ public class Server extends AbstractUser {
     public boolean wait_client() {
         try {
             _socket = ss.accept();
-            System.out.println("Un client s'est connecté");
-            DataExchange de = new DataExchange(_socket, this._shared);
-            _th = new Thread(de);
+            _de = new DataExchange(_socket, this._shared);
+            _th = new Thread(_de);
             _th.start();
 
             return true;
@@ -71,7 +55,7 @@ public class Server extends AbstractUser {
         System.out.println("Creation Server");
         Shared_component shr = new Shared_component();
         Server srv = new Server(14500, shr);
-        srv.connect();
+        
 
         srv.newMessage();
         System.out.println("new message getting in main server");

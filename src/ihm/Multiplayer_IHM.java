@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -39,7 +40,9 @@ import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import reseaux.Client;
+import reseaux.DataType;
 import reseaux.Server;
+import utils.Joueur;
 import utils.KeyWord;
 import utils.TweetWord;
 import java.util.regex.Pattern;
@@ -502,22 +505,36 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
 	    							 
+	    							
+	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+	    							Joueur lui = new Joueur();
+	    							
 	    							se.newMessage();
-	    							System.out.println(se._shared._data_hash);
+	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
+	    							se.newMessage();
+	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
 	    							
-	    							se.initData(_tf_pseudo_creat.getText(), _hashtag);
 	    							
+	    							Random rand = new Random();
+	    							int r = rand.nextInt(1);
+	    					        if(r == 1)
+	    					        	mot = _hashtag;
+	    					        	
+	    					       
 	    							
-	    							/*
 	    							try {
-										CtrlTweetEnOr cteo = new CtrlTweetEnOr(_hashtag,_shared);
-										se.server_sendKeyword(cteo.getKeyWords());
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
+										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+										KeyWord k = cteo.getKeyWords();
 										
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-*/
+		    							se.sendObject(DataType.KEYWORD, k);
+		    							_progression.settext(lui.getPseudo()+" "+k.toString());
+										
+									} catch (Exception e) {e.printStackTrace();}
 	    							
+	    							
+	    							
+	    
 	    						}else{
 	    							_progression.settext("connexion client en echec...");
 	    						}
@@ -545,7 +562,15 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					}else{
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
+	    						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+    							Joueur lui = new Joueur();
+	    						cl.newMessage();
+    							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
+    							cl.newMessage();
+    							KeyWord key = (KeyWord) cl._shared._data_hash.get(cl._shared._datatype);
+    							
 	    						
+    							//_progression.settext(lui.getPseudo()+" "+key.toString());
 	    					}
 	    				}
 	    			}).start();
