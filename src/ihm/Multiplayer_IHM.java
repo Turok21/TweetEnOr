@@ -36,6 +36,8 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import reseaux.Client;
+import reseaux.Server;
 import utils.TweetWord;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -275,7 +277,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	/**
 	 * Controle des parametre de création d'une partie 
 	 */
-	private void control_creat()
+	private boolean control_creat()
 	{    	
 		if(port_creat_control() && pseudo_creat_controle())
 		{
@@ -284,14 +286,17 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_joint.setEnabled(false);
     		_b_wait_client.setText("Arreter");
+    		
+    		return true;
 		}
 		else
 		{
 			_b_wait_client.setSelected(false);
+			return false;
 		}
 	}
 	
-	private void join_control()
+	private boolean join_control()
 	{	
 		if(pseudo_joint_controle() && port_joint_control() && ip_controle())
 		{		
@@ -300,8 +305,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_create.setEnabled(false);
     		_b_connexion.setText("Arreter");
+			return true;
 		}else{
 			_b_connexion.setSelected(false);
+			return false;
 		}
 	}
 	
@@ -445,14 +452,30 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         }else if( e.getSource() == _b_wait_client ){
         	if(_b_wait_client.isSelected())
         	{
-        		control_creat();
+        		if(control_creat()){
+        			new Thread(new Runnable() {
+        				@Override
+        				public void run() {
+        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()));
+        				}
+        			}).start();
+        			
+        		}
+        		
         	}else{
         		cancel_create();
         	}
         }else if( e.getSource() == _b_connexion ){
         	if(_b_connexion.isSelected())
         	{
-        		join_control();
+        		if(join_control()){
+	        		new Thread(new Runnable() {
+	    				@Override
+	    				public void run() {
+	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()));
+	    				}
+	    			}).start();
+        		}
         	}else{
         		cancel_joint();
         	}
