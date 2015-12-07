@@ -32,11 +32,11 @@ public class Pa extends JPanel implements composent{
 	private Dimension _screen;
 
 	public Pa(){
-		super();
+		super(null);
 		contruct();
 	}
 	public Pa(LayoutManager LM){
-		super(LM);
+		super(null);
 		contruct();
 	}
 	
@@ -144,18 +144,16 @@ public class Pa extends JPanel implements composent{
 	public void setwh(float w,float h){
 		_Ph=h;
 		_Pw=w;
-		apply_gravity();
 		setSize(new Dimension((int) w,(int) h));
+		apply_gravity();
 	}
 	public void setw(float w){
-		_Pw=w;
-		apply_gravity();
 		setwh((int) w,getHeight());
+		apply_gravity();
 	}
 	public void seth(float h){
-		_Ph=h;
-		apply_gravity();
 		setwh(getWidth(),(int) h);
+		apply_gravity();
 	}
 	
 	

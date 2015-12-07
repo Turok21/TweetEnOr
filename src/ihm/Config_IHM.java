@@ -1,6 +1,7 @@
 package ihm;
 
 import java.awt.FontFormatException;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +14,9 @@ import java.util.List;
 import javax.swing.JFrame;
 
 import ihm.components.Bt;
+import ihm.components.Pa;
 import ihm.components.Tbt;
+import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 
@@ -43,32 +46,35 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         new Config_IHM(new JFrame("test"));
     }
 
-    public Config_IHM(JFrame fram) {
-    	/*
-    	Tf t = new Tf();
+    public Config_IHM(JFrame fram) {    	
+    	
+    	
+    	_difficulte = LEVEL.MEDIUM;
+
+        load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
+        
+       /* 
+        Pa t = new Pa(null);
     	t.setOpaque(true);
     	t.setBackground(Color.red);
-        t.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
-    	t.setGravity(GRAVITY.TOP_RIGHT);
+        //t.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
+    	t.setGravity(GRAVITY.CENTER);
     	t.auto_resize();
     	t.setxy(50, 50);
     	t.setwh(400, 400);
     	_jp_principal.add(t);
     	
-    	Tf c = new Tf();
+    	
+    	Bt c = new Bt();
+    	c.settext("kfhdkhjkf");
         c.setOpaque(true);
-        c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
      	c.setGravity(GRAVITY.BOTTOM_RIGHT);
-     	c.auto_resize();
+     	c.setxyin(100,100, 400,400);
+        c.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
      	
-     	c.setxyin(100,100, t);
      	t.add(c);
-    	
-    	*/
-    	
-    	_difficulte = LEVEL.MEDIUM;
-
-        load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
+        */
+        
         /*************** TITLE ***************/
         _title_frame = new Txt("Paramétrages");
         _title_frame.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));

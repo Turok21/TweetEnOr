@@ -161,7 +161,6 @@ public class Txt extends JLabel {
 		_Px=x;
 		_Py=y;
 		apply_gravity();
-		System.out.println(x+" "+_in_w);
 		setLocation((int)(_in_w*(x/100))-_center_x,(int)(_in_h*(y/100))-_center_y);
 	}
 	public void setx(float x){
@@ -181,12 +180,10 @@ public class Txt extends JLabel {
 		apply_gravity();
 	}
 	public void setw(float w){
-		_Pw=w;
 		setwh((int) w,getHeight());
 		apply_gravity();
 	}
 	public void seth(float h){
-		_Ph=h;
 		setwh(getWidth(),(int) h);
 		apply_gravity();
 	}
