@@ -69,6 +69,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	protected ArrayList<Txt> _listLetters;
 	protected ArrayList<Txt> _listPts;
 	
+	protected String _coloredPan;
+	protected Txt _msg;
+	
 	protected HashMap<String, String> wordAna;
 	
 	protected JFrame _fram_given;
@@ -382,6 +385,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_hintColor.setxy(50, 95);
 	    _b_hintColor.addActionListener(this);
 	    _jp_principal.add(_b_hintColor);
+	    
+	    
+	    /**********************Message pour indice sur même panel****************************/
+	    _msg = new Txt();
+    	_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
+    	_msg.setForeground(new Color(0, 0, 0,255));
+    	_msg.setGravity(GRAVITY.CENTER);	
+    	_msg.setxy(50, 20);
+    	_jp_principal.add(_msg);
+    	_msg.setVisible(false);
 	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
@@ -822,9 +835,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		if(_b_hintShuffle.isSelected()){
 			Pa panel = (Pa)e.getSource();
 		    String c = panel.getName();
+		    if(_coloredPan != c){
 			mixWords(c);
 			_b_hintShuffle.setSelected(false);
 			_b_hintShuffle.setEnabled(false);
+			_msg.setVisible(false);
+		    }
+		    else
+		    {
+		    	_msg.setText("Choisissez un autre mot");
+		    	_msg.auto_resize();
+		    	_msg.setVisible(true);
+		    }
 		}
 		if( _b_hintColor.isSelected()){
 			Pa panel = (Pa)e.getSource();
@@ -832,6 +854,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	Color(pan_name);
         	_b_hintColor.setSelected(false);
         	_b_hintColor.setEnabled(false);
+        	_coloredPan = pan_name;
         }
 		
 		
