@@ -8,7 +8,8 @@ public enum DataType {
     SCORE(5),                   // integer
     NICKNAME(6),                // string
     CTEO(7),                    // integer
-    TEST(10);
+    TEST(10),
+    LINE_LOADER(11);
 
     private int value = 1;
 
