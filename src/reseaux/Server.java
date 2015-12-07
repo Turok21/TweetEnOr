@@ -5,11 +5,9 @@ package reseaux;
  */
 import ihm.components.Shared_component;
 import utils.KeyWord;
-import utils.TweetParser;
 import utils.TweetWord;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 

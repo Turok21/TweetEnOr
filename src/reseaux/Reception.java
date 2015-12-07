@@ -21,6 +21,7 @@ public class Reception implements Runnable {
                 // Action a effectuer sur reception d'un message
                 Data data = (Data) in.readObject();
                 while (!this._shared._is_message) {
+
 //                    WAIT(1);
                 }
                 this._shared._is_message = true;
