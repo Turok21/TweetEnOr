@@ -70,7 +70,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	private String _hashtag;
 	private String pseudo;
 	private int _porNumber;
-	
+	private Bt _b_again; 
 
 	public static void main(String[] args) {
 	     new Multiplayer_IHM("test",new JFrame("test"));
@@ -288,6 +288,14 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
 		_jp_principal.add(_shared._progressbar);
+		
+		_b_again = new Bt();
+		_b_again.addActionListener(this);
+		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
+		_b_again.setText("Ecran de Configuration");
+		_b_again.setGravity(GRAVITY.CENTER);
+		_b_again.setxy(50,80);
+		_jp_principal.add(_b_again);
         
 		
 		show_windows();
@@ -543,9 +551,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         	}else{
         		cancel_joint();
         	}
+        }else if(e.getSource() == _b_again){
+			new Config_IHM(_fenetre);
         }
-		
-
         
 	}
 }

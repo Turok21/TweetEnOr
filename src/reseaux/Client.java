@@ -1,6 +1,5 @@
 package reseaux;
 
-import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
 import ihm.components.Shared_component;
 import java.io.IOException;
 import java.net.ServerSocket;
