@@ -14,14 +14,23 @@ public class Reception implements Runnable {
         this.in = in;
         this._shared = shr;
     }
-
+    public static boolean WAIT(double sec) {
+        try {
+            Thread.sleep((int)sec * 10);
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public void run() {
         while (true) {
             try {
                 // Action a effectuer sur reception d'un message
                 Data data = (Data) in.readObject();
-                while (!this._shared._is_message) {
-
+                while (this._shared._is_message) {
+                    WAIT(0.10);
+//                    System.out.println("in while in reception");
 //                    WAIT(1);
                 }
                 System.out.println("RECEPTION D'UN MESSAGE = " + data.get_type());
