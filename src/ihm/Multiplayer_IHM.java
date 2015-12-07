@@ -96,8 +96,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_progression = new Txt("Progression");
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 		_progression.setForeground(Color.BLACK);
-		_progression.setGravity(GRAVITY.CENTER_LEFT);
-		_progression.setxy(70, 65);
+		_progression.setGravity(GRAVITY.CENTER);
+		_progression.setxy(75, 65);
 		_jp_principal.add(_progression);
 		_progression.setVisible(false);
 		
@@ -278,7 +278,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		/*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
         _shared.txt_line1.setGravity(GRAVITY.CENTER);
-        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
         _shared.txt_line1.setForeground(Color.white);
         _shared.txt_line1.settext("chargement des info");
         _shared.txt_line1.setxy(50, 64);
@@ -525,8 +525,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         				@Override
         				public void run() {
         					
-        					show_loadin_global_info(true);
-	    			        
+        					
         					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					if(!se.create_server()){
 	    						cancel_joint();
@@ -553,9 +552,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					        	mot = _hashtag;
 	    					        	
 	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
-	    							
-	    					        se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+	    					        
 	    							try {
+	    								show_loadin_global_info(true);
 										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
 										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
 										
@@ -564,8 +564,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
 										
 									} catch (Exception e) {e.printStackTrace();}
-	    							
-	    							
 	    							
 	    
 	    						}else{
@@ -591,15 +589,18 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    				@Override
 	    				public void run() {
 	    					
-	    					_loader.setVisible(true);
-	    			        _shared.txt_line1.setVisible(true);
-	    					
+	    					_progression.settext("Connexion au serveur en cours ...");	    					
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
 	    						cancel_joint();
 	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
 	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
+	    						
+	    						_progression.settext("Connexion OK !");	     
+	    						_loader.setVisible(true);
+		    			        _shared.txt_line1.setVisible(true);
+	    						
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
 
@@ -607,16 +608,17 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							Joueur lui = new Joueur();
 	    						cl.newMessage();
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
-    							cl.newMessage();
     							
+    							cl.newMessage();
     							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
     							_progression.setGravity(GRAVITY.CENTER);
-    							
-    							cl.newMessage();
-    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
-    							
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
-    							_progression.settext(""+key.toString());
+
+    							
+    							/*cl.newMessage();
+    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
+    							*/
+    							
     							
 	    						try {
 									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
