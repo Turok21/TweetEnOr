@@ -41,8 +41,12 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		try {
 			verifier = new CtrlTweetEnOr("Microsoft", new Shared_component());
 			ArrayList<TweetWord> listword = (ArrayList<TweetWord>) verifier.getListWords();
-			new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
-			//new End_IHM(new JFrame(""),listword,"Microsoft","Player 1",100,"un autre ",180);
+			//new End_IHM(new JFrame(""),0,listword,"Microsoft",666);
+			Joueur j1 = new Joueur("J1");
+			Joueur j2 = new Joueur("J2");
+			j1.addPoint(20);
+			j2.addPoint(20);
+			new End_IHM(new JFrame(""),verifier,j1,j2);
 		} catch (Exception e) {
 			if(e instanceof IllegalStateException){
 				System.out.println("sdffffffffff");
@@ -97,7 +101,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	/**
 	 * 
 	 * @param fram the maine JFrame
-	 * @param fin did She win (1) or loose(0)
+	 * @param fin did he win (1) or loose(0)
 	 * @param listword liste of the word she had to found
 	 * @param hastag hashtag played
 	 * @param point nb point gained
@@ -339,7 +343,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        	txt.setxy(20, 22+(9*k));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(78, 22+(9*(k-1)));
+	        	txt.setxy(78, 22+(50*(k-1)));
 	        }
 	        k++;
 			_jp_principal.add(txt);
@@ -367,7 +371,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	 */
 	private void equality_screen_multi(JFrame fram,ArrayList<TweetWord> listword){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_Fail.jpg",fram, false);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Fin ","fond_reseau_egalite.jpg",fram, false);
 		
 		_fenetre.addKeyListener(this);
 			
