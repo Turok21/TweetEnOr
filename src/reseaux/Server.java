@@ -49,6 +49,7 @@ public class Server extends AbstractUser {
     public static void main(String[] args) {
         System.out.println("Creation Server");
         Server srv = new Server(14500);
+        srv.connect();
 
         WAIT(5);
         srv.initData("SRVBOSS", "bière");

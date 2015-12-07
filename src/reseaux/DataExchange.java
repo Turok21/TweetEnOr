@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class DataExchange implements Runnable {
+    //public class DataExchange {
     private Socket             socket = null;
     private ObjectInputStream  in     = null;
     private ObjectOutputStream out    = null;
