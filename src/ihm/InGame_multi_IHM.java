@@ -107,9 +107,15 @@ public class InGame_multi_IHM extends InGame_IHM{
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while(1){
+				boolean go = true;
+				while(go){
 					_au.newMessage();
-					_compteur_de_point_adversaire.settext("adversaire : "+_au._shared._data_hash.get(_au._shared._datatype));
+					_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
+					_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
+					if(_j_distant.getPoint() >= 100){
+						go = false;
+						end_game();
+					}
 				}
 			}
 		}).start();		
@@ -257,8 +263,8 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    /*************** _compteur_de_point ***************/ 
 	    _compteur_de_point_adversaire = new Txt(_j_distant.getPseudo()+" : "+_j_distant.getPoint());	 
 	    _compteur_de_point_adversaire.setFont(arista_light.deriveFont(32));
-	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_LEFT);
-	    _compteur_de_point_adversaire.setxy((float)96,(float)3);
+	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point_adversaire.setxy((float)95,(float)6);
 	    _jp_principal.add(_compteur_de_point_adversaire);
 	    
 
