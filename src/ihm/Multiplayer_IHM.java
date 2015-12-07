@@ -350,6 +350,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_joint.setEnabled(false);
     		_b_wait_client.setText("Arreter");
+    		_b_again.setVisible(false);
     		
     		return true;
 		}
@@ -369,6 +370,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_create.setEnabled(false);
     		_b_connexion.setText("Arreter");
+    		_b_again.setVisible(false);
 			return true;
 		}else{
 			_b_connexion.setSelected(false);
@@ -479,6 +481,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_pseudo_creat.setEditable(true);
 		_b_joint.setEnabled(true);
 		_progression.setVisible(false);
+		_b_again.setVisible(true);
 	}
 	
 	private void cancel_joint() {
@@ -490,6 +493,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_ip.setEditable(true);
 		_tf_port_joint.setEditable(true);
 		_tf_pseudo_joint.setEditable(true);
+		_b_again.setVisible(true);
 	}
 
 	@Override
