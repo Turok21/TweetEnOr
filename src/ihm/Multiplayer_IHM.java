@@ -520,15 +520,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					        if(r == 1)
 	    					        	mot = _hashtag;
 	    					        	
-	    					       
+	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
 	    							
 	    							try {
 										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
 										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
-										KeyWord k = cteo.getKeyWords();
 										
-		    							se.sendObject(DataType.KEYWORD, k);
-		    							_progression.settext(lui.getPseudo()+" "+k.toString());
+		    							se.sendObject(DataType.CTEO, cteo);
 										
 									} catch (Exception e) {e.printStackTrace();}
 	    							
@@ -567,10 +565,11 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						cl.newMessage();
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
     							cl.newMessage();
-    							KeyWord key = (KeyWord) cl._shared._data_hash.get(cl._shared._datatype);
+    							CtrlTweetEnOr cteo = (CtrlTweetEnOr) cl._shared._data_hash.get(DataType.CTEO);
+    							
     							
 	    						
-    							//_progression.settext(lui.getPseudo()+" "+key.toString());
+    							_progression.settext(lui.getPseudo()+" "+key.toString());
 	    					}
 	    				}
 	    			}).start();
