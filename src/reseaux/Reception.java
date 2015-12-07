@@ -24,6 +24,7 @@ public class Reception implements Runnable {
 
 //                    WAIT(1);
                 }
+                System.out.println("RECEPTION D'UN MESSAGE = " + data.get_type());
                 this._shared._is_message = true;
                 HashMap<DataType, Object> editMap = new HashMap<>();
                 editMap.put(data.get_type(), data.get_content());
