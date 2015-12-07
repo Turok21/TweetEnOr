@@ -748,50 +748,30 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
             i++;
         }
         Random rand = new Random();
-        int random = rand.nextInt((i - 0) + 1);
-        int random2 = i+2;
-        int random3 = i+2;
-        int random4 = i+2;
-        int random5 = i+2;
-        int random6 = i+2;
-        if(i>3){
-         random2= rand.nextInt((i - 0) + 1);
-        }
-        if(i>5)
-        {
-            random3= rand.nextInt((i - 0) + 1);
-        }
-        if(i>7)
-        {
-            random4= rand.nextInt((i - 0) + 1);
-        }
-        if(i>9)
-        {
-            random5= rand.nextInt((i - 0) + 1);
-        }
-        if(i>11)
-        {
-            random6= rand.nextInt((i - 0) + 1);
+        
+        ArrayList<Integer> random = new ArrayList<Integer>();
+        int nb = (int)(i*0.45);
+        while(nb !=0){
+	        	random.add(rand.nextInt((i - 0) + 1));
+	        nb--;
         }
         
-        System.out.println(random +", " + random2 +", " + random3 +", " +random4 +", " +random5 +", " +random6);
         int j = 0, r= 0;
 		while(j < _listword_label.size()){
 			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
 				builder.append("<html>");
 				for (char letter : _listword_label.get(j).getText().toCharArray()) {
-					if(random == r || r == random2 || r == random3 || r == random4 || r == random5 || r == random6){  
-						builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
-					}
-					else{
-						builder.append(letter);
-					}
-		            r++;
-		        }
+					
+						if(random.contains(r)){  
+							builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
+						}
+						else{
+							builder.append(letter);
+						}
+					r++;
+				}
 				builder.append("</html>");
-				System.out.println(builder.toString());
 				_listword_label.get(j).setText(builder.toString());
-				//_listword_label.get(j).auto_resize();
 			}
 			j++;
 		}
