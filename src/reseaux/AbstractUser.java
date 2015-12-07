@@ -57,6 +57,7 @@ public abstract class AbstractUser implements User {
         sendObject(DataType.SCORE, score);
     }
 
+
     public static boolean WAIT(double sec) {
         try {
             Thread.sleep((int)sec * 10);
