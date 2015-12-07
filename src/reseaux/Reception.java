@@ -14,15 +14,17 @@ public class Reception implements Runnable {
         this.in = in;
         this._shared = shr;
     }
+
     public static boolean WAIT(double sec) {
         try {
-            Thread.sleep((int)sec * 10);
+            Thread.sleep((int) sec * 10);
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
             return false;
         }
     }
+
     public void run() {
         while (true) {
             try {
@@ -32,11 +34,12 @@ public class Reception implements Runnable {
                     WAIT(0.10);
                 }
 
-                this._shared._is_message = true;
                 HashMap<DataType, Object> editMap = new HashMap<>();
                 editMap.put(data.get_type(), data.get_content());
                 this._shared._datatype = data.get_type();
                 this._shared._data_hash = editMap;
+                System.out.println("In reception " + data.get_type() + " <-> " + data.get_content());
+                this._shared._is_message = true;
 
             } catch (IOException e) {
                 System.out.println("Partner probably deconnected. Leaving");

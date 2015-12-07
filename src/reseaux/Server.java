@@ -51,38 +51,40 @@ public class Server extends AbstractUser {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println("Creation Server");
-        Shared_component shr = new Shared_component();
-        Server srv = new Server(14500, shr);
-        
 
-        srv.newMessage();
-        System.out.println("new message getting in main server");
-        srv.initData("SRVBOSS", "bière");
 
-        /** CALCUL DU SERVEUR  **/
-        List<TweetWord> ll = new ArrayList<>();
-        ll.add(new TweetWord("blonde", 10));
-        ll.add(new TweetWord("blanche", 10));
-        ll.add(new TweetWord("brune", 10));
-        ll.add(new TweetWord("ambré", 10));
-        ll.add(new TweetWord("ninkasi", 10));
-        ll.add(new TweetWord("doua", 10));
-        ll.add(new TweetWord("mousse", 10));
-        ll.add(new TweetWord("jaune", 10));
-        ll.add(new TweetWord("alcool", 10));
-        ll.add(new TweetWord("jagu", 10));
-        /**   FIN DES CALCULS  **/
-
-        WAIT(2);
-        KeyWord key = new KeyWord("bière", ll);
-        srv.server_sendKeyword(key);
-
-        WAIT(10);
-        srv.updateStatus(2, 50);
-        WAIT(7);
-        srv.updateStatus(2, 50);
-    }
+//    public static void main(String[] args) {
+//        System.out.println("Creation Server");
+//        Shared_component shr = new Shared_component();
+//        Server srv = new Server(14500, shr);
+//        srv.connect();
+//
+//        srv.newMessage();
+//        System.out.println("new message getting in main server");
+//        srv.initData("SRVBOSS", "bière");
+//
+//        /** CALCUL DU SERVEUR  **/
+//        List<TweetWord> ll = new ArrayList<>();
+//        ll.add(new TweetWord("blonde", 10));
+//        ll.add(new TweetWord("blanche", 10));
+//        ll.add(new TweetWord("brune", 10));
+//        ll.add(new TweetWord("ambré", 10));
+//        ll.add(new TweetWord("ninkasi", 10));
+//        ll.add(new TweetWord("doua", 10));
+//        ll.add(new TweetWord("mousse", 10));
+//        ll.add(new TweetWord("jaune", 10));
+//        ll.add(new TweetWord("alcool", 10));
+//        ll.add(new TweetWord("jagu", 10));
+//        /**   FIN DES CALCULS  **/
+//
+//        WAIT(2);
+//        KeyWord key = new KeyWord("bière", ll);
+//        srv.server_sendKeyword(key);
+//
+//        WAIT(10);
+//        srv.updateStatus(2, 50);
+//        WAIT(7);
+//        srv.updateStatus(2, 50);
+//    }
 
 }
