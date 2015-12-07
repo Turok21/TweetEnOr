@@ -407,7 +407,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
     	Matcher rx_status = rx_port_number.matcher(_tf_port_creat.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port_creat.getText()) > 1024)
+    		if(Integer.parseInt(_tf_port_creat.getText()) > 0)
     		{
 	        	_tf_port_creat.setEditable(false);
 	        	_tf_port_creat.setBackground(Color.WHITE);
