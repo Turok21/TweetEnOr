@@ -529,6 +529,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
 										
 		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+
+										new InGame_multi_IHM(cteo, moi, lui, _fram_given);
+										System.out.println("kuhgfdlkjhgfjkdhglkdjfhgljkdh");
 										
 									} catch (Exception e) {e.printStackTrace();}
 	    							
@@ -573,7 +576,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
     							_progression.settext(""+key.toString());
     							
-	    						
+	    						try {
+									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+									
+									new InGame_multi_IHM(cteo, moi, lui, _fram_given);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 
 	    					}
 	    				}

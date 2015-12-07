@@ -164,7 +164,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 0;
+					long limit = 100;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					while((System.currentTimeMillis())-(t0)  < (limit)*1000 ){
@@ -201,7 +201,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	
 	public void draw_multiplayer_screen(){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,false);
 		
 	    _fenetre.addKeyListener(this);
 		_jp_principal.addKeyListener(this);
