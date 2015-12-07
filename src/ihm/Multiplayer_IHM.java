@@ -269,7 +269,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _loader = new Txt(new ImageIcon("./data/images/loader.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(false);
-		_jp_principal.add(_loader);
+		_jp_principal.add(_loader); 
 	
 		 /*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
