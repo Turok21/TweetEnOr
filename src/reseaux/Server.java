@@ -71,7 +71,8 @@ public class Server extends AbstractUser {
 
     public static void main(String[] args) {
         System.out.println("Creation Server");
-        Server srv = new Server(14500);
+        Shared_component shr = new Shared_component();
+        Server srv = new Server(14500, shr);
         srv.connect();
 
         WAIT(5);

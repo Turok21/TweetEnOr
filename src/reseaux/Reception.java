@@ -3,6 +3,7 @@ package reseaux;
 import ihm.components.Shared_component;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.HashMap;
 
 public class Reception implements Runnable {
 
@@ -19,11 +20,13 @@ public class Reception implements Runnable {
             try {
                 // Action a effectuer sur reception d'un message
                 Data data = (Data) in.readObject();
-                while(!this._shared._is_message){
-                    WAIT(1);
+                while (!this._shared._is_message) {
+//                    WAIT(1);
                 }
                 this._shared._is_message = true;
-                this._shared.data_hash = 
+                HashMap<DataType, Object> editMap = new HashMap<>();
+                editMap.put(data.get_type(), data.get_content());
+                this._shared._data_hash = editMap;
 
 //                switch (data.get_type()) {
 //                    case NICKNAME:
