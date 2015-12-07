@@ -380,7 +380,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    /*************** Anagramme ***************/
 	    _b_hintShuffle = new Tbt("Anagramme");
 	    _b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
+	    _b_hintShuffle.setGravity(GRAVITY.BOTTOM_LEFT);
 	    _b_hintShuffle.setwh(75, 75);
 	    _b_hintShuffle.auto_resize();
 	    _b_hintShuffle.setxy(10, 90);
@@ -390,7 +390,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    /*************** Nombre de lettres ***************/
 	    _b_hintNbLetters = new Bt("Nombre de Lettre");
 	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
+	    _b_hintNbLetters.setGravity(GRAVITY.BOTTOM_RIGHT);
 	    _b_hintNbLetters.setwh(75, 75);
 	    _b_hintNbLetters.auto_resize();
 	    _b_hintNbLetters.setxy(90, 90);
@@ -401,7 +401,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    /*************** Décourverte de lettres aléatoire ***************/
 	    _b_hintColor = new Tbt("Découverte de lettres");
 	    _b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintColor.setGravity(GRAVITY.CENTER);
+	    _b_hintColor.setGravity(GRAVITY.BOTTOM_CENTER);
 	    _b_hintColor.setwh(75, 75);
 	    _b_hintColor.auto_resize();
 	    _b_hintColor.setxy(50, 90);
@@ -424,7 +424,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nbAnaCpt.settext(_nbAna.toString());
 		_nbAnaCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
 		_nbAnaCpt.setForeground(new Color(0, 0, 0, 255));
-		_nbAnaCpt.setGravity(GRAVITY.CENTER);
+		_nbAnaCpt.setGravity(GRAVITY.BOTTOM_LEFT);
 		_nbAnaCpt.setxy(20, 90);
 		_jp_principal.add(_nbAnaCpt);
     	_nbAnaCpt.setVisible(true);
@@ -436,8 +436,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nbColorCpt.settext(_nbColor.toString());
 		_nbColorCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
 		_nbColorCpt.setForeground(new Color(0, 0, 0, 255));
-		_nbColorCpt.setGravity(GRAVITY.CENTER);
-		_nbColorCpt.setxy(60, 90);
+		_nbColorCpt.setGravity(GRAVITY.BOTTOM_LEFT);
+		_nbColorCpt.setxy(58, 90);
 		_jp_principal.add(_nbColorCpt);
 		_nbColorCpt.setVisible(true);
 
