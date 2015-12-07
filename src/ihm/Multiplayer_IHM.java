@@ -465,7 +465,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.settext("Serveur créer, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							//se.
+	    							//se. 
 	    							
 	    						}else{
 	    							_progression.settext("connexion client en echec...");
