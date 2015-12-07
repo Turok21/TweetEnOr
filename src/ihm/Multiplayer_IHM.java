@@ -289,6 +289,11 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
 		_jp_principal.add(_shared._progressbar);
         
+		_tf_port_creat.settext("2222");
+		_tf_ip.settext("127.0.0.1");
+		_tf_port_joint.settext("2222");
+		_tf_pseudo_creat.settext("server");
+		_tf_pseudo_joint.settext("client");
 		
 		show_windows();
 	}
