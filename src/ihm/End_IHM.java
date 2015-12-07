@@ -45,7 +45,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 			Joueur j1 = new Joueur("Guilhem");
 			Joueur j2 = new Joueur("Margaux");
 			j1.addPoint(20);
-			j2.addPoint(80);
+			j2.addPoint(0);
 			new End_IHM(new JFrame(""),verifier,j1,j2);
 		} catch (Exception e) {
 			if(e instanceof IllegalStateException){
@@ -369,10 +369,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        
 	        if(k%2 == 0){
 	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
-	        	txt.setxy(20, 22+(9*k));
+	        	txt.setxy(20, 22+(8*k));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(80, 22+(9*(k-1)));
+	        	txt.setxy(80, 22+(8*(k-1)));
 	        }
 	        k++;
 			_jp_principal.add(txt);
@@ -456,10 +456,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        
 	        if(k1%2 == 0){
 	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
-	        	txt.setxy(18, 22+(9*k1));
+	        	txt.setxy(18, 22+(8*k1));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(82, 22+(9*(k1-1)));
+	        	txt.setxy(82, 22+(8*(k1-1)));
 	        }
 	        k1++;
 			_jp_principal.add(txt);
@@ -553,10 +553,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	        
 	        if(k1%2 == 0){
 	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
-	        	txt.setxy(18, 22+(9*k1));
+	        	txt.setxy(18, 22+(8*k1));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(82, 22+(9*(k1-1)));
+	        	txt.setxy(82, 22+(8*(k1-1)));
 	        }
 	        k1++;
 			_jp_principal.add(txt);
@@ -568,7 +568,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 		_b_again.setText("Recommencer");
 		_b_again.setGravity(GRAVITY.CENTER);
-		_b_again.setxy(50,45);
+		_b_again.setxy(50,70);
 		_jp_principal.add(_b_again);
 		
 		
