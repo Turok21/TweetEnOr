@@ -1,14 +1,17 @@
 package reseaux;
 
+import ihm.components.Shared_component;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class Reception implements Runnable {
 
     private ObjectInputStream in;
+    private Shared_component  _shared;
 
-    public Reception(ObjectInputStream in) {
+    public Reception(ObjectInputStream in, Shared_component shr) {
         this.in = in;
+        this._shared = shr;
     }
 
     public void run() {
@@ -19,18 +22,23 @@ public class Reception implements Runnable {
                 switch (data.get_type()) {
                     case NICKNAME:
                         System.out.println("Message NICKNAME recu : " + data.get_content());
-                    break;
+                        this._shared.isMessage = true;
+                        break;
                     case PROPOSED_KEYWORD:
                         System.out.println("Message PROPOSED_KEYWORD recu : " + data.get_content());
+                        this._shared.isMessage = true;
                         break;
                     case KEYWORD:
                         System.out.println("Message KEYWORD recu : " + data.get_content());
+                        this._shared.isMessage = true;
                         break;
                     case SCORE:
                         System.out.println("Message SCORE recu : " + data.get_content());
+                        this._shared.isMessage = true;
                         break;
                     case WORD_FOUND:
                         System.out.println("Message WORD_FOUND recu : " + data.get_content());
+                        this._shared.isMessage = true;
                         break;
                     case START:
                         System.out.println("Message START recu : " + data.get_content());

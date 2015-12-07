@@ -1,5 +1,6 @@
 package reseaux;
 
+import ihm.components.Shared_component;
 import java.io.IOException;
 import java.net.Socket;
 /**
@@ -10,10 +11,12 @@ public abstract class AbstractUser implements User {
 
     public static Thread _th;
     public static Socket _socket = null;
-    public DataExchange _de;
+    public DataExchange     _de;
+    public Shared_component _shared;
 
-    public AbstractUser() {
+    public AbstractUser(Shared_component shr) {
         _socket = null;
+        this._shared = shr;
 //        System.out.println("Initialisation de la connexion");
 //        try {
 //            _socket = new Socket(Server.url, Server.port);
@@ -25,8 +28,6 @@ public abstract class AbstractUser implements User {
 //            System.err.println("Aucun serveur � l'�coute du port " + _socket.getLocalPort());
 //        }
     }
-    
-
 
     public DataExchange getDataExchange() {
         return this._de;
@@ -49,9 +50,9 @@ public abstract class AbstractUser implements User {
         sendObject(DataType.SCORE, score);
     }
 
-    public static boolean WAIT(int sec){
+    public static boolean WAIT(int sec) {
         try {
-            Thread.sleep(sec*10);
+            Thread.sleep(sec * 10);
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();

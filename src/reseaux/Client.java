@@ -1,5 +1,7 @@
 package reseaux;
 
+import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import ihm.components.Shared_component;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,8 +15,8 @@ public class Client extends AbstractUser {
     private String _ip;
     private int    _port;
 
-    public Client(String ip, int port) {
-        super();
+    public Client(String ip, int port, Shared_component shr) {
+        super(shr);
         _ip = ip;
         _port = port;
 
@@ -26,7 +28,7 @@ public class Client extends AbstractUser {
         try {
             _socket = new Socket(_ip, _port);
             System.out.println("Connexion établie avec le serveur");
-            _de = new DataExchange(_socket);
+            _de = new DataExchange(_socket, _shared);
             _th = new Thread(_de);
             _th.start();
             return true;
@@ -39,7 +41,8 @@ public class Client extends AbstractUser {
 
     public static void main(String[] args) {
         System.out.println("Creation Client");
-        Client clt = new Client("127.0.0.1", 14500);
+        Shared_component shr = new Shared_component();
+        Client clt = new Client("127.0.0.1", 14500, shr);
         clt.connect();
         WAIT(5);
         clt.initData("CLIENTPSEUDO", "COP21");

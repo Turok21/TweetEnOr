@@ -3,6 +3,7 @@ package reseaux;
 /**
  * Created by Arié on 23/11/2015.
  */
+import ihm.components.Shared_component;
 import utils.KeyWord;
 import utils.TweetParser;
 import utils.TweetWord;
@@ -20,8 +21,8 @@ public class Server extends AbstractUser {
 
     private int _port;
 
-    public Server(int port) {
-        super();
+    public Server(int port, Shared_component shr) {
+        super(shr);
         _port = port;
     }
 
@@ -35,7 +36,7 @@ public class Server extends AbstractUser {
             System.out.println("Le serveur est à l'écoute du port " + ss.getLocalPort());
             _socket = ss.accept();
             System.out.println("Un client s'est connecté");
-            DataExchange de = new DataExchange(_socket);
+            DataExchange de = new DataExchange(_socket, this._shared);
             _th = new Thread(de);
             _th.start();
             return true;
