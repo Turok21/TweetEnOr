@@ -42,6 +42,7 @@ public class Client extends AbstractUser {
         Client clt = new Client("127.0.0.1", 14500, shr);
         clt.connect();
         WAIT(5);
+        System.out.println("sending data");
         clt.initData("CLIENTPSEUDO", "COP21");
         WAIT(20);
         clt.updateStatus(1, 15);
