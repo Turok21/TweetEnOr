@@ -21,7 +21,7 @@ public class Client extends AbstractUser {
 
     }
     
-    @Override
+
 	public boolean connect() {
     	
     	System.out.println("Initialisation de la connexion");
@@ -33,7 +33,7 @@ public class Client extends AbstractUser {
             _th.start();
         	return true;
         } catch (IOException e) {
-            System.err.println("Aucun serveur à l'écoute du port " + _socket.getLocalPort());
+            System.err.println("Aucun serveur à l'écoute du port " + _port);
         	return false;
         }
 

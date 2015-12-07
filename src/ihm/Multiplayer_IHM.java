@@ -457,6 +457,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         				@Override
         				public void run() {
         					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()));
+        					if(!se.create_server()){
+	    						cancel_joint();
+	    						_progression.setVisible(true);
+	    						_progression.settext("echec de création du serveur...");
+	    					}else{
+	    						_progression.settext("Serveur créer, en attente de connexion ...");
+	    						if(se.wait_client()){
+	    							_progression.settext("client connecté");
+	    							//se.
+	    							
+	    						}else{
+	    							_progression.settext("connexion client en echec...");
+	    						}
+	    						
+	    					}
         				}
         			}).start();
         			
@@ -473,6 +488,15 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    				@Override
 	    				public void run() {
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()));
+	    					if(!cl.connect()){
+	    						cancel_joint();
+	    						_progression.setVisible(true);
+	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
+	    					}else{
+	    						cl.initData(_tf_pseudo_joint.getText(), _hasttag);
+	    						
+	    						
+	    					}
 	    				}
 	    			}).start();
         		}
