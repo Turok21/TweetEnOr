@@ -29,6 +29,8 @@ import javax.swing.JProgressBar;
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 import javax.xml.soap.Text;
 
+import com.sun.org.apache.xpath.internal.compiler.Keywords;
+
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.IHM_Iterface.LEVEL;
@@ -526,7 +528,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
 										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
 										
-		    							se.sendObject(DataType.CTEO, cteo);
+		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
 										
 									} catch (Exception e) {e.printStackTrace();}
 	    							
@@ -565,11 +567,14 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						cl.newMessage();
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
     							cl.newMessage();
-    							CtrlTweetEnOr cteo = (CtrlTweetEnOr) cl._shared._data_hash.get(DataType.CTEO);
     							
+    							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
+    							_progression.setGravity(GRAVITY.CENTER);
+    							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
+    							_progression.settext(""+key.toString());
     							
 	    						
-    							_progression.settext(lui.getPseudo()+" "+key.toString());
+
 	    					}
 	    				}
 	    			}).start();
