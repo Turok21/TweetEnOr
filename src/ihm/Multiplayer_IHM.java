@@ -487,7 +487,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         			new Thread(new Runnable() {
         				@Override
         				public void run() {
-        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared));
+        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					if(!se.create_server()){
 	    						cancel_joint();
 	    						_progression.setVisible(true);
