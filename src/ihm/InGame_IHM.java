@@ -230,8 +230,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         
         
 
-       
-        
         /*************** ProgressBar ***************/
         _shared._progressbar = new JProgressBar();
         _shared._progressbar.setSize(500,30);
