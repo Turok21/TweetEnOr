@@ -40,7 +40,7 @@ public abstract class AbstractUser implements User {
 
     @Override
     public void initData(String nickname, String mot) {
-        sendObject(DataType.NICKNAME, mot);
+        sendObject(DataType.NICKNAME, nickname);
         sendObject(DataType.PROPOSED_KEYWORD, mot);
     }
 

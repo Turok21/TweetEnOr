@@ -59,7 +59,7 @@ public class Server extends AbstractUser {
         try {
             _socket = ss.accept();
             System.out.println("Un client s'est connecté");
-            DataExchange de = new DataExchange(_socket);
+            DataExchange de = new DataExchange(_socket, this._shared);
             _th = new Thread(de);
             _th.start();
 

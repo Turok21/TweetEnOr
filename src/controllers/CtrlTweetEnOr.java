@@ -29,13 +29,14 @@ public class CtrlTweetEnOr {
     private KeyWord      _keyWords;
     private List<String> _invalidWords;
     private List<String> _validWords;
+    List<TweetWord>  _liste_word_pondere;
     private Shared_component _shared;
+    private String _word;
     
     public CtrlTweetEnOr(String word,Shared_component shared) throws TwitterException, Exception {
     	// Create "cache" directory if does not exist
     	_shared = shared;
-    	
-    	
+    	_word = word;
     	File directory = new File("cache");
     	directory.mkdirs();
     	
@@ -68,10 +69,16 @@ public class CtrlTweetEnOr {
     	}
         this._invalidWords = new ArrayList<>();
         this._validWords = new ArrayList<>();
+        listeWordsPonderee();
     }
 
     public KeyWord getKeyWords() {
         return _keyWords;
+    }
+    
+    public String getWord()
+    {
+    	return _word;
     }
 
     /**
@@ -109,22 +116,20 @@ public class CtrlTweetEnOr {
      * les mot avec leur ponderation
      * @return
      */
+    
+    private void listeWordsPonderee() {
+    	List<TweetWord>  tw = this._keyWords.getListWords();
+    	_liste_word_pondere = new ArrayList<TweetWord>();
+        for( TweetWord twTmp :  tw){
+        	_liste_word_pondere.add((isMotValid(twTmp.getWord())));
+        }
+     
+        _invalidWords.clear();
+        _validWords.clear();
+	}
     public List<TweetWord> getListWords() {
     	
-    	if(netIsAvailable())
-    	{
-	    	List<TweetWord>  tw = this._keyWords.getListWords();
-	    	List<TweetWord>  rtnTW = new ArrayList<TweetWord>();
-	        for( TweetWord twTmp :  tw){
-	        	rtnTW.add((isMotValid(twTmp.getWord())));
-	        }
-	     
-	        _invalidWords.clear();
-	        _validWords.clear();
-	    	return rtnTW;
-    	}else{
-    		return null;
-    	}
+    	return _liste_word_pondere;
     }
 
     public boolean isMotAlreadyUse(String Mot) {
