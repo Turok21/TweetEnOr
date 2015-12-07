@@ -272,6 +272,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(false);
+        _loader.setVisible(false);
 		_jp_principal.add(_loader); 
 		
 		/*************** text d'informations sous la bar de progression ***************/
@@ -281,6 +282,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _shared.txt_line1.setForeground(Color.white);
         _shared.txt_line1.settext("chargement des info");
         _shared.txt_line1.setxy(50, 64);
+        _shared.txt_line1.setVisible(false);
 		_jp_principal.add(_shared.txt_line1);
         
        
@@ -291,10 +293,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
 		_jp_principal.add(_shared._progressbar);
+        _shared._progressbar.setVisible(false);
 		
 		_jp_principal.repaint();
-		show_loadin_global_info(true);
+		show_loadin_global_info(false);
 	
+		
 		
 		
 		_b_again = new Bt();
@@ -310,6 +314,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_port_joint.settext("2222");
 		_tf_pseudo_creat.settext("server");
 		_tf_pseudo_joint.settext("client");
+		
 		
 		show_windows();
 	}
@@ -515,6 +520,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         			new Thread(new Runnable() {
         				@Override
         				public void run() {
+        					
+        					show_loadin_global_info(true);
+	    			        
         					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					if(!se.create_server()){
 	    						cancel_joint();
@@ -542,6 +550,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					        	
 	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
 	    							
+	    					        se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
 	    							try {
 										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
 										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
@@ -549,7 +558,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
 
 										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
-										System.out.println("kuhgfdlkjhgfjkdhglkdjfhgljkdh");
 										
 									} catch (Exception e) {e.printStackTrace();}
 	    							
@@ -578,6 +586,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
+	    					
+	    					_loader.setVisible(true);
+	    			        _shared.txt_line1.setVisible(true);
+	    					
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
 	    						cancel_joint();
@@ -595,6 +607,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							
     							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
     							_progression.setGravity(GRAVITY.CENTER);
+    							
+    							cl.newMessage();
+    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
+    							
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
     							_progression.settext(""+key.toString());
     							
