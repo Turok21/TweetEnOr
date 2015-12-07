@@ -72,6 +72,16 @@ public class CtrlTweetEnOr {
         listeWordsPonderee();
     }
 
+    public CtrlTweetEnOr(KeyWord p_keyW) throws TwitterException, Exception {
+        // Create "cache" directory if does not exist
+//        _shared = shared;
+        _word = p_keyW.getWord();
+        this._keyWords = p_keyW;
+        this._invalidWords = new ArrayList<>();
+        this._validWords = new ArrayList<>();
+        listeWordsPonderee();
+    }
+
     public KeyWord getKeyWords() {
         return _keyWords;
     }
