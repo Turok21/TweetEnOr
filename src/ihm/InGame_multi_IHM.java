@@ -44,7 +44,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	protected Joueur _j_distant;
 	
 	protected boolean _timer_is_running;
-	
+	boolean _go_watcher,_go_timer;
 	Txt _timer;
 	
 	AbstractUser _au;
@@ -106,13 +106,13 @@ public class InGame_multi_IHM extends InGame_IHM{
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				boolean go = true;
-				while(go){
+				_go_watcher = true;
+				while(_go_watcher){
 					_au.newMessage();
 					_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
 					_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
 					if(_j_distant.getPoint() >= 100){
-						go = false;
+						_go_watcher = false;
 						end_game();
 					}
 				}
@@ -193,7 +193,8 @@ public class InGame_multi_IHM extends InGame_IHM{
 					long limit = 100;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
-					while((System.currentTimeMillis())-(t0)  < (limit)*1000 ){
+					_go_timer = true;
+					while(((System.currentTimeMillis())-(t0)  < (limit)*1000 ) && _go_timer){
 						
 						long t = (System.currentTimeMillis())-(t0);
 						
@@ -211,8 +212,10 @@ public class InGame_multi_IHM extends InGame_IHM{
 							Thread.sleep(2);
 						} catch (InterruptedException e) {}
 					}
-					end_game();
-					_timer_is_running = false;
+					if(_go_timer == true){
+						end_game();
+						_timer_is_running = false;
+					}
 				}
 			}).start();
 		}
