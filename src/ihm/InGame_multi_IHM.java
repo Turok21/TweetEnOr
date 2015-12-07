@@ -30,6 +30,9 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import reseaux.AbstractUser;
+import reseaux.DataType;
+import reseaux.Server;
 import twitter4j.TwitterException;
 import utils.Joueur;
 import utils.TweetParser;
@@ -44,6 +47,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	
 	Txt _timer;
 	
+	AbstractUser _au;
 	
 	@Override protected void load_vie_img(){}
 	@Override protected void drawloader(int redraw){}
@@ -55,9 +59,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 		Shared_component shared = new Shared_component();
 		shared._progressbar = new JProgressBar();
 		shared.txt_line1 = new Txt(); 
-		try {
-			new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
-		} catch (Exception e) {};
+		//try {
+		//	new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
+		//} catch (Exception e) {};
 		
 	}
 	
@@ -71,7 +75,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	 * @param j_distant
 	 * @throws IOException
 	 */
-	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,JFrame fram) throws IOException {
+	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,AbstractUser AU,JFrame fram) throws IOException {
 		/*************** initialisation des variables ***************/
 		super(LEVEL.EASY,cteo.getWord(),null);
 		
@@ -81,6 +85,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _hashtag = _CTEO.getWord();
 	    _listword = _CTEO.getListWords();
 
+	    
+	    _au = AU;
+	    
 		_j_local = j_local;
 		_j_distant = j_distant;
 
@@ -90,10 +97,23 @@ public class InGame_multi_IHM extends InGame_IHM{
 		
 		draw_multiplayer_screen();//affiche l'ecran de jeu
 		
+		watch_connection();
 		start_timer();
+		
 
 	}
 	
+	private void watch_connection(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(1){
+					_au.newMessage();
+					_compteur_de_point_adversaire.settext("adversaire : "+_au._shared._data_hash.get(_au._shared._datatype));
+				}
+			}
+		}).start();		
+	}
 
 	@Override protected void loose_vie(){
 		 
@@ -139,6 +159,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	        		setAnswer(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        		_mots_trouver ++;
+	        		_au.sendObject(DataType.SCORE, _j_local.getPoint());
 	        	}
 	        	_info_player.setText(affichage);
 	    	    _info_player.auto_resize();

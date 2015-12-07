@@ -548,7 +548,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 										
 		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
 
-										new InGame_multi_IHM(cteo, moi, lui, _fram_given);
+										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
 										System.out.println("kuhgfdlkjhgfjkdhglkdjfhgljkdh");
 										
 									} catch (Exception e) {e.printStackTrace();}
@@ -601,7 +601,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						try {
 									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
 									
-									new InGame_multi_IHM(cteo, moi, lui, _fram_given);
+									new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
