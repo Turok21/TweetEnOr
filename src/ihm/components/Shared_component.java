@@ -16,6 +16,7 @@ public class Shared_component {
 	public HashMap<DataType , Object> _data_hash;
 	
 	
+	
 	public Shared_component() {
 		_is_message = false;
 		_progressbar = new JProgressBar();
