@@ -26,7 +26,7 @@ public abstract class AbstractUser implements User {
 //        }
     }
     
-    abstract public boolean connect();
+
 
     public DataExchange getDataExchange() {
         return this._de;

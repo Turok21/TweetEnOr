@@ -31,23 +31,28 @@ public class Server extends AbstractUser {
         sendObject(DataType.KEYWORD, _keyWord);
     }
 
-    @Override
-	public boolean connect() {
+    public boolean create_server(){
     	try {
-            ss = new ServerSocket(_port);
-            System.out.println("Le serveur est à l'écoute du port " + ss.getLocalPort());
-            _socket = ss.accept();
-            System.out.println("Un client s'est connecté");
-            DataExchange de = new DataExchange(_socket);
-            _th = new Thread(de);
-            _th.start();
-            
-    		return true;
-    		
-        } catch (IOException e) {
-        	System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");
-        	return false;
-        }
+			ss = new ServerSocket(_port);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+    }
+    
+
+	public boolean wait_client() {
+    	try {
+			_socket = ss.accept();
+	        System.out.println("Un client s'est connecté");
+	        DataExchange de = new DataExchange(_socket);
+	        _th = new Thread(de);
+	        _th.start();
+	        
+			return true;
+    	} catch (IOException e) {
+			return false;
+		}
 
 	}
     

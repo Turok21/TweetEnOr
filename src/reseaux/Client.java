@@ -21,7 +21,7 @@ public class Client extends AbstractUser {
 
     }
     
-    @Override
+
 	public boolean connect() {
     	
     	System.out.println("Initialisation de la connexion");
