@@ -71,6 +71,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	
 	protected ArrayList<String> _coloredPan;
 	protected ArrayList<String> _AnaPan;
+	protected ArrayList<String> _VerifPan;
 	protected Txt _msg;
 	protected Integer _nbAna;
 	protected Txt _nbAnaCpt;
@@ -443,6 +444,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 		 _coloredPan = new ArrayList<String>();
 
+		 _VerifPan = new ArrayList<String>();
 	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
@@ -695,6 +697,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	}else if(motVerifie.getPonderation() > 0){
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		setAnswer(motVerifie.getWord());
+	        		_VerifPan.add(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        		_mots_trouver ++;
 	        	}
@@ -889,7 +892,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		if(_b_hintShuffle.isSelected()){
 			Pa panel = (Pa)e.getSource();
 		    String c = panel.getName();
-			if (!_coloredPan.contains(c)) {
+			if (!_coloredPan.contains(c) && !_VerifPan.contains(c) && _nbAna > 0) {
 				mixWords(c);
 				_msg.setVisible(false);
 				_nbAna--;
@@ -919,7 +922,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		    String pan_name = panel.getName();
 			_coloredPan.add(pan_name);
 			
-			if(!_AnaPan.contains(pan_name) && _nbColor > 0){
+			if(!_AnaPan.contains(pan_name) && _nbColor > 0 && !_VerifPan.contains(pan_name)){
 				Color(pan_name);
 				_nbColor --;
 				if(_nbColor == 0){
