@@ -30,7 +30,6 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
 import twitter4j.TwitterException;
 import utils.Joueur;
 import utils.TweetParser;
