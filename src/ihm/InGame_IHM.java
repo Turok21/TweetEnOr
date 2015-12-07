@@ -69,6 +69,9 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	protected ArrayList<Txt> _listLetters;
 	protected ArrayList<Txt> _listPts;
 	
+	protected String _coloredPan;
+	protected Txt _msg;
+	
 	protected HashMap<String, String> wordAna;
 	
 	protected JFrame _fram_given;
@@ -382,6 +385,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_hintColor.setxy(50, 95);
 	    _b_hintColor.addActionListener(this);
 	    _jp_principal.add(_b_hintColor);
+	    
+	    
+	    /**********************Message pour indice sur même panel****************************/
+	    _msg = new Txt();
+    	_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
+    	_msg.setForeground(new Color(0, 0, 0,255));
+    	_msg.setGravity(GRAVITY.CENTER);	
+    	_msg.setxy(50, 20);
+    	_jp_principal.add(_msg);
+    	_msg.setVisible(false);
 	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
@@ -748,50 +761,30 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
             i++;
         }
         Random rand = new Random();
-        int random = rand.nextInt((i - 0) + 1);
-        int random2 = i+2;
-        int random3 = i+2;
-        int random4 = i+2;
-        int random5 = i+2;
-        int random6 = i+2;
-        if(i>3){
-         random2= rand.nextInt((i - 0) + 1);
-        }
-        if(i>5)
-        {
-            random3= rand.nextInt((i - 0) + 1);
-        }
-        if(i>7)
-        {
-            random4= rand.nextInt((i - 0) + 1);
-        }
-        if(i>9)
-        {
-            random5= rand.nextInt((i - 0) + 1);
-        }
-        if(i>11)
-        {
-            random6= rand.nextInt((i - 0) + 1);
+        
+        ArrayList<Integer> random = new ArrayList<Integer>();
+        int nb = (int)(i*0.45);
+        while(nb !=0){
+	        	random.add(rand.nextInt((i - 0) + 1));
+	        nb--;
         }
         
-        System.out.println(random +", " + random2 +", " + random3 +", " +random4 +", " +random5 +", " +random6);
         int j = 0, r= 0;
 		while(j < _listword_label.size()){
 			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
 				builder.append("<html>");
 				for (char letter : _listword_label.get(j).getText().toCharArray()) {
-					if(random == r || r == random2 || r == random3 || r == random4 || r == random5 || r == random6){  
-						builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
-					}
-					else{
-						builder.append(letter);
-					}
-		            r++;
-		        }
+					
+						if(random.contains(r)){  
+							builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
+						}
+						else{
+							builder.append(letter);
+						}
+					r++;
+				}
 				builder.append("</html>");
-				System.out.println(builder.toString());
 				_listword_label.get(j).setText(builder.toString());
-				//_listword_label.get(j).auto_resize();
 			}
 			j++;
 		}
@@ -842,9 +835,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		if(_b_hintShuffle.isSelected()){
 			Pa panel = (Pa)e.getSource();
 		    String c = panel.getName();
+		    if(_coloredPan != c){
 			mixWords(c);
 			_b_hintShuffle.setSelected(false);
 			_b_hintShuffle.setEnabled(false);
+			_msg.setVisible(false);
+		    }
+		    else
+		    {
+		    	_msg.setText("Choisissez un autre mot");
+		    	_msg.auto_resize();
+		    	_msg.setVisible(true);
+		    }
 		}
 		if( _b_hintColor.isSelected()){
 			Pa panel = (Pa)e.getSource();
@@ -852,6 +854,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         	Color(pan_name);
         	_b_hintColor.setSelected(false);
         	_b_hintColor.setEnabled(false);
+        	_coloredPan = pan_name;
         }
 		
 		

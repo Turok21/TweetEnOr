@@ -328,15 +328,15 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
         // displayin j2
         Txt pseudoAdversaire = new Txt(_pseudo_adversaire);
         pseudoAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
-        pseudoAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pseudoAdversaire.setForeground(new Color(255, 209, 0 ,255));
         pseudoAdversaire.auto_resize();
         pseudoAdversaire.setxy(75, 12);
         _jp_principal.add(pseudoAdversaire);
         
         // displaying the points  
-        Txt pointAdversaire = new Txt("Score : "+_points);
+        Txt pointAdversaire = new Txt("Score : "+_points_adversaire);
         pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
-        pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
+        pointAdversaire.setForeground(new Color(255, 209, 0 ,255));
         pointAdversaire.auto_resize();
         pointAdversaire.setxy(90, 12);
         _jp_principal.add(pointAdversaire);
@@ -503,7 +503,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		//displaying J1
 		Txt pseudoLocal = new Txt(_pseudo);
 		pseudoLocal.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
-		pseudoLocal.setForeground(new Color(255, 255, 255 ,255));
+		pseudoLocal.setForeground(new Color(255, 209, 0 ,255));
 		pseudoLocal.auto_resize();
 		pseudoLocal.setxy(10, 12);
         _jp_principal.add(pseudoLocal);
@@ -511,17 +511,17 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
      // displaying the points  
         Txt point = new Txt("Score : "+_points);
         point.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
-        point.setForeground(new Color(255, 255, 255 ,255));
+        point.setForeground(new Color(255, 209, 0 ,255));
         point.auto_resize();
         point.setxy(25, 12);
         _jp_principal.add(point);
         
 	    //displaying the hashtag
 	    Txt hash = new Txt("#"+_hastag);
-	    hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,50));
+	    hash.setFont(arista.deriveFont(Font.TRUETYPE_FONT,82));
 	    hash.setForeground(new Color(36, 78, 124 ,255));
 	    hash.auto_resize();
-	    hash.setxy(44, 90);
+	    hash.setxy(50, 12);
 	    _jp_principal.add(hash);
         
         // displayin j2
@@ -565,10 +565,10 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		// restart button
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
-		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
+		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 		_b_again.setText("Recommencer");
-		_b_again.setGravity(GRAVITY.TOP_RIGHT);
-		_b_again.setxy(75,90);
+		_b_again.setGravity(GRAVITY.CENTER);
+		_b_again.setxy(50,45);
 		_jp_principal.add(_b_again);
 		
 		

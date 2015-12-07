@@ -75,7 +75,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	private String _hashtag;
 	private String pseudo;
 	private int _porNumber;
-	
+	private Bt _b_again; 
 
 	public static void main(String[] args) {
 	     new Multiplayer_IHM("test",new JFrame("test"));
@@ -268,20 +268,18 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_p_create.add(_b_wait_client);
 		
 		
-		
-		
 		/*************** chargement et paramétrage du loader twitter  ***************/
-        _loader = new Txt(new ImageIcon("./data/images/loader.gif"));
+        _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(false);
 		_jp_principal.add(_loader); 
-	
-		 /*************** text d'informations sous la bar de progression ***************/
+		
+		/*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
         _shared.txt_line1.setGravity(GRAVITY.CENTER);
         _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
         _shared.txt_line1.setForeground(Color.white);
-        _shared.txt_line1.settext("Création des données de jeux en cours ...");
+        _shared.txt_line1.settext("chargement des info");
         _shared.txt_line1.setxy(50, 64);
 		_jp_principal.add(_shared.txt_line1);
         
@@ -293,6 +291,19 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
 		_jp_principal.add(_shared._progressbar);
+		
+		_jp_principal.repaint();
+		show_loadin_global_info(true);
+	
+		
+		
+		_b_again = new Bt();
+		_b_again.addActionListener(this);
+		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+		_b_again.setText("Ecran de Configuration");
+		_b_again.setGravity(GRAVITY.CENTER);
+		_b_again.setxy(10,90);
+		_jp_principal.add(_b_again);
         
 		_tf_port_creat.settext("2222");
 		_tf_ip.settext("127.0.0.1");
@@ -301,6 +312,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_pseudo_joint.settext("client");
 		
 		show_windows();
+	}
+	
+	void show_loadin_global_info(boolean show)
+	{
+        _loader.setVisible(show);
+        _shared.txt_line1.setVisible(show);
+        _shared._progressbar.setVisible(show);
 	}
 	
 	private void show_joint_ihm(){
@@ -554,17 +572,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         }else if( e.getSource() == _b_connexion ){
         	if(_b_connexion.isSelected())
         	{
+        		
         		if(join_control()){
+        			
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
-	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);
+	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
 	    						cancel_joint();
 	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
+	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
+
 	    						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
     							Joueur lui = new Joueur();
 	    						cl.newMessage();
@@ -591,9 +613,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         	}else{
         		cancel_joint();
         	}
+        }else if(e.getSource() == _b_again){
+			new Config_IHM(_fenetre);
         }
-		
-
         
 	}
 }
