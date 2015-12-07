@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -229,8 +230,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         
         
 
-       
-        
         /*************** ProgressBar ***************/
         _shared._progressbar = new JProgressBar();
         _shared._progressbar.setSize(500,30);
@@ -372,6 +371,18 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_hintNbLetters.setxy(90, 95);
 	    _b_hintNbLetters.addActionListener(this);
 	    _jp_principal.add(_b_hintNbLetters);
+	    
+	    
+	    /*************** Décourverte de lettres aléatoire ***************/
+	    _b_hintColor = new Tbt("Découverte de lettres");
+	    _b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
+	    _b_hintColor.setGravity(GRAVITY.CENTER);
+	    _b_hintColor.setwh(75, 75);
+	    _b_hintColor.auto_resize();
+	    _b_hintColor.setxy(50, 95);
+	    _b_hintColor.addActionListener(this);
+	    _jp_principal.add(_b_hintColor);
+	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
@@ -726,6 +737,65 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			j++;
 		}
 	}
+	
+	protected void Color(String pan_name) {
+	    StringBuilder builder = new StringBuilder();
+        List<Character> letters = new ArrayList<Character>();
+        int i = 0;
+        
+        for (char letter : pan_name.toCharArray()) {
+            letters.add(letter);
+            i++;
+        }
+        Random rand = new Random();
+        int random = rand.nextInt((i - 0) + 1);
+        int random2 = i+2;
+        int random3 = i+2;
+        int random4 = i+2;
+        int random5 = i+2;
+        int random6 = i+2;
+        if(i>3){
+         random2= rand.nextInt((i - 0) + 1);
+        }
+        if(i>5)
+        {
+            random3= rand.nextInt((i - 0) + 1);
+        }
+        if(i>7)
+        {
+            random4= rand.nextInt((i - 0) + 1);
+        }
+        if(i>9)
+        {
+            random5= rand.nextInt((i - 0) + 1);
+        }
+        if(i>11)
+        {
+            random6= rand.nextInt((i - 0) + 1);
+        }
+        
+        System.out.println(random +", " + random2 +", " + random3 +", " +random4 +", " +random5 +", " +random6);
+        int j = 0, r= 0;
+		while(j < _listword_label.size()){
+			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
+				builder.append("<html>");
+				for (char letter : _listword_label.get(j).getText().toCharArray()) {
+					if(random == r || r == random2 || r == random3 || r == random4 || r == random5 || r == random6){  
+						builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
+					}
+					else{
+						builder.append(letter);
+					}
+		            r++;
+		        }
+				builder.append("</html>");
+				System.out.println(builder.toString());
+				_listword_label.get(j).setText(builder.toString());
+				//_listword_label.get(j).auto_resize();
+			}
+			j++;
+		}
+	}
 /************************Mettre le mot correct ******************************/
 	protected void setAnswer(String mot)
 	{
@@ -776,6 +846,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			_b_hintShuffle.setSelected(false);
 			_b_hintShuffle.setEnabled(false);
 		}
+		if( _b_hintColor.isSelected()){
+			Pa panel = (Pa)e.getSource();
+		    String pan_name = panel.getName();
+        	Color(pan_name);
+        	_b_hintColor.setSelected(false);
+        	_b_hintColor.setEnabled(false);
+        }
 		
 		
 	    }
