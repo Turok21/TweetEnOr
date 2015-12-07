@@ -269,7 +269,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _loader = new Txt(new ImageIcon("./data/images/loader.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(false);
-		_jp_principal.add(_loader);
+		_jp_principal.add(_loader); 
 	
 		 /*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
@@ -487,7 +487,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         			new Thread(new Runnable() {
         				@Override
         				public void run() {
-        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()));
+        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					if(!se.create_server()){
 	    						cancel_joint();
 	    						_progression.setVisible(true);
@@ -496,8 +496,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.settext("Serveur créer, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							//se. 
-	    							se.initData(_tf_pseudo_creat.getText(), _hashtag);
+	    							 
+	    							//se.initData(_tf_pseudo_creat.getText(), _hashtag);
 	    							
 	    							try {
 										CtrlTweetEnOr cteo= new CtrlTweetEnOr(_hashtag,_shared);
@@ -528,7 +528,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
-	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()));
+	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);
 	    					if(!cl.connect()){
 	    						cancel_joint();
 	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
