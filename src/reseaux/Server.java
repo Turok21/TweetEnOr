@@ -15,26 +15,35 @@ import java.util.List;
 public class Server extends AbstractUser {
 
     //    public static int          port = 14429;
-    //    public static String       url = "127.0.0.1";
-    public static ServerSocket ss = null;
+    public static String       url = "127.0.0.1";
+    public static ServerSocket ss  = null;
+
+    private int _port;
 
     public Server(int port) {
         super();
+        _port = port;
+    }
+
+    public void server_sendKeyword(KeyWord _keyWord) {
+        sendObject(DataType.KEYWORD, _keyWord);
+    }
+
+    @Override
+    public boolean connect() {
         try {
-            ss = new ServerSocket(port);
+            ss = new ServerSocket(_port);
             System.out.println("Le serveur est à l'écoute du port " + ss.getLocalPort());
             _socket = ss.accept();
             System.out.println("Un client s'est connecté");
             DataExchange de = new DataExchange(_socket);
             _th = new Thread(de);
             _th.start();
+            return true;
         } catch (IOException e) {
             System.err.println("Le port " + ss.getLocalPort() + " est déjà utilisé !");
+            return false;
         }
-    }
-
-    public void server_sendKeyword(KeyWord _keyWord) {
-        sendObject(DataType.KEYWORD, _keyWord);
     }
 
     public static void main(String[] args) {
@@ -67,4 +76,5 @@ public class Server extends AbstractUser {
         WAIT(7);
         srv.updateStatus(2, 50);
     }
+
 }

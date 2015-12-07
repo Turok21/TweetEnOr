@@ -3,7 +3,7 @@ package reseaux;
 import java.io.IOException;
 import java.net.Socket;
 /**
- * Created by Arié on 25/11/2015.
+ * Created by Ariï¿½ on 25/11/2015.
  */
 
 public abstract class AbstractUser implements User {
@@ -17,14 +17,16 @@ public abstract class AbstractUser implements User {
 //        System.out.println("Initialisation de la connexion");
 //        try {
 //            _socket = new Socket(Server.url, Server.port);
-//            System.out.println("Connexion établie avec le serveur");
+//            System.out.println("Connexion ï¿½tablie avec le serveur");
 //            _de = new DataExchange(_socket);
 //            _th = new Thread(_de);
 //            _th.start();
 //        } catch (IOException e) {
-//            System.err.println("Aucun serveur à l'écoute du port " + _socket.getLocalPort());
+//            System.err.println("Aucun serveur ï¿½ l'ï¿½coute du port " + _socket.getLocalPort());
 //        }
     }
+    
+    abstract public boolean connect();
 
     public DataExchange getDataExchange() {
         return this._de;
