@@ -24,6 +24,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 import javax.xml.soap.Text;
 
 import Sounds.Player;
@@ -38,6 +40,7 @@ import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import reseaux.Client;
 import reseaux.Server;
+import utils.KeyWord;
 import utils.TweetWord;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -64,7 +67,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;	
-	private String _hasttag;
+	private String _hashtag;
 	private String pseudo;
 	private int _porNumber;
 	
@@ -78,7 +81,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		super();
 		_shared = new Shared_component();
 		_fram_given = fram;
-	    _hasttag = hastag_theme;
+	    _hashtag = hastag_theme;
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
 		
@@ -142,7 +145,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		Txt hastag = new Txt("");
 		hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 40));
-		hastag.settext("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hasttag+"</font></html>");
+		hastag.settext("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hashtag+"</font></html>");
 		hastag.setxy(50,5);
 		_jp_principal.add(hastag);
 		
@@ -258,6 +261,34 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_wait_client.setxyin(50,90,_p_create);
 		_b_wait_client.addActionListener(this);
 		_p_create.add(_b_wait_client);
+		
+		
+		
+		
+		/*************** chargement et paramétrage du loader twitter  ***************/
+        _loader = new Txt(new ImageIcon("./data/images/loader.gif"));
+        _loader.setxy(50, 35);
+        _loader.setOpaque(false);
+		_jp_principal.add(_loader);
+	
+		 /*************** text d'informations sous la bar de progression ***************/
+        _shared.txt_line1 = new Txt();
+        _shared.txt_line1.setGravity(GRAVITY.CENTER);
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+        _shared.txt_line1.setForeground(Color.white);
+        _shared.txt_line1.settext("Création des données de jeux en cours ...");
+        _shared.txt_line1.setxy(50, 64);
+		_jp_principal.add(_shared.txt_line1);
+        
+       
+        /*************** ProgressBar ***************/
+        _shared._progressbar = new JProgressBar();
+        _shared._progressbar.setSize(500,30);
+        _shared._progressbar.setForeground(new Color(29, 202, 255,255));
+        _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
+        		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
+		_jp_principal.add(_shared._progressbar);
+        
 		
 		show_windows();
 	}
@@ -466,6 +497,16 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
 	    							//se. 
+	    							se.initData(_tf_pseudo_creat.getText(), _hashtag);
+	    							
+	    							try {
+										CtrlTweetEnOr cteo= new CtrlTweetEnOr(_hashtag,_shared);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+	    							
+	    							//KeyWord key = new KeyWord("bière", ll);
+	    					        //srv.server_sendKeyword(key);
 	    							
 	    						}else{
 	    							_progression.settext("connexion client en echec...");
@@ -490,10 +531,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()));
 	    					if(!cl.connect()){
 	    						cancel_joint();
-	    						_progression.setVisible(true);
 	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
-	    						cl.initData(_tf_pseudo_joint.getText(), _hasttag);
+	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
 	    						
 	    					}
