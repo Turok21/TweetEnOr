@@ -29,7 +29,6 @@ import javax.swing.JProgressBar;
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 import javax.xml.soap.Text;
 
-import com.sun.org.apache.xpath.internal.compiler.Keywords;
 
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
@@ -269,7 +268,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		
 		/*************** chargement et paramétrage du loader twitter  ***************/
-        _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
+        _loader = new Txt(new ImageIcon("./data/images/hourglass.gif"));
         _loader.setxy(50, 35);
         _loader.auto_resize();
         _loader.setOpaque(false);
