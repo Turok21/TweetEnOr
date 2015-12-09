@@ -1,11 +1,16 @@
 package ihm;
 
 import java.awt.FontFormatException;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -16,7 +21,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.w3c.dom.events.MouseEvent;
 
 import ihm.components.Bt;
 import ihm.components.Pa;
@@ -25,15 +34,16 @@ import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 
-public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListener {
+public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListener, MouseListener {
 
     private static final long serialVersionUID = 1L;
 
-    private Txt _title_frame, _title_dif, _title_theme, _msgNet;
+    private Txt _title_frame, _title_dif, _title_theme, _msgNet, _help_txte;
     private Tbt _tbt_easy, _tbt_medium, _tbt_hard;
     private List<Tbt> _list_theme;
-    private Bt        _b_play,_b_play_online, _b_help;
+    private Bt        _b_play,_b_play_online, _b_help, _b_hide_help;
     private boolean is_net;
+    private Pa _p_help_txte;
 
     LEVEL    _difficulte;
     String _hastag_theme;
@@ -81,18 +91,44 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _jp_principal.add(_title_frame);
 
         /*************** Help ***************/
-        _b_help = getTooltip();
+        _b_help = new Bt("?");
         _b_help.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 40));
         _b_help.setGravity(GRAVITY.CENTER);
         _b_help.addActionListener(this);
         _b_help.auto_resize();
         _b_help.setxy(80, 5);
         _jp_principal.add(_b_help);
-
+        
+        _p_help_txte = new Pa(null);
+        _p_help_txte.setSize(402,502);
+        _p_help_txte.setGravity(GRAVITY.CENTER);
+        _p_help_txte.setxy(50, 50);
+        _p_help_txte.setOpaque(true);
+        
+        _help_txte = new Txt(new ImageIcon("./data/images/Rules.jpg"));
+        _help_txte.addMouseListener(this);
+        _help_txte.setGravity(GRAVITY.TOP_LEFT);
+        _help_txte.auto_resize();
+        _help_txte.setwh(402,502);
+        _help_txte.setxy(0,0);
+        //_help_txte.setOpaque(false);
+        
+        _p_help_txte.add(_help_txte);
+        
+        _b_hide_help = new Bt("Cacher");
+        _b_hide_help.addActionListener(this);
+        _b_hide_help.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+        _b_hide_help.setGravity(GRAVITY.CENTER);
+        _b_hide_help.auto_resize();
+        _b_hide_help.setxy(58, 75);
+        _jp_principal.add(_b_hide_help);
+         
+        
+        _jp_principal.add(_p_help_txte);
+        show_help(false);
         /*************** Difficulté ***************/
         _title_dif = new Txt("Difficulté :");
         _title_dif.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 30));
-        _title_dif.setSize(100, 15);
         _title_dif.setGravity(GRAVITY.CENTER);
         _title_dif.setxy(20, 20);
         _jp_principal.add(_title_dif);
@@ -198,6 +234,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
     }
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
@@ -217,8 +254,12 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             _tbt_easy.setSelected(false);
             _tbt_medium.setSelected(false);
             _difficulte = LEVEL.HARD;
+        }else if(e.getSource() == _b_help){
+        	show_help(true);
+        }
+        else if(e.getSource() == _b_hide_help){
+            show_help(false);
         }else {
-        
             for (Tbt lab : _list_theme) {
                 if (e.getSource() == lab) {
                     _hastag_theme = lab.getText();
@@ -239,6 +280,12 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
 
     }
+    
+    private void show_help(boolean show)
+    {
+    	_p_help_txte.setVisible(show);
+    	_b_hide_help.setVisible(show);
+    }
 
     private void lauchegame() {
         try {
@@ -249,5 +296,38 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     private void lauche_online_game() {
     	new Multiplayer_IHM(_hastag_theme, _fenetre);
     }
+
+	@Override
+	public void mouseClicked(java.awt.event.MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(java.awt.event.MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(java.awt.event.MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(java.awt.event.MouseEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == _help_txte)
+		{
+			show_help(false);
+		}
+	}
+
+	@Override
+	public void mouseReleased(java.awt.event.MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

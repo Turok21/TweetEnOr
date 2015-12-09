@@ -243,7 +243,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		}else{
 			_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","",_fram_given,false);
 		}
-
+		
 
 
 
@@ -883,10 +883,17 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	 */
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
+		
+		_msg.setVisible(false);
 
+		if( e.getSource() == _b_hintShuffle)
+			_b_hintColor.setSelected(false);
+		
+		if( e.getSource() == _b_hintColor)
+			_b_hintShuffle.setSelected(false);
+		
 		if( e.getSource() == _b_verifier)
 			verifier( _tf_saisie.getText());
-
 
 		if( e.getSource() == _b_hintNbLetters){
 			show_hint_letters();
@@ -903,7 +910,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 /***********************************Anagramme****************************************/
 		if(_b_hintShuffle.isSelected() && !_b_hintColor.isSelected()){
-			_b_hintColor.setSelected(false);
 			Pa panel = (Pa)e.getSource();
 			String c = panel.getName();
 			if (!_coloredPan.contains(c) && !_VerifPan.contains(c) && _nbAna > 0 ) {
@@ -935,14 +941,14 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 			}
 			else{
-				_msg.setText("Choississez un autre mot");
+				_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
 				_msg.auto_resize();
 				_msg.setVisible(true);
 			}
 
 		}
 			else{
-				_msg.setText("Choississez un autre mot");
+				_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
 				_msg.auto_resize();
 				_msg.setVisible(true);
 			}
@@ -950,8 +956,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 /***********************************Indice Découverte de lettre****************************************/
 		if( _b_hintColor.isSelected() && !_b_hintShuffle.isSelected()){
-			
-			_b_hintShuffle.setSelected(false);
 			
 			Pa panel = (Pa)e.getSource();
 			String pan_name = panel.getName();
@@ -977,13 +981,13 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 					
 				}
 				else {
-					_msg.setText("Choississez un autre mot");
+					_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
 					_msg.auto_resize();
 					_msg.setVisible(true);
 				}
 			}
 			 else {
-				_msg.setText("Choississez un autre mot");
+				_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
 				_msg.auto_resize();
 				_msg.setVisible(true);
 			}
