@@ -9,6 +9,8 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -538,16 +540,37 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
 	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
 	    					        
+    						    
+	    						  
+    						
+    					        	show_loadin_global_info(true);
+	    					        CtrlTweetEnOr cteo = null;
 	    							try {
-	    								show_loadin_global_info(true);
-										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
-										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
-										
-		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+										cteo = new CtrlTweetEnOr(mot,_shared);
+	    							} catch (Exception e) {
+	    								if(e instanceof IllegalStateException){ //credentials missing{
+	    									_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+	    									se.sendObject(DataType.NICKNAME, "laisse béton");
+			    							se.sendObject(DataType.KEYWORD, new KeyWord("vide", new ArrayList<TweetWord>()));
+	    									return;
+	    								}
+	    								e.printStackTrace();
+	    							}
+									se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+									
+	    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
 
+	    							if (cteo.getKeyWords().getListWords().size() == 0){
+	    								_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
+	    								return;
+	    							}
+	    							
+									try {
 										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
+									} catch (IOException e) {e.printStackTrace();
+									}
 										
-									} catch (Exception e) {e.printStackTrace();}
+									
 	    							
 	    
 	    						}else{
@@ -603,14 +626,19 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
     							*/
     							
-    							
-	    						try {
-									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
-									
-									new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+    							if(key.getListWords().size() > 0){
+		    						try {
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+										
+										new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+    							}else{
+    								show_loadin_global_info(false);
+    								_progression.setVisible(true);
+    								_progression.settext("Erreur du serveur lors de la création des données de jeu !");
+    							}
 
 	    					}
 	    				}
