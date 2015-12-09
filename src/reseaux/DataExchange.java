@@ -15,6 +15,7 @@ public class DataExchange implements Runnable {
 
     private Thread th3;
     private Thread th4;
+
     public DataExchange(Socket s, Shared_component shr) {
         socket = s;
         this._shared = shr;
