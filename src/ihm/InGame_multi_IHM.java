@@ -108,11 +108,16 @@ public class InGame_multi_IHM extends InGame_IHM{
 			public void run() {
 				_go_watcher = true;
 				while(_go_watcher){
-					_au.newMessage();
-					_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
-					_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
-					if(_j_distant.getPoint() >= 100){
-						_go_watcher = false;
+					if(_au.newMessage()){
+						_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
+						_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
+						if(_j_distant.getPoint() >= 100){
+							_go_watcher = false;
+							end_game();
+						}
+					}else{
+						_compteur_de_point_adversaire.settext("joueur déconnecté !");
+						_j_distant.setPoint(-1);
 						end_game();
 					}
 				}

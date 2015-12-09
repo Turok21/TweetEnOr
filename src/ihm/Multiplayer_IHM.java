@@ -604,7 +604,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
 
-	    						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+	    						Joueur moi = new Joueur(_tf_pseudo_joint.getText());
     							Joueur lui = new Joueur();
 	    						cl.newMessage();
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
