@@ -7,9 +7,10 @@ public enum DataType {
     WORD_FOUND(4),              // integer
     SCORE(5),                   // integer
     NICKNAME(6),                // string
-    CTEO(7),                    // integer
-    TEST(10),
-    LINE_LOADER(11);
+    //    CTEO(7),                    // integer
+//    TEST(10),
+    LINE_LOADER(11),
+    ERROR(12);
 
     private int value = 1;
 

@@ -147,29 +147,34 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_listLetters = new ArrayList<Txt>();
 		_listPts = new ArrayList<Txt>();
 		
+		_coloredPan = new ArrayList<String>();
+		_VerifPan = new ArrayList<String>();
+		
 		switch(_difficulte){ 
-		case EASY:
-			_nbAna = 3;
-			_nbColor = 3;
-		break;
-		case MEDIUM :
-			_nbAna = 2;
-			_nbColor = 2;
-		break;
-		case HARD :
-			_nbAna = 1;
-			_nbColor = 1;
-		break;
-	}
+			case EASY:
+				_nbAna = 3;
+				_nbColor = 3;
+			break;
+			case MEDIUM :
+				_nbAna = 2;
+				_nbColor = 2;
+			break;
+			case HARD :
+				_nbAna = 1;
+				_nbColor = 1;
+			break;
+			
+		}
+		
 	
 		
-		
-		load_vie_img();
-		    
-		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
-		
-		load_game_data();
-		
+		if(fram !=  null){
+			load_vie_img();
+			    
+			drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
+			
+			load_game_data();
+		}
 		
 		
 	}
@@ -317,20 +322,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 		
-		
-		 /*************** _tf_saisie ***************/
-	    _tf_saisie = new Tf(50);
-	    _tf_saisie.setVisible(true);
-	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
-	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
-	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50,37);
-	    _tf_saisie.setFocusable(true);
-	    _jp_principal.add(_tf_saisie);
-
-	    
-	  
-	    /*************** _compteur_de_point ***************/
+		/*************** _compteur_de_point ***************/
 	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
@@ -350,6 +342,25 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	_jp_principal.add(tmp);
 	    }
 	    
+	    
+	    
+	    
+		
+		
+		
+		
+		
+		
+		 /*************** _tf_saisie ***************/
+	    _tf_saisie = new Tf(50);
+	    _tf_saisie.setVisible(true);
+	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
+	    _tf_saisie.addKeyListener(this);
+	    _tf_saisie.setxy(50,37);
+	    _tf_saisie.setFocusable(true);
+	    _jp_principal.add(_tf_saisie);
+
 
 	    /*************** _t_hashtag ***************/
 	    _t_hashtag = new Txt("#"+_hashtag);
@@ -441,10 +452,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nbColorCpt.setxy(58, 90);
 		_jp_principal.add(_nbColorCpt);
 		_nbColorCpt.setVisible(true);
-
-		 _coloredPan = new ArrayList<String>();
-
-		 _VerifPan = new ArrayList<String>();
 	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/

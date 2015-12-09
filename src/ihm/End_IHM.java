@@ -524,6 +524,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 	    hash.setxy(50, 12);
 	    _jp_principal.add(hash);
         
+	    
+	    if(_points_adversaire != -1){
         // displayin j2
         Txt pseudoAdversaire = new Txt(_pseudo_adversaire);
         pseudoAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
@@ -534,12 +536,25 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
         
         // displaying the points  
         Txt pointAdversaire = new Txt("Score : "+_points_adversaire);
+        
         pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
         pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
         pointAdversaire.auto_resize();
         pointAdversaire.setxy(90, 12);
+    
         _jp_principal.add(pointAdversaire);
         
+	    }else{
+	    	Txt pointAdversaire = new Txt(_pseudo_adversaire + ": abandon par déconnexion !");
+	    	pointAdversaire.setGravity(GRAVITY.CENTER_RIGHT);
+	        pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
+	        pointAdversaire.setForeground(new Color(255, 35, 10 ,255));
+	        pointAdversaire.auto_resize();
+	        pointAdversaire.setxy(95, 12);
+	    
+	        _jp_principal.add(pointAdversaire);
+	    	
+	    }
       
         int k1 = 0;
         for(TweetWord word : listword){		

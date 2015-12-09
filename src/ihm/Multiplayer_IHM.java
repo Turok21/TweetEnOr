@@ -5,34 +5,22 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-import javax.xml.soap.Text;
-
 
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
-import ihm.IHM_Iterface.LEVEL;
 import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Shared_component;
@@ -46,7 +34,6 @@ import reseaux.Server;
 import utils.Joueur;
 import utils.KeyWord;
 import utils.TweetWord;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, KeyListener {
@@ -90,13 +77,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
 		
 		
-		
 		/*************Progression **************/
 		_progression = new Txt("Progression");
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 		_progression.setForeground(Color.BLACK);
 		_progression.setGravity(GRAVITY.CENTER);
-		_progression.setxy(75, 65);
+		_progression.setxy(75, 40);
 		_jp_principal.add(_progression);
 		_progression.setVisible(false);
 		
@@ -120,7 +106,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		};
 		_p_loader.setBackground(new Color(255, 255, 255, 255));
 		_p_loader.setSize(width,height);
-		_p_loader.setxy(75,50);
+		_p_loader.setxy(75,30);
 		_p_loader.setOpaque(false);  
 		
 		_p_loader.add(_loader);
@@ -532,10 +518,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.setVisible(true);
 	    						_progression.settext("echec de création du serveur...");
 	    					}else{
+	    						_loader.setxy(50, 45);
 	    						_progression.settext("Serveur crée, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							 
+		    						_progression.setxy(50, 30);
+
+			    			        _p_loader.setVisible(false);
 	    							
 	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
 	    							Joueur lui = new Joueur();
@@ -544,26 +533,52 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
 	    							se.newMessage();
 	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
-	    							
+
+	    							System.out.println("RAND = "+mot);
 	    							
 	    							Random rand = new Random();
-	    							int r = rand.nextInt(2);
-	    					        if(r == 1)
+	    							int r = rand.nextInt(100);
+	    					        if(r > 50)
 	    					        	mot = _hashtag;
 	    					        	
-	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
+	    					        _progression.settext("Votre adveraire : "+lui.getPseudo());
 	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
 	    					        
+    						    
+	    						  
+    						
+    					        	show_loadin_global_info(true);
+	    					        CtrlTweetEnOr cteo = null;
 	    							try {
-	    								show_loadin_global_info(true);
-										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
-										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
-										
-		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+										cteo = new CtrlTweetEnOr(mot,_shared);
+	    							} catch (Exception e) {
+	    								if(e instanceof IllegalStateException){ //credentials missing{
+	    									_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+	    									se.sendObject(DataType.NICKNAME, "laisse béton");
+			    							se.sendObject(DataType.KEYWORD, new KeyWord("vide", new ArrayList<TweetWord>()));
+	    									return;
+	    								}
+	    								e.printStackTrace();
+	    							}
+									se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+									
+	    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
 
+	    							if (cteo.getKeyWords().getListWords().size() == 0){
+	    								_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
+	    								return;
+	    							}
+	    							
+	    							try {
+										Thread.sleep(200);
+									} catch (InterruptedException e1) {e1.printStackTrace();}
+	    							se.newMessage();
+									try {
 										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
+									} catch (IOException e) {e.printStackTrace();
+									}
 										
-									} catch (Exception e) {e.printStackTrace();}
+									
 	    							
 	    
 	    						}else{
@@ -588,7 +603,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
-	    					
+	    					_loader.setxy(50, 50);
 	    					_progression.settext("Connexion au serveur en cours ...");	    					
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
@@ -597,36 +612,48 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
 	    						
-	    						_progression.settext("Connexion OK !");	     
+	    						_progression.settext("Connexion au serveur OK !");	   
+	    						_progression.setxy(50, 30);
 	    						_loader.setVisible(true);
 		    			        _shared.txt_line1.setVisible(true);
+		    			        
+		    			        _p_loader.setVisible(false);
 	    						
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
 
-	    						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+	    						Joueur moi = new Joueur(_tf_pseudo_joint.getText());
     							Joueur lui = new Joueur();
 	    						cl.newMessage();
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
     							
     							cl.newMessage();
-    							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
+    							_progression.settext("votre adversaire : "+lui.getPseudo()+". le serveur charge les données de jeu");
     							_progression.setGravity(GRAVITY.CENTER);
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
 
+
     							
-    							/*cl.newMessage();
-    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
-    							*/
-    							
-    							
-	    						try {
-									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
-									
-									new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+    							if(key.getListWords().size() > 0){
+		    						try {
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+										
+										
+										try {
+											Thread.sleep(400);
+										} catch (InterruptedException e1) {e1.printStackTrace();}
+										cl.sendObject(DataType.START, "");
+										
+										new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+    							}else{
+    								show_loadin_global_info(false);
+    								_progression.setVisible(true);
+    								_progression.settext("Erreur du serveur lors de la création des données de jeu !");
+    								return ;
+    							}
 
 	    					}
 	    				}

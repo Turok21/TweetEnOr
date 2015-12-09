@@ -19,8 +19,8 @@ public class Client extends AbstractUser {
 
     }
 
-	public boolean connect() {
-    	System.out.println("Initialisation de la connexion");
+    public boolean connect() {
+        System.out.println("Initialisation de la connexion");
         try {
             _socket = new Socket(_ip, _port);
             System.out.println("Connexion établie avec le serveur");
@@ -30,7 +30,7 @@ public class Client extends AbstractUser {
             return true;
         } catch (IOException e) {
             System.err.println("Aucun serveur à l'écoute du port " + _port);
-        	return false;
+            return false;
         }
 
     }

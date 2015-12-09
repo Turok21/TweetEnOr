@@ -8,10 +8,13 @@ import java.net.Socket;
 
 public class DataExchange implements Runnable {
     //public class DataExchange {
-    private Socket             socket  = null;
-    private ObjectInputStream  in      = null;
-    private ObjectOutputStream out     = null;
-    private Shared_component   _shared;
+    private Socket             socket = null;
+    private ObjectInputStream  in     = null;
+    private ObjectOutputStream out    = null;
+    private Shared_component _shared;
+
+    private Thread th3;
+    private Thread th4;
 
     public DataExchange(Socket s, Shared_component shr) {
         socket = s;
@@ -30,9 +33,9 @@ public class DataExchange implements Runnable {
     public void run() {
         System.out.println("Demarrage de l'échange");
 
-        Thread th3 = new Thread(new Reception(in, this._shared));
+        th3 = new Thread(new Reception(in, this._shared));
         th3.start();
-        Thread th4 = new Thread(new Emission(out));
+        th4 = new Thread(new Emission(out));
         th4.start();
     }
 
@@ -41,6 +44,18 @@ public class DataExchange implements Runnable {
             out.writeObject(new Data(type, obj));
         } catch (IOException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void finalize() {
+        try {
+            this.th3.interrupt();
+            this.th4.interrupt();
+            this.in.close();
+            this.out.close();
+            this.socket.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
