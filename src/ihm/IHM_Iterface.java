@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -29,7 +31,7 @@ import ihm.components.composent.GRAVITY;
  * @author Guilhem Eyraud
  *
  */
-public class IHM_Iterface extends JFrame implements KeyListener, ActionListener {
+public class IHM_Iterface extends JFrame implements KeyListener, ActionListener, MouseListener {
 
     /**
      *
@@ -164,6 +166,8 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
         _jp_principal.setLayout(null);
 
         _jp_principal.setOpaque(false);
+        
+        _jp_principal.addMouseListener(this);
 
         _fenetre.add(_jp_principal);
 
@@ -253,6 +257,46 @@ public class IHM_Iterface extends JFrame implements KeyListener, ActionListener 
             close_all();
         }
     }
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
 
