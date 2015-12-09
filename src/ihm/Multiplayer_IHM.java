@@ -266,6 +266,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		/*************** chargement et paramétrage du loader twitter  ***************/
         _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
         _loader.setxy(50, 35);
+        _loader.auto_resize();
         _loader.setOpaque(false);
 		_jp_principal.add(_loader); 
 		
@@ -295,7 +296,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
 		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-		_b_again.setText("Ecran de Configuration");
+		_b_again.setText("Retour au paramètrage");
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy(10,90);
 		_jp_principal.add(_b_again);
