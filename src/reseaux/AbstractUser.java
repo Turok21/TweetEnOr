@@ -69,4 +69,8 @@ public abstract class AbstractUser implements User {
             return false;
         }
     }
+
+    public void finalize() {
+        System.out.println("Object Abstract User been destroyed");
+    }
 }
