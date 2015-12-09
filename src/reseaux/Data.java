@@ -6,11 +6,6 @@ public class Data implements Serializable {
     private static final long serialVersionUID = 1350092881346723569L;
 
     private DataType _type;
-    // can be => "Nickname"
-    // can be => "Word"
-    // can be => "KeyWord"
-    // can be => "Score"
-    // can be => "NbWordFounded":
     private Object   _content;
 
     public Data(DataType type, Object content) {

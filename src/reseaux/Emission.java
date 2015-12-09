@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class Emission implements Runnable {
 
     private ObjectOutputStream out;
-    private String  message = null;
-    private Scanner sc      = null;
+//    private String  message = null;
+    private Scanner sc = null;
 
     public Emission(ObjectOutputStream out) {
         this.out = out;

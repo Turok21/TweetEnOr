@@ -13,8 +13,6 @@ import java.util.List;
 
 public class Server extends AbstractUser {
 
-    //    public static int          port = 14429;
-    public static String       url = "127.0.0.1";
     public static ServerSocket ss  = null;
 
     private int _port;
@@ -27,7 +25,6 @@ public class Server extends AbstractUser {
     public void server_sendKeyword(KeyWord _keyWord) {
         sendObject(DataType.KEYWORD, _keyWord);
     }
-
 
     public boolean create_server() {
         try {
@@ -50,8 +47,6 @@ public class Server extends AbstractUser {
             return false;
         }
     }
-
-
 
 //    public static void main(String[] args) {
 //        System.out.println("Creation Server");

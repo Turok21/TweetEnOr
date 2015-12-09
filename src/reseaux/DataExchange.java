@@ -8,10 +8,10 @@ import java.net.Socket;
 
 public class DataExchange implements Runnable {
     //public class DataExchange {
-    private Socket             socket  = null;
-    private ObjectInputStream  in      = null;
-    private ObjectOutputStream out     = null;
-    private Shared_component   _shared;
+    private Socket             socket = null;
+    private ObjectInputStream  in     = null;
+    private ObjectOutputStream out    = null;
+    private Shared_component _shared;
 
     public DataExchange(Socket s, Shared_component shr) {
         socket = s;

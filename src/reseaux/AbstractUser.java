@@ -8,10 +8,10 @@ import java.net.Socket;
 
 public abstract class AbstractUser implements User {
 
-    public static Thread _th;
+    public static Thread           _th;
+    public        DataExchange     _de;
+    public        Shared_component _shared;
     public static Socket _socket = null;
-    public DataExchange     _de;
-    public Shared_component _shared;
 
     public AbstractUser(Shared_component shr) {
         _socket = null;
@@ -32,11 +32,11 @@ public abstract class AbstractUser implements User {
         return this._de;
     }
 
-    public boolean newMessage(){
-        while(!this._shared._is_message){
+    public boolean newMessage() {
+        while (!this._shared._is_message) {
             WAIT(0.10);
         }
-        if(this._shared._datatype == DataType.ERROR){
+        if (this._shared._datatype == DataType.ERROR) {
             return false;
         }
         this._shared._is_message = false;
@@ -60,10 +60,9 @@ public abstract class AbstractUser implements User {
         sendObject(DataType.SCORE, score);
     }
 
-
     public static boolean WAIT(double sec) {
         try {
-            Thread.sleep((int)sec * 10);
+            Thread.sleep((int) sec * 10);
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
