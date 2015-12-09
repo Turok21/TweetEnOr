@@ -633,7 +633,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 										
 										
 										try {
-											Thread.sleep(600);
+											Thread.sleep(400);
 										} catch (InterruptedException e1) {e1.printStackTrace();}
 										cl.sendObject(DataType.START, "");
 										
