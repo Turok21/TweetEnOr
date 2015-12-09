@@ -110,7 +110,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 				while(_go_watcher){
 					if(_au.newMessage()){
 						_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
-						_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
+						_compteur_de_point_adversaire.settext(_j_distant.getPseudo()+" : "+_j_distant.getPoint());
 						if(_j_distant.getPoint() >= 100){
 							_go_watcher = false;
 							end_game();
