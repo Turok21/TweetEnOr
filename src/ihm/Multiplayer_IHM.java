@@ -622,8 +622,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
 
     							
-    							/*cl.newMessage();
-    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
+    							/*c
+    								l.newMessage();
+    								_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
     							*/
     							
     							if(key.getListWords().size() > 0){

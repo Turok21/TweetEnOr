@@ -28,6 +28,7 @@ public class Server extends AbstractUser {
             ss = new ServerSocket(_port);
             return true;
         } catch (IOException e) {
+        	System.out.println(e.toString());
             return false;
         }
     }
