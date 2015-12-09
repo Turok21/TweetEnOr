@@ -178,7 +178,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 15;
+					long limit = 150;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					_go_timer = true;
@@ -303,112 +303,110 @@ public class InGame_multi_IHM extends InGame_IHM{
 
 
 	    /*************** _t_hashtag ***************/
-	    _t_hashtag = new Txt("#"+_hashtag);
-	    _t_hashtag.setForeground(Color.blue);
-	    _t_hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
-	    _t_hashtag.auto_resize();
-	    _t_hashtag.setxy(50, 25);
-	    _jp_principal.add(_t_hashtag);
+		_t_hashtag = new Txt("#"+_hashtag);
+		_t_hashtag.setForeground(Color.blue);
+		_t_hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
+		_t_hashtag.auto_resize();
+		_t_hashtag.setxy(50, 25);
+		_jp_principal.add(_t_hashtag);
 
-	
-	    /*************** _info_player déchange avec l'utilisateur ***************/
-	    _info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
-	    _info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
-	    _info_player.auto_resize();
-	    _info_player.setxy(50, 48);
-	    _jp_principal.add(_info_player);
-	    
-	    
-	    /*************** _b_verifier ***************/
-	    _b_verifier = new Bt("vérifier");
-	    _b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
-	    _b_verifier.setGravity(GRAVITY.CENTER);
-	    _b_verifier.setwh(150, 75);
-	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 43);
+
+		/*************** _info_player déchange avec l'utilisateur ***************/
+		_info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
+		_info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
+		_info_player.auto_resize();
+		_info_player.setxy(50, 48);
+		_jp_principal.add(_info_player);
+
+
+		/*************** _b_verifier ***************/
+		_b_verifier = new Bt("vérifier");
+		_b_verifier.setFont(arista_light.deriveFont(Font.BOLD,28));
+		_b_verifier.setGravity(GRAVITY.CENTER);
+		_b_verifier.setwh(150, 75);
+		_b_verifier.auto_resize();
+		_b_verifier.setxy(50, 43);
 		_b_verifier.addActionListener(this);
-	    _jp_principal.add(_b_verifier);
-	    
-	    /*************** Anagramme ***************/
-	    _b_hintShuffle = new Tbt("Anagramme");
-	    _b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
-	    _b_hintShuffle.setwh(75, 75);
-	    _b_hintShuffle.auto_resize();
-	    _b_hintShuffle.setxy(10, 90);
-	    _b_hintShuffle.addActionListener(this);
-	    _jp_principal.add(_b_hintShuffle);
-	    
-	    /*************** Nombre de lettres ***************/
-	    _b_hintNbLetters = new Bt("Nombre de Lettre");
-	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
-	    _b_hintNbLetters.setwh(75, 75);
-	    _b_hintNbLetters.auto_resize();
-	    _b_hintNbLetters.setxy(90, 90);
-	    _b_hintNbLetters.addActionListener(this);
-	    _jp_principal.add(_b_hintNbLetters);
-	    
-	    
-	    /*************** Décourverte de lettres aléatoire ***************/
-	    _b_hintColor = new Tbt("Découverte de lettres");
-	    _b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintColor.setGravity(GRAVITY.CENTER);
-	    _b_hintColor.setwh(75, 75);
-	    _b_hintColor.auto_resize();
-	    _b_hintColor.setxy(50, 90);
-	    _b_hintColor.addActionListener(this);
-	    _jp_principal.add(_b_hintColor);
-	    
-	    
-	    /**********************Message pour indice sur même panel****************************/
-	    _msg = new Txt();
-    	_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
-    	_msg.setForeground(new Color(0, 0, 0,255));
-    	_msg.setGravity(GRAVITY.CENTER);	
-    	_msg.setxy(50, 17);
-    	_jp_principal.add(_msg);
-    	_msg.setVisible(false);
-    	
-    	
-    	/********************** Cpt Couleur ****************************/
-    	_nbAnaCpt = new Txt();
+		_jp_principal.add(_b_verifier);
+
+		/*************** Anagramme ***************/
+		_b_hintShuffle = new Tbt("Anagramme");
+		_b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
+		_b_hintShuffle.setGravity(GRAVITY.BOTTOM_LEFT);
+		_b_hintShuffle.setwh(75, 75);
+		_b_hintShuffle.auto_resize();
+		_b_hintShuffle.setxy(10, 90);
+		_b_hintShuffle.addActionListener(this);
+		_jp_principal.add(_b_hintShuffle);
+
+		/*************** Nombre de lettres ***************/
+		_b_hintNbLetters = new Bt("Nombre de Lettre");
+		_b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
+		_b_hintNbLetters.setGravity(GRAVITY.BOTTOM_RIGHT);
+		_b_hintNbLetters.setwh(75, 75);
+		_b_hintNbLetters.auto_resize();
+		_b_hintNbLetters.setxy(90, 90);
+		_b_hintNbLetters.addActionListener(this);
+		_jp_principal.add(_b_hintNbLetters);
+
+
+		/*************** Décourverte de lettres aléatoire ***************/
+		_b_hintColor = new Tbt("Découverte de lettres");
+		_b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
+		_b_hintColor.setGravity(GRAVITY.BOTTOM_CENTER);
+		_b_hintColor.setwh(75, 75);
+		_b_hintColor.auto_resize();
+		_b_hintColor.setxy(50, 90);
+		_b_hintColor.addActionListener(this);
+		_jp_principal.add(_b_hintColor);
+
+
+		/**********************Message pour indice sur même panel****************************/
+		_msg = new Txt();
+		_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
+		_msg.setForeground(new Color(0, 0, 0,255));
+		_msg.setGravity(GRAVITY.CENTER);	
+		_msg.setxy(50, 15);
+		_msg.setVisible(false);
+		_jp_principal.add(_msg);
+
+
+
+		/********************** Cpt Couleur ****************************/
+		_nbAnaCpt = new Txt();
 		_nbAnaCpt.settext(_nbAna.toString());
 		_nbAnaCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
 		_nbAnaCpt.setForeground(new Color(0, 0, 0, 255));
-		_nbAnaCpt.setGravity(GRAVITY.CENTER);
+		_nbAnaCpt.setGravity(GRAVITY.BOTTOM_LEFT);
 		_nbAnaCpt.setxy(20, 90);
 		_jp_principal.add(_nbAnaCpt);
-    	_nbAnaCpt.setVisible(true);
+		_nbAnaCpt.setVisible(true);
 
 		_AnaPan = new ArrayList<String>();
-		
+
 		/********************** Cpt Couleur ****************************/
 		_nbColorCpt = new Txt();
 		_nbColorCpt.settext(_nbColor.toString());
 		_nbColorCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
 		_nbColorCpt.setForeground(new Color(0, 0, 0, 255));
-		_nbColorCpt.setGravity(GRAVITY.CENTER);
-		_nbColorCpt.setxy(60, 90);
+		_nbColorCpt.setGravity(GRAVITY.BOTTOM_LEFT);
+		_nbColorCpt.setxy(58, 90);
 		_jp_principal.add(_nbColorCpt);
 		_nbColorCpt.setVisible(true);
 
-		 _coloredPan = new ArrayList<String>();
 
-	    
-	    
-	    /*************** Gestion de l'affichage des mots à trouver ***************/
-	    List<Pa> words = new ArrayList<Pa>();
-	    List<Pa> ALletters = new ArrayList<Pa>();
-	    wordAna = new HashMap<>();
-	   
+		/*************** Gestion de l'affichage des mots à trouver ***************/
+		List<Pa> words = new ArrayList<Pa>();
+		List<Pa> ALletters = new ArrayList<Pa>();
+		
+
 		float wline=0,hline=0,wline2=0,hline2=0, wline3=0,hline3=0, wline4=0,hline4=0;
 
-	    int i = 0;
+		int i = 0;
 		for(TweetWord word : _listword){
-			
+
 			Pa p = new Pa(null) {
-			   private static final long serialVersionUID = 1L;
+				private static final long serialVersionUID = 1L;
 				protected void paintComponent(Graphics g) {
 					super.paintComponent(g);
 					Dimension arcs = new Dimension(15,15);
@@ -416,37 +414,43 @@ public class InGame_multi_IHM extends InGame_IHM{
 					int height = getHeight();
 					Graphics2D graphics = (Graphics2D) g;
 					graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					
+
 					graphics.setColor(getBackground());
 					graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
 					graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
-				  
+
 				}
 			};
 			p.addMouseListener(this);
 			p.setBounds(10,10,100,30);
 			p.setOpaque(false);
 			p.setBackground(new Color(29, 202, 255,255));
-			  
-			wordAna.put(word.getWord(), ""+shuffle(word.getWord()));
+
+			if(word.getWord().length()>4){
+				_wordAna.put(word.getWord(), ""+shuffle(word.getWord()));
+			}
+			else{
+				_wordAna.put(word.getWord(), ""+word.getWord());
+			}
+
 			Txt txt = new Txt(""+ word.getWord());
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,45));
 			txt.setForeground(new Color(29, 202, 255,255));
 			txt.setGravity(GRAVITY.CENTER);	
 			_listword_label.add(txt);
-			
+
 			p.add(txt);
 			p.setName(word.getWord());
-				
+
 			p.setwh(txt.getWidth()+15,txt.getHeight()+5);
 			txt.setxyin(50,50,p.getWidth(),p.getHeight());
-				
-				
+
+
 			words.add(p);
-			
-			
-			
-			
+
+
+
+
 			/************Hints**********/
 			Pa lettres = new Pa(null) {
 				private static final long serialVersionUID = 1L;
@@ -457,7 +461,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 					int height = getHeight();
 					Graphics2D graphics = (Graphics2D) g;
 					graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					
+
 					graphics.setColor(getBackground());
 					graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);
 					graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border       
@@ -466,42 +470,42 @@ public class InGame_multi_IHM extends InGame_IHM{
 			lettres.setBounds(10,10,100,30);
 			lettres.setOpaque(false);
 			lettres.setBackground(new Color(255, 255, 255,255));
-			
+
 			//Nombre de letttre
 			Txt nbLetters = new Txt(" "+ word.getWord().length());
 			nbLetters.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbLetters.setForeground(new Color(255, 255, 255,255));
 			nbLetters.setGravity(GRAVITY.CENTER_LEFT);
-			
+
 			//Nombre de points
 			Txt nbPts = new Txt ("" + word.getPonderation());
 			nbPts.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			nbPts.setForeground(new Color(29, 202, 255,255));
 			nbPts.setGravity(GRAVITY.CENTER_RIGHT);
-			
+
 			Txt tiret = new Txt ("-");
 			tiret.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
 			tiret.setForeground(new Color(29, 202, 255,255));
 			tiret.setGravity(GRAVITY.CENTER);
-			
+
 			_listLetters.add(nbLetters);
 			_listPts.add(nbPts);
-			
-			
+
+
 			lettres.setwh(p.getWidth(), nbLetters.getHeight() + 5);
-			
+
 			nbPts.setxyin(95, 50, lettres);
 			nbLetters.setxyin(5, 50, lettres);
 			tiret.setxyin(50, 50, lettres);
-			
-			
+
+
 			lettres.add(nbPts);
 			lettres.add(nbLetters);
 			lettres.add(tiret);
-			
+
 			ALletters.add(lettres);
-			
-			
+
+
 			if(i < 5){
 				wline += p.getWidth()+15;
 				hline = (float) (p.getHeight()+lettres.getHeight()*1.5);
@@ -509,7 +513,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 				wline2 += p.getWidth()+15;
 				hline2 = (float) (p.getHeight()+lettres.getHeight()*1.5);
 			}
-			  
+
 			if(i < 5){
 				wline3 += p.getWidth()+15;
 				hline3 = hline;
@@ -517,11 +521,11 @@ public class InGame_multi_IHM extends InGame_IHM{
 				wline4 += p.getWidth()+15;
 				hline4 = hline2; 
 			}
-			
+
 			i++;
 		}
-		
-		
+
+
 		//Placement des mots
 		float x_decalage = 0,y_de=60;
 		i=1;
@@ -529,29 +533,29 @@ public class InGame_multi_IHM extends InGame_IHM{
 		pline.setwh(wline, hline);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa pword : words){
-			
-	    	pword.setGravity(GRAVITY.TOP_LEFT);
-	    	pword.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
-	    	x_decalage += (((float)pword.getWidth()+15)/(float)pline.getWidth())*100;
-	    
-	    	
+
+			pword.setGravity(GRAVITY.TOP_LEFT);
+			pword.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
+			x_decalage += (((float)pword.getWidth()+15)/(float)pline.getWidth())*100;
+
+
 			pline.add(pword);
-			
+
 			if(i == 5 || i == 10){
-	    		pline.setxy(50,y_de);
-	    		pline.setOpaque(false);
-	    		_jp_principal.add(pline);
-	    		
-	    		pline = new Pa(null);
-	    		pline.setwh(wline2, hline2);
-	    		pline.setGravity(GRAVITY.CENTER);
-	    		x_decalage = 0;
-	    		y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
-	    	}
-			
+				pline.setxy(50,y_de);
+				pline.setOpaque(false);
+				_jp_principal.add(pline);
+
+				pline = new Pa(null);
+				pline.setwh(wline2, hline2);
+				pline.setGravity(GRAVITY.CENTER);
+				x_decalage = 0;
+				y_de += (((float)hline+15)/(float)_screen.getHeight())*100;
+			}
+
 			i++;
 		}
-		
+
 		//Placement du nb de lettres
 		x_decalage =  0;
 		y_de-= 1.5*(((float)hline+15)/(float)_screen.getHeight())*100;
@@ -560,28 +564,31 @@ public class InGame_multi_IHM extends InGame_IHM{
 		pline.setwh(wline3, hline3);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa plettre : ALletters){
-			
+
 			plettre.setGravity(GRAVITY.TOP_LEFT);
 			plettre.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
-	    	x_decalage +=(((float)plettre.getWidth()+15)/(float)pline.getWidth())*100;
-	    			//(((float)words.get(i-1).getWidth()+15)/(float)pline.getWidth())*100;
-	    	
+			x_decalage +=(((float)plettre.getWidth()+15)/(float)pline.getWidth())*100;
+			//(((float)words.get(i-1).getWidth()+15)/(float)pline.getWidth())*100;
+
 			pline.add(plettre);
-			
+
 			if(i == 5 || i == 10){
-	    		pline.setxy(50,y_de);
-	    		pline.setOpaque(false);
-	    		_jp_principal.add(pline);
-	    		
-	    		pline = new Pa(null);
-	    		pline.setwh(wline2, hline3);
-	    		pline.setGravity(GRAVITY.CENTER);
-	    		x_decalage = 0;
-	    		y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
-	    	}
-			
+				pline.setxy(50,y_de);
+				pline.setOpaque(false);
+				_jp_principal.add(pline);
+
+				pline = new Pa(null);
+				pline.setwh(wline2, hline3);
+				pline.setGravity(GRAVITY.CENTER);
+				x_decalage = 0;
+				y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
+			}
+
 			i++;
 		}
+
+
+		_fenetre.repaint();
 		
 		
 		
