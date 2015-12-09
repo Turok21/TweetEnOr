@@ -178,7 +178,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 150;
+					long limit = 10;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					_go_timer = true;
@@ -245,7 +245,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_go_timer = false;
 		_go_watcher = false;
 		try {
-			Thread.sleep(200);
+			Thread.sleep(400);
 		} catch (InterruptedException e) {}
 		_au.finalize();
 		new End_IHM(_fenetre, _CTEO,_j_local,_j_distant);

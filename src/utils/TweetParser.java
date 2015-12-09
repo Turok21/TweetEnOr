@@ -257,13 +257,23 @@ public abstract class TweetParser {
             listTweetWord.add(tweetWord);
         }
         // Il arrive que la somme des points ne soit pas égale à 100, a cause des arrondis
-        // Dans ce cas, on arrtibut les points manquant aux x premiers de la liste. X étant le nombre de points manquants
-        if (totalSet != 100) {
+        /**   SI LA SOMME EST INFERIEUR A 100 **/
+        if (totalSet < 100) {
             int difference = 100 - totalSet;
             Iterator<TweetWord> iMap = listTweetWord.iterator();
             while (iMap.hasNext() && difference != 0) {
                 TweetWord word = iMap.next();
                 word.setPonderation(word.getPonderation() + 1);
+                difference--;
+            }
+        }
+        /**    SI LA SOMME EST SUPPERIEUR A 100 **/
+        if (totalSet > 100) {
+            int difference = totalSet - 100;
+            Iterator<TweetWord> iMap = listTweetWord.iterator();
+            while (iMap.hasNext() && difference != 0) {
+                TweetWord word = iMap.next();
+                word.setPonderation(word.getPonderation() - 1);
                 difference--;
             }
         }
@@ -360,7 +370,7 @@ public abstract class TweetParser {
         KeyWord keyw;
 
         try {
-            keyw = findWords("ski", new Shared_component());
+            keyw = findWords("starwars", new Shared_component());
             System.out.println(keyw);
 
         } catch (Exception e) {
