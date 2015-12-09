@@ -178,7 +178,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 15;
+					long limit = 150;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					_go_timer = true;
@@ -393,7 +393,6 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_jp_principal.add(_nbColorCpt);
 		_nbColorCpt.setVisible(true);
 
-		 _coloredPan = new ArrayList<String>();
 
 	    
 	    

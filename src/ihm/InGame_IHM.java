@@ -147,29 +147,34 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_listLetters = new ArrayList<Txt>();
 		_listPts = new ArrayList<Txt>();
 		
+		_coloredPan = new ArrayList<String>();
+		_VerifPan = new ArrayList<String>();
+		
 		switch(_difficulte){ 
-		case EASY:
-			_nbAna = 3;
-			_nbColor = 3;
-		break;
-		case MEDIUM :
-			_nbAna = 2;
-			_nbColor = 2;
-		break;
-		case HARD :
-			_nbAna = 1;
-			_nbColor = 1;
-		break;
-	}
+			case EASY:
+				_nbAna = 3;
+				_nbColor = 3;
+			break;
+			case MEDIUM :
+				_nbAna = 2;
+				_nbColor = 2;
+			break;
+			case HARD :
+				_nbAna = 1;
+				_nbColor = 1;
+			break;
+			
+		}
+		
 	
 		
-		
-		load_vie_img();
-		    
-		drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
-		
-		load_game_data();
-		
+		if(fram !=  null){
+			load_vie_img();
+			    
+			drawloader(0);//gestion de l'affichage du loader lors du chargement des tweets
+			
+			load_game_data();
+		}
 		
 		
 	}
@@ -447,10 +452,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		_nbColorCpt.setxy(58, 90);
 		_jp_principal.add(_nbColorCpt);
 		_nbColorCpt.setVisible(true);
-
-		 _coloredPan = new ArrayList<String>();
-
-		 _VerifPan = new ArrayList<String>();
 	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
