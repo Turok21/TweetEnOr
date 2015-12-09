@@ -30,6 +30,9 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import reseaux.AbstractUser;
+import reseaux.DataType;
+import reseaux.Server;
 import twitter4j.TwitterException;
 import utils.Joueur;
 import utils.TweetParser;
@@ -41,9 +44,10 @@ public class InGame_multi_IHM extends InGame_IHM{
 	protected Joueur _j_distant;
 	
 	protected boolean _timer_is_running;
-	
+	boolean _go_watcher,_go_timer;
 	Txt _timer;
 	
+	AbstractUser _au;
 	
 	@Override protected void load_vie_img(){}
 	@Override protected void drawloader(int redraw){}
@@ -55,9 +59,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 		Shared_component shared = new Shared_component();
 		shared._progressbar = new JProgressBar();
 		shared.txt_line1 = new Txt(); 
-		try {
-			new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
-		} catch (Exception e) {};
+		//try {
+		//	new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
+		//} catch (Exception e) {};
 		
 	}
 	
@@ -71,7 +75,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	 * @param j_distant
 	 * @throws IOException
 	 */
-	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,JFrame fram) throws IOException {
+	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,AbstractUser AU,JFrame fram) throws IOException {
 		/*************** initialisation des variables ***************/
 		super(LEVEL.EASY,cteo.getWord(),null);
 		
@@ -81,6 +85,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _hashtag = _CTEO.getWord();
 	    _listword = _CTEO.getListWords();
 
+	    
+	    _au = AU;
+	    
 		_j_local = j_local;
 		_j_distant = j_distant;
 
@@ -90,10 +97,29 @@ public class InGame_multi_IHM extends InGame_IHM{
 		
 		draw_multiplayer_screen();//affiche l'ecran de jeu
 		
+		watch_connection();
 		start_timer();
+		
 
 	}
 	
+	private void watch_connection(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				_go_watcher = true;
+				while(_go_watcher){
+					_au.newMessage();
+					_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
+					_compteur_de_point_adversaire.settext("adversaire : "+_j_distant.getPoint());
+					if(_j_distant.getPoint() >= 100){
+						_go_watcher = false;
+						end_game();
+					}
+				}
+			}
+		}).start();		
+	}
 
 	@Override protected void loose_vie(){
 		 
@@ -139,6 +165,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	        		setAnswer(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        		_mots_trouver ++;
+	        		_au.sendObject(DataType.SCORE, _j_local.getPoint());
 	        	}
 	        	_info_player.setText(affichage);
 	    	    _info_player.auto_resize();
@@ -164,10 +191,11 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 0;
+					long limit = 100;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
-					while((System.currentTimeMillis())-(t0)  < (limit)*1000 ){
+					_go_timer = true;
+					while(((System.currentTimeMillis())-(t0)  < (limit)*1000 ) && _go_timer){
 						
 						long t = (System.currentTimeMillis())-(t0);
 						
@@ -185,8 +213,10 @@ public class InGame_multi_IHM extends InGame_IHM{
 							Thread.sleep(2);
 						} catch (InterruptedException e) {}
 					}
-					end_game();
-					_timer_is_running = false;
+					if(_go_timer == true){
+						end_game();
+						_timer_is_running = false;
+					}
 				}
 			}).start();
 		}
@@ -201,7 +231,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	
 	public void draw_multiplayer_screen(){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,false);
 		
 	    _fenetre.addKeyListener(this);
 		_jp_principal.addKeyListener(this);
@@ -236,8 +266,8 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    /*************** _compteur_de_point ***************/ 
 	    _compteur_de_point_adversaire = new Txt(_j_distant.getPseudo()+" : "+_j_distant.getPoint());	 
 	    _compteur_de_point_adversaire.setFont(arista_light.deriveFont(32));
-	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_LEFT);
-	    _compteur_de_point_adversaire.setxy((float)96,(float)3);
+	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point_adversaire.setxy((float)95,(float)6);
 	    _jp_principal.add(_compteur_de_point_adversaire);
 	    
 
