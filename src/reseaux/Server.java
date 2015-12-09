@@ -86,6 +86,6 @@ public class Server extends AbstractUser {
 //        srv.updateStatus(2, 50);
 //        WAIT(7);
 //        srv.updateStatus(2, 50);
-//    }
+   }
 
 }
