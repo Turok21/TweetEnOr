@@ -1,6 +1,7 @@
 package reseaux;
 
 import ihm.components.Shared_component;
+import java.io.IOException;
 import java.net.Socket;
 /**
  * Created by Ari� on 25/11/2015.
@@ -71,6 +72,13 @@ public abstract class AbstractUser implements User {
     }
 
     public void finalize() {
+        try {
+            this._socket.close();
+            this._de.finalize();
+            this._th.interrupt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Object Abstract User been destroyed");
     }
 }

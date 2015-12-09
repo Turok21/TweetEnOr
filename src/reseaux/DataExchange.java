@@ -44,4 +44,14 @@ public class DataExchange implements Runnable {
             e.printStackTrace();
         }
     }
+
+    public void finalize() {
+        try {
+            this.in.close();
+            this.out.close();
+            this.socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
