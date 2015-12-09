@@ -231,7 +231,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_go_timer = false;
 		_go_watcher = false;
 		try {
-			Thread.sleep(100);
+			Thread.sleep(200);
 		} catch (InterruptedException e) {}
 		_au.finalize();
 		new End_IHM(_fenetre, _CTEO,_j_local,_j_distant);
