@@ -33,6 +33,9 @@ public class Joueur {
 	public void addPoint(int point){
 		_points += Math.abs(point);
 	}
+	public void setPoint(int point){
+		_points = Math.abs(point);
+	}
 	
 	public int getPoint(){
 		return _points;

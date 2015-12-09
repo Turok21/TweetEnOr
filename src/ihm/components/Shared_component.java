@@ -18,6 +18,7 @@ public class Shared_component {
 	
 	
 	public Shared_component() {
+		_is_message = false;
 		_progressbar = new JProgressBar();
 		txt_line1 = new Txt();
 	}

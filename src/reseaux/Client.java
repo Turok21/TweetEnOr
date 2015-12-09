@@ -2,9 +2,7 @@ package reseaux;
 
 import ihm.components.Shared_component;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 /**
  * Created by Arié on 23/11/2015.
  */
@@ -22,7 +20,6 @@ public class Client extends AbstractUser {
     }
 
 	public boolean connect() {
-    	
     	System.out.println("Initialisation de la connexion");
         try {
             _socket = new Socket(_ip, _port);
@@ -38,16 +35,17 @@ public class Client extends AbstractUser {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println("Creation Client");
-        Shared_component shr = new Shared_component();
-        Client clt = new Client("127.0.0.1", 14500, shr);
-        clt.connect();
-        WAIT(5);
-        clt.initData("CLIENTPSEUDO", "COP21");
-        WAIT(20);
-        clt.updateStatus(1, 15);
-        WAIT(10);
-        clt.updateStatus(8, 91);
-    }
+//    public static void main(String[] args) {
+//        System.out.println("Creation Client");
+//        Shared_component shr = new Shared_component();
+//        Client clt = new Client("127.0.0.1", 14500, shr);
+//        clt.connect();
+//        WAIT(5);
+//        System.out.println("sending data");
+//        clt.initData("CLIENTPSEUDO", "COP21");
+//        WAIT(20);
+//        clt.updateStatus(1, 15);
+//        WAIT(10);
+//        clt.updateStatus(8, 91);
+//    }
 }

@@ -16,15 +16,15 @@ public class Emission implements Runnable {
 
     public void run() {
         sc = new Scanner(System.in);
-        while (true) {
-            System.out.println("Votre message :");
-            message = sc.nextLine();
-            try {
-                out.writeObject(new Data(DataType.TEST, message));
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
+//        while (true) {
+//            System.out.println("Votre message :");
+//            message = sc.nextLine();
+//            try {
+//                out.writeObject(new Data(DataType.TEST, message));
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

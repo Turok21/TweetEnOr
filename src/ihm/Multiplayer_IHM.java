@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 import javax.xml.soap.Text;
+
+import com.sun.org.apache.xpath.internal.compiler.Keywords;
 
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
@@ -39,7 +42,9 @@ import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 import reseaux.Client;
+import reseaux.DataType;
 import reseaux.Server;
+import utils.Joueur;
 import utils.KeyWord;
 import utils.TweetWord;
 import java.util.regex.Pattern;
@@ -91,8 +96,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_progression = new Txt("Progression");
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 		_progression.setForeground(Color.BLACK);
-		_progression.setGravity(GRAVITY.CENTER_LEFT);
-		_progression.setxy(70, 65);
+		_progression.setGravity(GRAVITY.CENTER);
+		_progression.setxy(75, 65);
 		_jp_principal.add(_progression);
 		_progression.setVisible(false);
 		
@@ -267,15 +272,17 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
         _loader.setxy(50, 35);
         _loader.setOpaque(false);
+        _loader.setVisible(false);
 		_jp_principal.add(_loader); 
 		
 		/*************** text d'informations sous la bar de progression ***************/
         _shared.txt_line1 = new Txt();
         _shared.txt_line1.setGravity(GRAVITY.CENTER);
-        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
         _shared.txt_line1.setForeground(Color.white);
         _shared.txt_line1.settext("chargement des info");
         _shared.txt_line1.setxy(50, 64);
+        _shared.txt_line1.setVisible(false);
 		_jp_principal.add(_shared.txt_line1);
         
        
@@ -286,10 +293,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
         		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
 		_jp_principal.add(_shared._progressbar);
+        _shared._progressbar.setVisible(false);
 		
 		_jp_principal.repaint();
-		show_loadin_global_info(true);
+		show_loadin_global_info(false);
 	
+		
 		
 		
 		_b_again = new Bt();
@@ -300,6 +309,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_again.setxy(10,90);
 		_jp_principal.add(_b_again);
         
+		_tf_port_creat.settext("2222");
+		_tf_ip.settext("127.0.0.1");
+		_tf_port_joint.settext("2222");
+		_tf_pseudo_creat.settext("server");
+		_tf_pseudo_joint.settext("client");
+		
 		
 		show_windows();
 	}
@@ -417,7 +432,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
     	Matcher rx_status = rx_port_number.matcher(_tf_port_creat.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port_creat.getText()) > 1024)
+    		if(Integer.parseInt(_tf_port_creat.getText()) > 0)
     		{
 	        	_tf_port_creat.setEditable(false);
 	        	_tf_port_creat.setBackground(Color.WHITE);
@@ -440,7 +455,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
     	Matcher rx_status = rx_port_number.matcher(_tf_port_joint.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port_joint.getText()) > 1024)
+    		if(Integer.parseInt(_tf_port_joint.getText()) > 0)
     		{
     			_tf_port_joint.setEditable(false);
     			_tf_port_joint.setBackground(Color.WHITE);
@@ -509,6 +524,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         			new Thread(new Runnable() {
         				@Override
         				public void run() {
+        					
+        					
         					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					if(!se.create_server()){
 	    						cancel_joint();
@@ -519,17 +536,36 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
 	    							 
-	    							//se.initData(_tf_pseudo_creat.getText(), _hashtag);
 	    							
+	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+	    							Joueur lui = new Joueur();
+	    							
+	    							se.newMessage();
+	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
+	    							se.newMessage();
+	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
+	    							
+	    							
+	    							Random rand = new Random();
+	    							int r = rand.nextInt(2);
+	    					        if(r == 1)
+	    					        	mot = _hashtag;
+	    					        	
+	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
+	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+	    					        
 	    							try {
-										CtrlTweetEnOr cteo= new CtrlTweetEnOr(_hashtag,_shared);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
+	    								show_loadin_global_info(true);
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(mot,_shared);
+										se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+										
+		    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+
+										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
+										
+									} catch (Exception e) {e.printStackTrace();}
 	    							
-	    							//KeyWord key = new KeyWord("bière", ll);
-	    					        //srv.server_sendKeyword(key);
-	    							
+	    
 	    						}else{
 	    							_progression.settext("connexion client en echec...");
 	    						}
@@ -552,15 +588,46 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
+	    					
+	    					_progression.settext("Connexion au serveur en cours ...");	    					
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
 	    						cancel_joint();
 	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
 	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
+	    						
+	    						_progression.settext("Connexion OK !");	     
+	    						_loader.setVisible(true);
+		    			        _shared.txt_line1.setVisible(true);
+	    						
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
-	    						//loadin_global_info("");
+
+	    						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+    							Joueur lui = new Joueur();
+	    						cl.newMessage();
+    							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
+    							
+    							cl.newMessage();
+    							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
+    							_progression.setGravity(GRAVITY.CENTER);
+    							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
+
+    							
+    							/*cl.newMessage();
+    							_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
+    							*/
+    							
+    							
+	    						try {
+									CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+									
+									new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
 	    					}
 	    				}
 	    			}).start();

@@ -1,7 +1,6 @@
 package reseaux;
 
 import ihm.components.Shared_component;
-import java.io.IOException;
 import java.net.Socket;
 /**
  * Created by Ari� on 25/11/2015.
@@ -33,6 +32,14 @@ public abstract class AbstractUser implements User {
         return this._de;
     }
 
+    public boolean newMessage(){
+        while(!this._shared._is_message){
+            WAIT(0.10);
+        }
+        this._shared._is_message = false;
+        return true;
+    }
+
     @Override
     public void sendObject(DataType type, Object obj) {
         this._de._emit(type, obj);
@@ -50,9 +57,10 @@ public abstract class AbstractUser implements User {
         sendObject(DataType.SCORE, score);
     }
 
-    public static boolean WAIT(int sec) {
+
+    public static boolean WAIT(double sec) {
         try {
-            Thread.sleep(sec * 10);
+            Thread.sleep((int)sec * 10);
             return true;
         } catch (InterruptedException e) {
             e.printStackTrace();
