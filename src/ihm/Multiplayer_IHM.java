@@ -5,30 +5,22 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.xml.soap.Text;
+import javax.swing.JProgressBar;
 
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
-import ihm.IHM_Iterface.LEVEL;
 import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Shared_component;
@@ -36,8 +28,12 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
+import reseaux.Client;
+import reseaux.DataType;
+import reseaux.Server;
+import utils.Joueur;
+import utils.KeyWord;
 import utils.TweetWord;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, KeyListener {
@@ -62,10 +58,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 
 	private CtrlTweetEnOr _verifier;
 	private List<TweetWord> _listword;	
-	private String _hasttag;
+	private String _hashtag;
 	private String pseudo;
 	private int _porNumber;
-	
+	private Bt _b_again; 
 
 	public static void main(String[] args) {
 	     new Multiplayer_IHM("test",new JFrame("test"));
@@ -76,26 +72,25 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		super();
 		_shared = new Shared_component();
 		_fram_given = fram;
-	    _hasttag = hastag_theme;
+	    _hashtag = hastag_theme;
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
-		
 		
 		
 		/*************Progression **************/
 		_progression = new Txt("Progression");
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 		_progression.setForeground(Color.BLACK);
-		_progression.setGravity(GRAVITY.CENTER_LEFT);
-		_progression.setxy(70, 65);
+		_progression.setGravity(GRAVITY.CENTER);
+		_progression.setxy(75, 40);
 		_jp_principal.add(_progression);
 		_progression.setVisible(false);
 		
 		/*************** Loader ***************/
 		_loader = new Txt(new ImageIcon("./data/images/loader_ponte.gif"));
 		_loader.setGravity(GRAVITY.CENTER);
-		int width = _loader.getWidth() + 10 ;
-        int height = _loader.getHeight() + 10 ;
+		final int width = _loader.getWidth() + 10 ;
+        	final int height = _loader.getHeight() + 10 ;
 		_loader.setxyin(50,50,width,height);
 		
 		_p_loader = new Pa(null) {    
@@ -111,7 +106,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		};
 		_p_loader.setBackground(new Color(255, 255, 255, 255));
 		_p_loader.setSize(width,height);
-		_p_loader.setxy(75,50);
+		_p_loader.setxy(75,30);
 		_p_loader.setOpaque(false);  
 		
 		_p_loader.add(_loader);
@@ -140,7 +135,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		Txt hastag = new Txt("");
 		hastag.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 40));
-		hastag.settext("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hasttag+"</font></html>");
+		hastag.settext("<html>Thème choisi: <font color='rgb(10,40,245)'>#"+_hashtag+"</font></html>");
 		hastag.setxy(50,5);
 		_jp_principal.add(hastag);
 		
@@ -257,7 +252,64 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_wait_client.addActionListener(this);
 		_p_create.add(_b_wait_client);
 		
+		
+		/*************** chargement et paramétrage du loader twitter  ***************/
+        _loader = new Txt(new ImageIcon("./data/images/hourglass.gif"));
+        _loader.setxy(50, 35);
+        _loader.auto_resize();
+        _loader.setOpaque(false);
+        _loader.setVisible(false);
+		_jp_principal.add(_loader); 
+		
+		/*************** text d'informations sous la bar de progression ***************/
+        _shared.txt_line1 = new Txt();
+        _shared.txt_line1.setGravity(GRAVITY.CENTER);
+        _shared.txt_line1.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,40));
+        _shared.txt_line1.setForeground(Color.white);
+        _shared.txt_line1.settext("chargement des info");
+        _shared.txt_line1.setxy(50, 64);
+        _shared.txt_line1.setVisible(false);
+		_jp_principal.add(_shared.txt_line1);
+        
+       
+        /*************** ProgressBar ***************/
+        _shared._progressbar = new JProgressBar();
+        _shared._progressbar.setSize(500,30);
+        _shared._progressbar.setForeground(new Color(29, 202, 255,255));
+        _shared._progressbar.setLocation((int)((_screen.width/2)-(_shared._progressbar.getSize().width*0.5))
+        		, (int)((_screen.height*0.6)-(_shared._progressbar.getSize().height/2)));
+		_jp_principal.add(_shared._progressbar);
+        _shared._progressbar.setVisible(false);
+		
+		_jp_principal.repaint();
+		show_loadin_global_info(false);
+	
+		
+		
+		
+		_b_again = new Bt();
+		_b_again.addActionListener(this);
+		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
+		_b_again.setText("Retour au paramètrage");
+		_b_again.setGravity(GRAVITY.CENTER);
+		_b_again.setxy(10,90);
+		_jp_principal.add(_b_again);
+        
+		_tf_port_creat.settext("2222");
+		_tf_ip.settext("127.0.0.1");
+		_tf_port_joint.settext("2222");
+		_tf_pseudo_creat.settext("server");
+		_tf_pseudo_joint.settext("client");
+		
+		
 		show_windows();
+	}
+	
+	void show_loadin_global_info(boolean show)
+	{
+        _loader.setVisible(show);
+        _shared.txt_line1.setVisible(show);
+        _shared._progressbar.setVisible(show);
 	}
 	
 	private void show_joint_ihm(){
@@ -275,7 +327,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	/**
 	 * Controle des parametre de création d'une partie 
 	 */
-	private void control_creat()
+	private boolean control_creat()
 	{    	
 		if(port_creat_control() && pseudo_creat_controle())
 		{
@@ -284,14 +336,18 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_joint.setEnabled(false);
     		_b_wait_client.setText("Arreter");
+    		_b_again.setVisible(false);
+    		
+    		return true;
 		}
 		else
 		{
 			_b_wait_client.setSelected(false);
+			return false;
 		}
 	}
 	
-	private void join_control()
+	private boolean join_control()
 	{	
 		if(pseudo_joint_controle() && port_joint_control() && ip_controle())
 		{		
@@ -300,8 +356,11 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     		_progression.setText("Progression");
     		_b_create.setEnabled(false);
     		_b_connexion.setText("Arreter");
+    		_b_again.setVisible(false);
+			return true;
 		}else{
 			_b_connexion.setSelected(false);
+			return false;
 		}
 	}
 	
@@ -359,7 +418,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
     	Matcher rx_status = rx_port_number.matcher(_tf_port_creat.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port_creat.getText()) > 1024)
+    		if(Integer.parseInt(_tf_port_creat.getText()) > 0)
     		{
 	        	_tf_port_creat.setEditable(false);
 	        	_tf_port_creat.setBackground(Color.WHITE);
@@ -382,7 +441,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		Pattern rx_port_number = Pattern.compile("^[0-9]+$");
     	Matcher rx_status = rx_port_number.matcher(_tf_port_joint.getText());
     	if(rx_status.find()){
-    		if(Integer.parseInt(_tf_port_joint.getText()) > 1024)
+    		if(Integer.parseInt(_tf_port_joint.getText()) > 0)
     		{
     			_tf_port_joint.setEditable(false);
     			_tf_port_joint.setBackground(Color.WHITE);
@@ -408,6 +467,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_pseudo_creat.setEditable(true);
 		_b_joint.setEnabled(true);
 		_progression.setVisible(false);
+		_b_again.setVisible(true);
 	}
 	
 	private void cancel_joint() {
@@ -419,6 +479,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_ip.setEditable(true);
 		_tf_port_joint.setEditable(true);
 		_tf_pseudo_joint.setEditable(true);
+		_b_again.setVisible(true);
 	}
 
 	@Override
@@ -445,20 +506,165 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         }else if( e.getSource() == _b_wait_client ){
         	if(_b_wait_client.isSelected())
         	{
-        		control_creat();
+        		if(control_creat()){
+        			new Thread(new Runnable() {
+        				@Override
+        				public void run() {
+        					
+        					
+        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
+        					if(!se.create_server()){
+	    						cancel_joint();
+	    						_progression.setVisible(true);
+	    						_progression.settext("echec de création du serveur...");
+	    					}else{
+	    						_loader.setxy(50, 45);
+	    						_progression.settext("Serveur crée, en attente de connexion ...");
+	    						if(se.wait_client()){
+	    							_progression.settext("client connecté");
+		    						_progression.setxy(50, 30);
+
+			    			        _p_loader.setVisible(false);
+	    							
+	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+	    							Joueur lui = new Joueur();
+	    							
+	    							se.newMessage();
+	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
+	    							se.newMessage();
+	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
+
+	    							System.out.println("RAND = "+mot);
+	    							
+	    							Random rand = new Random();
+	    							int r = rand.nextInt(100);
+	    					        if(r > 50)
+	    					        	mot = _hashtag;
+	    					        	
+	    					        _progression.settext("Votre adveraire : "+lui.getPseudo());
+	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+	    					        
+    						    
+	    						  
+    						
+    					        	show_loadin_global_info(true);
+	    					        CtrlTweetEnOr cteo = null;
+	    							try {
+										cteo = new CtrlTweetEnOr(mot,_shared);
+	    							} catch (Exception e) {
+	    								if(e instanceof IllegalStateException){ //credentials missing{
+	    									_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+	    									se.sendObject(DataType.NICKNAME, "laisse béton");
+			    							se.sendObject(DataType.KEYWORD, new KeyWord("vide", new ArrayList<TweetWord>()));
+	    									return;
+	    								}
+	    								e.printStackTrace();
+	    							}
+									se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+									
+	    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+
+	    							if (cteo.getKeyWords().getListWords().size() == 0){
+	    								_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
+	    								return;
+	    							}
+	    							
+	    							try {
+										Thread.sleep(200);
+									} catch (InterruptedException e1) {e1.printStackTrace();}
+	    							se.newMessage();
+									try {
+										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
+									} catch (IOException e) {e.printStackTrace();
+									}
+										
+									
+	    							
+	    
+	    						}else{
+	    							_progression.settext("connexion client en echec...");
+	    						}
+	    						
+	    					}
+        				}
+        			}).start();
+        			
+        		}
+        		
         	}else{
         		cancel_create();
         	}
         }else if( e.getSource() == _b_connexion ){
         	if(_b_connexion.isSelected())
         	{
-        		join_control();
+        		
+        		if(join_control()){
+        			
+	        		new Thread(new Runnable() {
+	    				@Override
+	    				public void run() {
+	    					_loader.setxy(50, 50);
+	    					_progression.settext("Connexion au serveur en cours ...");	    					
+	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
+	    					if(!cl.connect()){
+	    						cancel_joint();
+	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
+	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
+	    					}else{
+	    						
+	    						_progression.settext("Connexion au serveur OK !");	   
+	    						_progression.setxy(50, 30);
+	    						_loader.setVisible(true);
+		    			        _shared.txt_line1.setVisible(true);
+		    			        
+		    			        _p_loader.setVisible(false);
+	    						
+	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
+	    						
+
+	    						Joueur moi = new Joueur(_tf_pseudo_joint.getText());
+    							Joueur lui = new Joueur();
+	    						cl.newMessage();
+    							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
+    							
+    							cl.newMessage();
+    							_progression.settext("votre adversaire : "+lui.getPseudo()+". le serveur charge les données de jeu");
+    							_progression.setGravity(GRAVITY.CENTER);
+    							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
+
+
+    							
+    							if(key.getListWords().size() > 0){
+		    						try {
+										CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+										
+										
+										try {
+											Thread.sleep(400);
+										} catch (InterruptedException e1) {e1.printStackTrace();}
+										cl.sendObject(DataType.START, "");
+										
+										new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+    							}else{
+    								show_loadin_global_info(false);
+    								_progression.setVisible(true);
+    								_progression.settext("Erreur du serveur lors de la création des données de jeu !");
+    								return ;
+    							}
+
+	    					}
+	    				}
+	    			}).start();
+        		}
         	}else{
         		cancel_joint();
         	}
+        }else if(e.getSource() == _b_again){
+			new Config_IHM(_fenetre);
         }
-		
-
         
 	}
 }

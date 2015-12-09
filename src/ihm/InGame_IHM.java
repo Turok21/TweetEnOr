@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -67,6 +68,16 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	protected ArrayList<Txt> _listword_label;
 	protected ArrayList<Txt> _listLetters;
 	protected ArrayList<Txt> _listPts;
+	
+	protected ArrayList<String> _coloredPan;
+	protected ArrayList<String> _AnaPan;
+	protected ArrayList<String> _VerifPan;
+	protected Txt _msg;
+	protected Integer _nbAna;
+	protected Txt _nbAnaCpt;
+	protected Integer _nbColor;
+	protected Txt _nbColorCpt;
+
 	
 	protected HashMap<String, String> wordAna;
 	
@@ -135,6 +146,22 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 		_listLetters = new ArrayList<Txt>();
 		_listPts = new ArrayList<Txt>();
+		
+		switch(_difficulte){ 
+		case EASY:
+			_nbAna = 3;
+			_nbColor = 3;
+		break;
+		case MEDIUM :
+			_nbAna = 2;
+			_nbColor = 2;
+		break;
+		case HARD :
+			_nbAna = 1;
+			_nbColor = 1;
+		break;
+	}
+	
 		
 		
 		load_vie_img();
@@ -229,8 +256,6 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
         
         
 
-       
-        
         /*************** ProgressBar ***************/
         _shared._progressbar = new JProgressBar();
         _shared._progressbar.setSize(500,30);
@@ -292,20 +317,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 		
-		
-		 /*************** _tf_saisie ***************/
-	    _tf_saisie = new Tf(50);
-	    _tf_saisie.setVisible(true);
-	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
-	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
-	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50, 45);
-	    _tf_saisie.setFocusable(true);
-	    _jp_principal.add(_tf_saisie);
-
-	    
-	  
-	    /*************** _compteur_de_point ***************/
+		/*************** _compteur_de_point ***************/
 	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
@@ -325,13 +337,32 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	_jp_principal.add(tmp);
 	    }
 	    
+	    
+	    
+	    
+		
+		
+		
+		
+		
+		
+		 /*************** _tf_saisie ***************/
+	    _tf_saisie = new Tf(50);
+	    _tf_saisie.setVisible(true);
+	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
+	    _tf_saisie.addKeyListener(this);
+	    _tf_saisie.setxy(50,37);
+	    _tf_saisie.setFocusable(true);
+	    _jp_principal.add(_tf_saisie);
+
 
 	    /*************** _t_hashtag ***************/
 	    _t_hashtag = new Txt("#"+_hashtag);
 	    _t_hashtag.setForeground(Color.blue);
 	    _t_hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	    _t_hashtag.auto_resize();
-	    _t_hashtag.setxy(50, 33);
+	    _t_hashtag.setxy(50, 25);
 	    _jp_principal.add(_t_hashtag);
 
 	
@@ -339,7 +370,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
 	    _info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _info_player.auto_resize();
-	    _info_player.setxy(50, 56);
+	    _info_player.setxy(50, 48);
 	    _jp_principal.add(_info_player);
 	    
 	    
@@ -349,29 +380,78 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    _b_verifier.setGravity(GRAVITY.CENTER);
 	    _b_verifier.setwh(150, 75);
 	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 52);
+	    _b_verifier.setxy(50, 43);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
 	    /*************** Anagramme ***************/
 	    _b_hintShuffle = new Tbt("Anagramme");
 	    _b_hintShuffle.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
+	    _b_hintShuffle.setGravity(GRAVITY.BOTTOM_LEFT);
 	    _b_hintShuffle.setwh(75, 75);
 	    _b_hintShuffle.auto_resize();
-	    _b_hintShuffle.setxy(10, 95);
+	    _b_hintShuffle.setxy(10, 90);
 	    _b_hintShuffle.addActionListener(this);
 	    _jp_principal.add(_b_hintShuffle);
 	    
 	    /*************** Nombre de lettres ***************/
 	    _b_hintNbLetters = new Bt("Nombre de Lettre");
 	    _b_hintNbLetters.setFont(arista_light.deriveFont(Font.BOLD,15));
-	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
+	    _b_hintNbLetters.setGravity(GRAVITY.BOTTOM_RIGHT);
 	    _b_hintNbLetters.setwh(75, 75);
 	    _b_hintNbLetters.auto_resize();
-	    _b_hintNbLetters.setxy(90, 95);
+	    _b_hintNbLetters.setxy(90, 90);
 	    _b_hintNbLetters.addActionListener(this);
 	    _jp_principal.add(_b_hintNbLetters);
+	    
+	    
+	    /*************** Décourverte de lettres aléatoire ***************/
+	    _b_hintColor = new Tbt("Découverte de lettres");
+	    _b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
+	    _b_hintColor.setGravity(GRAVITY.BOTTOM_CENTER);
+	    _b_hintColor.setwh(75, 75);
+	    _b_hintColor.auto_resize();
+	    _b_hintColor.setxy(50, 90);
+	    _b_hintColor.addActionListener(this);
+	    _jp_principal.add(_b_hintColor);
+	    
+	    
+	    /**********************Message pour indice sur même panel****************************/
+	    _msg = new Txt();
+    	_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
+    	_msg.setForeground(new Color(0, 0, 0,255));
+    	_msg.setGravity(GRAVITY.CENTER);	
+    	_msg.setxy(50, 17);
+    	_jp_principal.add(_msg);
+    	_msg.setVisible(false);
+    	
+    	
+    	/********************** Cpt Couleur ****************************/
+    	_nbAnaCpt = new Txt();
+		_nbAnaCpt.settext(_nbAna.toString());
+		_nbAnaCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
+		_nbAnaCpt.setForeground(new Color(0, 0, 0, 255));
+		_nbAnaCpt.setGravity(GRAVITY.BOTTOM_LEFT);
+		_nbAnaCpt.setxy(20, 90);
+		_jp_principal.add(_nbAnaCpt);
+    	_nbAnaCpt.setVisible(true);
+
+		_AnaPan = new ArrayList<String>();
+		
+		/********************** Cpt Couleur ****************************/
+		_nbColorCpt = new Txt();
+		_nbColorCpt.settext(_nbColor.toString());
+		_nbColorCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
+		_nbColorCpt.setForeground(new Color(0, 0, 0, 255));
+		_nbColorCpt.setGravity(GRAVITY.BOTTOM_LEFT);
+		_nbColorCpt.setxy(58, 90);
+		_jp_principal.add(_nbColorCpt);
+		_nbColorCpt.setVisible(true);
+
+		 _coloredPan = new ArrayList<String>();
+
+		 _VerifPan = new ArrayList<String>();
+	    
 	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
@@ -499,7 +579,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 		//Placement des mots
-		float x_decalage = 0,y_de=70;
+		float x_decalage = 0,y_de=60;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
@@ -623,6 +703,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	        	}else if(motVerifie.getPonderation() > 0){
 	        		affichage += "Le mot " + motVerifie.getWord() + " est correct (" + motVerifie.getPonderation() + " points) !";
 	        		setAnswer(motVerifie.getWord());
+	        		_VerifPan.add(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        		_mots_trouver ++;
 	        	}
@@ -726,6 +807,51 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			j++;
 		}
 	}
+	
+	protected void Color(String pan_name) {
+	    StringBuilder builder = new StringBuilder();
+        List<Character> letters = new ArrayList<Character>();
+        int i = 0;
+        
+        for (char letter : pan_name.toCharArray()) {
+            letters.add(letter);
+            i++;
+        }
+        Random rand = new Random();
+        
+        ArrayList<Integer> random = new ArrayList<Integer>();
+        int nb = (int)(i*0.45);
+        while(nb != 0){
+	        int r = 0;
+	        boolean go=true;
+	        while(go){
+	            r = rand.nextInt(i + 1);
+	            if(!random.contains(r))
+	            	go = false;
+	        }
+	        random.add(r);
+	        nb--;
+        }
+        int j = 0, r= 0;
+		while(j < _listword_label.size()){
+			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
+				builder.append("<html>");
+				for (char letter : _listword_label.get(j).getText().toCharArray()) {
+					
+						if(random.contains(r)){  
+							builder.append( "<font color=rgb(255,255,255)>"+ letter + "</font>" );
+						}
+						else{
+							builder.append(letter);
+						}
+					r++;
+				}
+				builder.append("</html>");
+				_listword_label.get(j).setText(builder.toString());
+			}
+			j++;
+		}
+	}
 /************************Mettre le mot correct ******************************/
 	protected void setAnswer(String mot)
 	{
@@ -772,10 +898,57 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		if(_b_hintShuffle.isSelected()){
 			Pa panel = (Pa)e.getSource();
 		    String c = panel.getName();
-			mixWords(c);
-			_b_hintShuffle.setSelected(false);
-			_b_hintShuffle.setEnabled(false);
+			if (!_coloredPan.contains(c) && !_VerifPan.contains(c) && _nbAna > 0) {
+				mixWords(c);
+				_msg.setVisible(false);
+				_nbAna--;
+				if(_nbAna == 0){
+					_b_hintShuffle.setSelected(false);
+					_b_hintShuffle.setEnabled(false);
+					_nbAnaCpt.setText("0");
+				}
+				else
+				{
+					_b_hintShuffle.setSelected(false);
+					_b_hintShuffle.setEnabled(true);
+					_nbAnaCpt.setText(_nbAna.toString());
+				}
+				_msg.setVisible(false);
+				
+		    }
+		    else
+		    {
+		    	_msg.setText("Choisissez un autre mot");
+		    	_msg.auto_resize();
+		    	_msg.setVisible(true);
+		    }
 		}
+		if( _b_hintColor.isSelected()){
+			Pa panel = (Pa)e.getSource();
+		    String pan_name = panel.getName();
+			_coloredPan.add(pan_name);
+			
+			if(!_AnaPan.contains(pan_name) && _nbColor > 0 && !_VerifPan.contains(pan_name)){
+				Color(pan_name);
+				_nbColor --;
+				if(_nbColor == 0){
+				_b_hintColor.setSelected(false);
+				_b_hintColor.setEnabled(false);
+				_nbColorCpt.setText("0");
+				}
+				else
+				{
+					_b_hintColor.setSelected(false);
+					_b_hintColor.setEnabled(true);
+					_nbColorCpt.setText(_nbColor.toString());
+				}
+				_msg.setVisible(false);
+				
+			}
+		} else {
+			_msg.setText("Choisissez un autre mot");
+			_msg.auto_resize();
+        }
 		
 		
 	    }

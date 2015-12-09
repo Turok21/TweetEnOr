@@ -31,7 +31,10 @@ public class Joueur {
 	}
 	
 	public void addPoint(int point){
-		_points += Math.abs(point);
+		_points += point;
+	}
+	public void setPoint(int point){
+		_points = point;
 	}
 	
 	public int getPoint(){

@@ -30,7 +30,9 @@ import ihm.components.Tbt;
 import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
-import jdk.nashorn.internal.runtime.regexp.joni.ast.EncloseNode;
+import reseaux.AbstractUser;
+import reseaux.DataType;
+import reseaux.Server;
 import twitter4j.TwitterException;
 import utils.Joueur;
 import utils.TweetParser;
@@ -42,9 +44,10 @@ public class InGame_multi_IHM extends InGame_IHM{
 	protected Joueur _j_distant;
 	
 	protected boolean _timer_is_running;
-	
+	boolean _go_watcher,_go_timer,_game_adversaire_end;
 	Txt _timer;
 	
+	AbstractUser _au;
 	
 	@Override protected void load_vie_img(){}
 	@Override protected void drawloader(int redraw){}
@@ -56,9 +59,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 		Shared_component shared = new Shared_component();
 		shared._progressbar = new JProgressBar();
 		shared.txt_line1 = new Txt(); 
-		try {
-			new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
-		} catch (Exception e) {};
+		//try {
+		//	new InGame_multi_IHM(new CtrlTweetEnOr("StarWars", shared),new Joueur("J1"),new Joueur("J2"),new JFrame());
+		//} catch (Exception e) {};
 		
 	}
 	
@@ -66,13 +69,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 	 /**
 	 * Constructeur 
 	 * 
-	 * @param hastag_theme
 	 * @param fram
 	 * @param j_local
 	 * @param j_distant
 	 * @throws IOException
 	 */
-	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,JFrame fram) throws IOException {
+	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,AbstractUser AU,JFrame fram) throws IOException {
 		/*************** initialisation des variables ***************/
 		super(LEVEL.EASY,cteo.getWord(),null);
 		
@@ -82,19 +84,29 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _hashtag = _CTEO.getWord();
 	    _listword = _CTEO.getListWords();
 
+	    
+	    _au = AU;
+	    
 		_j_local = j_local;
 		_j_distant = j_distant;
 
 
+		_game_adversaire_end = false;
 		_timer_is_running = false;
 		
 		
 		draw_multiplayer_screen();//affiche l'ecran de jeu
 		
+		
+		
+		
+		watch_connection();
 		start_timer();
+		
 
 	}
 	
+
 
 	@Override protected void loose_vie(){
 		 
@@ -140,6 +152,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	        		setAnswer(motVerifie.getWord());
 	        		add_point(motVerifie.getPonderation(), motVerifie);
 	        		_mots_trouver ++;
+	        		_au.sendObject(DataType.SCORE, _j_local.getPoint());
 	        	}
 	        	_info_player.setText(affichage);
 	    	    _info_player.auto_resize();
@@ -165,10 +178,11 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 0;
+					long limit = 15;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
-					while((System.currentTimeMillis())-(t0)  < (limit)*1000 ){
+					_go_timer = true;
+					while(((System.currentTimeMillis())-(t0)  < (limit)*1000 ) && _go_timer){
 						
 						long t = (System.currentTimeMillis())-(t0);
 						
@@ -186,15 +200,54 @@ public class InGame_multi_IHM extends InGame_IHM{
 							Thread.sleep(2);
 						} catch (InterruptedException e) {}
 					}
-					end_game();
-					_timer_is_running = false;
+					if(_go_timer == true){
+						_au.sendObject(DataType.START, "");
+						end_game();
+						_timer_is_running = false;
+					}
 				}
 			}).start();
 		}
 		
 	}
 	
+	private void watch_connection(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				_go_watcher = true;
+				while(_go_watcher){
+					if(_au.newMessage()){
+						if(_au._shared._datatype == DataType.START){
+							_game_adversaire_end = true;
+						}else if(_au._shared._datatype == DataType.SCORE){
+							_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
+							_compteur_de_point_adversaire.settext(_j_distant.getPseudo()+" : "+_j_distant.getPoint());
+							if(_j_distant.getPoint() >= 100){
+								_go_watcher = false;
+								end_game();
+							}
+						}
+					}else {
+						
+						if(_go_watcher && _timer_is_running && !_game_adversaire_end){
+							_compteur_de_point_adversaire.settext("joueur déconnecté !");
+							_j_distant.setPoint(-1);
+						}
+						end_game();
+					}
+				}
+			}
+		}).start();		
+	}
+	
 	public void end_game(){
+		_go_timer = false;
+		_go_watcher = false;
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {}
+		_au.finalize();
 		new End_IHM(_fenetre, _CTEO,_j_local,_j_distant);
 	}
 	
@@ -202,21 +255,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 	
 	public void draw_multiplayer_screen(){
 		
-		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,true);
+		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Jeu ","fond_Tweet_en_or.jpg",_fram_given,false);
 		
 	    _fenetre.addKeyListener(this);
 		_jp_principal.addKeyListener(this);
 		
-		
-		 /*************** _tf_saisie ***************/
-	    _tf_saisie = new Tf(50);
-	    _tf_saisie.setVisible(true);
-	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
-	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
-	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50, 45);
-	    _tf_saisie.setFocusable(true);
-	    _jp_principal.add(_tf_saisie);
+
 
 	    
 	    /*********** Timer ***********/
@@ -237,17 +281,33 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    /*************** _compteur_de_point ***************/ 
 	    _compteur_de_point_adversaire = new Txt(_j_distant.getPseudo()+" : "+_j_distant.getPoint());	 
 	    _compteur_de_point_adversaire.setFont(arista_light.deriveFont(32));
-	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_LEFT);
-	    _compteur_de_point_adversaire.setxy((float)96,(float)3);
+	    _compteur_de_point_adversaire.setGravity(GRAVITY.TOP_RIGHT);
+	    _compteur_de_point_adversaire.setxy((float)95,(float)6);
 	    _jp_principal.add(_compteur_de_point_adversaire);
 	    
+	    
+	    
+	    
+	    
+
+	    
+	    /*************** _tf_saisie ***************/
+	    _tf_saisie = new Tf(50);
+	    _tf_saisie.setVisible(true);
+	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
+	    _tf_saisie.addKeyListener(this);
+	    _tf_saisie.setxy(50,37);
+	    _tf_saisie.setFocusable(true);
+	    _jp_principal.add(_tf_saisie);
+
 
 	    /*************** _t_hashtag ***************/
 	    _t_hashtag = new Txt("#"+_hashtag);
 	    _t_hashtag.setForeground(Color.blue);
 	    _t_hashtag.setFont(arista_light.deriveFont(Font.BOLD,72));
 	    _t_hashtag.auto_resize();
-	    _t_hashtag.setxy(50, 33);
+	    _t_hashtag.setxy(50, 25);
 	    _jp_principal.add(_t_hashtag);
 
 	
@@ -255,7 +315,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _info_player = new Txt("Entrez un mot en rapport avec ce hashtag !");
 	    _info_player.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 	    _info_player.auto_resize();
-	    _info_player.setxy(50, 56);
+	    _info_player.setxy(50, 48);
 	    _jp_principal.add(_info_player);
 	    
 	    
@@ -265,7 +325,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _b_verifier.setGravity(GRAVITY.CENTER);
 	    _b_verifier.setwh(150, 75);
 	    _b_verifier.auto_resize();
-	    _b_verifier.setxy(50, 52);
+	    _b_verifier.setxy(50, 43);
 		_b_verifier.addActionListener(this);
 	    _jp_principal.add(_b_verifier);
 	    
@@ -275,7 +335,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _b_hintShuffle.setGravity(GRAVITY.CENTER_LEFT);
 	    _b_hintShuffle.setwh(75, 75);
 	    _b_hintShuffle.auto_resize();
-	    _b_hintShuffle.setxy(10, 95);
+	    _b_hintShuffle.setxy(10, 90);
 	    _b_hintShuffle.addActionListener(this);
 	    _jp_principal.add(_b_hintShuffle);
 	    
@@ -285,11 +345,58 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    _b_hintNbLetters.setGravity(GRAVITY.CENTER_RIGHT);
 	    _b_hintNbLetters.setwh(75, 75);
 	    _b_hintNbLetters.auto_resize();
-	    _b_hintNbLetters.setxy(90, 95);
+	    _b_hintNbLetters.setxy(90, 90);
 	    _b_hintNbLetters.addActionListener(this);
 	    _jp_principal.add(_b_hintNbLetters);
 	    
+	    
+	    /*************** Décourverte de lettres aléatoire ***************/
+	    _b_hintColor = new Tbt("Découverte de lettres");
+	    _b_hintColor.setFont(arista_light.deriveFont(Font.BOLD,15));
+	    _b_hintColor.setGravity(GRAVITY.CENTER);
+	    _b_hintColor.setwh(75, 75);
+	    _b_hintColor.auto_resize();
+	    _b_hintColor.setxy(50, 90);
+	    _b_hintColor.addActionListener(this);
+	    _jp_principal.add(_b_hintColor);
+	    
+	    
+	    /**********************Message pour indice sur même panel****************************/
+	    _msg = new Txt();
+    	_msg.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,25));
+    	_msg.setForeground(new Color(0, 0, 0,255));
+    	_msg.setGravity(GRAVITY.CENTER);	
+    	_msg.setxy(50, 17);
+    	_jp_principal.add(_msg);
+    	_msg.setVisible(false);
+    	
+    	
+    	/********************** Cpt Couleur ****************************/
+    	_nbAnaCpt = new Txt();
+		_nbAnaCpt.settext(_nbAna.toString());
+		_nbAnaCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
+		_nbAnaCpt.setForeground(new Color(0, 0, 0, 255));
+		_nbAnaCpt.setGravity(GRAVITY.CENTER);
+		_nbAnaCpt.setxy(20, 90);
+		_jp_principal.add(_nbAnaCpt);
+    	_nbAnaCpt.setVisible(true);
+
+		_AnaPan = new ArrayList<String>();
 		
+		/********************** Cpt Couleur ****************************/
+		_nbColorCpt = new Txt();
+		_nbColorCpt.settext(_nbColor.toString());
+		_nbColorCpt.setFont(arista_light.deriveFont(Font.BOLD, 15));
+		_nbColorCpt.setForeground(new Color(0, 0, 0, 255));
+		_nbColorCpt.setGravity(GRAVITY.CENTER);
+		_nbColorCpt.setxy(60, 90);
+		_jp_principal.add(_nbColorCpt);
+		_nbColorCpt.setVisible(true);
+
+		 _coloredPan = new ArrayList<String>();
+
+	    
+	    
 	    /*************** Gestion de l'affichage des mots à trouver ***************/
 	    List<Pa> words = new ArrayList<Pa>();
 	    List<Pa> ALletters = new ArrayList<Pa>();
@@ -411,15 +518,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 				hline4 = hline2; 
 			}
 			
-			
-			
-			
 			i++;
 		}
 		
 		
 		//Placement des mots
-		float x_decalage = 0,y_de=70;
+		float x_decalage = 0,y_de=60;
 		i=1;
 		Pa pline = new Pa(null);
 		pline.setwh(wline, hline);
@@ -456,10 +560,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 		pline.setwh(wline3, hline3);
 		pline.setGravity(GRAVITY.CENTER);
 		for(Pa plettre : ALletters){
+			
 			plettre.setGravity(GRAVITY.TOP_LEFT);
 			plettre.setxyin(x_decalage,0,pline.getWidth(),pline.getHeight());
 	    	x_decalage +=(((float)plettre.getWidth()+15)/(float)pline.getWidth())*100;
 	    			//(((float)words.get(i-1).getWidth()+15)/(float)pline.getWidth())*100;
+	    	
 			pline.add(plettre);
 			
 			if(i == 5 || i == 10){
@@ -473,7 +579,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	    		x_decalage = 0;
 	    		y_de += (((float)hline3+15)/(float)_screen.getHeight())*100;
 	    	}
-
+			
 			i++;
 		}
 		
