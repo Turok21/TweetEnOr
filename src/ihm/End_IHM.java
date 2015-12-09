@@ -534,6 +534,8 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
         
         // displaying the points  
         Txt pointAdversaire = new Txt("Score : "+_points_adversaire);
+        if(_points_adversaire == -1)
+        	pointAdversaire.settext("abandon par déconnexion !");
         pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
         pointAdversaire.setForeground(new Color(255, 255, 255 ,255));
         pointAdversaire.auto_resize();
