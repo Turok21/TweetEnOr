@@ -533,8 +533,9 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    							
 	    							
 	    							Random rand = new Random();
-	    							int r = rand.nextInt(2);
-	    					        if(r == 1)
+	    							int r = rand.nextInt(100);
+	    							System.out.println("RAND = "+r);
+	    					        if(r > 50)
 	    					        	mot = _hashtag;
 	    					        	
 	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
