@@ -178,7 +178,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					long limit = 150;
+					long limit = 10;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					_go_timer = true;
