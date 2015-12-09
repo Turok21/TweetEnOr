@@ -1,5 +1,9 @@
 package reseaux;
 
+/**
+ * Permet de définir le type de donnée envoyé et recus
+ * et permet ainsi de savoir quoi faire et comment réutiliser ces données à la reception
+ */
 public enum DataType {
     PROPOSED_KEYWORD(1),        // string
     KEYWORD(2),                 // KeyWord
@@ -7,8 +11,6 @@ public enum DataType {
     WORD_FOUND(4),              // integer
     SCORE(5),                   // integer
     NICKNAME(6),                // string
-    //    CTEO(7),                    // integer
-//    TEST(10),
     LINE_LOADER(11),
     ERROR(12);
 
@@ -21,5 +23,4 @@ public enum DataType {
     public int getvalue() {
         return value;
     }
-
-};
+}

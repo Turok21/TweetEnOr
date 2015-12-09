@@ -15,16 +15,12 @@ public class Reception implements Runnable {
         this._shared = shr;
     }
 
-    public static boolean WAIT(double sec) {
-        try {
-            Thread.sleep((int) sec * 10);
-            return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    /**
+     * Detecte la reception d'un message
+     * indique la reception si le message précédent à déja été pris en compte
+     *
+     * @callback newData(DataType, Object)
+     */
     public void run() {
         while (true) {
             try {
@@ -33,22 +29,41 @@ public class Reception implements Runnable {
                 while (this._shared._is_message) {
                     WAIT(0.10);
                 }
-
-                HashMap<DataType, Object> editMap = new HashMap<>();
-                editMap.put(data.get_type(), data.get_content());
-                this._shared._datatype = data.get_type();
-                this._shared._data_hash = editMap;
-                System.out.println("In reception " + data.get_type() + " <-> " + data.get_content());
-                this._shared._is_message = true;
+                newData(data.get_type(), data.get_content());
 
             } catch (IOException e) {
                 System.out.println("Partner probably deconnected. Leaving");
-                this._shared._datatype = DataType.ERROR;
-                this._shared._is_message = true;
+                newData(DataType.ERROR, "disconnection");
                 break;
             } catch (ClassNotFoundException e) {
                 System.out.println("Unable a understand the message");
             }
+        }
+    }
+
+    /**
+     * Permet d'instancier les variables pour indiquer une reception d'un message
+     *
+     * @param type {DataType} type de donnée recu
+     * @param obj  {Object} donnée en question
+     *             Change le _is_message de Shared_component lors de la reception du message
+     */
+    private void newData(DataType type, Object obj) {
+        HashMap<DataType, Object> editMap = new HashMap<>();
+        editMap.put(type, obj);
+        this._shared._datatype = type;
+        this._shared._data_hash = editMap;
+        System.out.println("In reception " + type + " <-> " + obj);
+        this._shared._is_message = true;
+    }
+
+    public static boolean WAIT(double sec) {
+        try {
+            Thread.sleep((int) sec * 10);
+            return true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

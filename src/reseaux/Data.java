@@ -8,6 +8,10 @@ public class Data implements Serializable {
     private DataType _type;
     private Object   _content;
 
+    /**
+     * @param type    {DataType} Type de donnée
+     * @param content {Object} Valeur de la donnée
+     */
     public Data(DataType type, Object content) {
         this._type = type;
         this._content = content;
@@ -17,16 +21,7 @@ public class Data implements Serializable {
         return _type;
     }
 
-    public void set_type(DataType _type) {
-        this._type = _type;
-    }
-
     public Object get_content() {
         return _content;
     }
-
-    public void set_content(Object _content) {
-        this._content = _content;
-    }
-
 }

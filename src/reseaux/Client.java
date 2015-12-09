@@ -1,17 +1,25 @@
+/**
+ * Created by Arié on 23/11/2015.
+ */
 package reseaux;
 
 import ihm.components.Shared_component;
 import java.io.IOException;
 import java.net.Socket;
-/**
- * Created by Arié on 23/11/2015.
- */
 
 public class Client extends AbstractUser {
 
     private String _ip;
     private int    _port;
 
+    /**
+     * Constructeur de client (appel aussi le constructeur parent)
+     * ( != connect)
+     *
+     * @param ip   {String}
+     * @param port {int}
+     * @param shr  {Shared_component}
+     */
     public Client(String ip, int port, Shared_component shr) {
         super(shr);
         _ip = ip;
@@ -19,6 +27,11 @@ public class Client extends AbstractUser {
 
     }
 
+    /**
+     * Lance la recherche de connection avec le serveur selon le port et l'ip configuré dans le constructeur
+     *
+     * @return {boolean} etat de la connection
+     */
     public boolean connect() {
         System.out.println("Initialisation de la connexion");
         try {
@@ -32,20 +45,5 @@ public class Client extends AbstractUser {
             System.err.println("Aucun serveur à l'écoute du port " + _port);
             return false;
         }
-
     }
-
-//    public static void main(String[] args) {
-//        System.out.println("Creation Client");
-//        Shared_component shr = new Shared_component();
-//        Client clt = new Client("127.0.0.1", 14500, shr);
-//        clt.connect();
-//        WAIT(5);
-//        System.out.println("sending data");
-//        clt.initData("CLIENTPSEUDO", "COP21");
-//        WAIT(20);
-//        clt.updateStatus(1, 15);
-//        WAIT(10);
-//        clt.updateStatus(8, 91);
-//    }
 }

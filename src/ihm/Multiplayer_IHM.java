@@ -62,17 +62,119 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	private String pseudo;
 	private int _porNumber;
 	private Bt _b_again; 
+	
+	private Thread _th_server,_th_client;
 
+	
+	Server _se;
+	Client _cl;
+	
 	public static void main(String[] args) {
 	     new Multiplayer_IHM("test",new JFrame("test"));
 	}
 
 	public Multiplayer_IHM(String hastag_theme,JFrame fram) {
-		
 		super();
 		_shared = new Shared_component();
 		_fram_given = fram;
 	    _hashtag = hastag_theme;
+	    
+	    
+
+		
+		_th_server = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				_se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
+				
+				if(!_se.create_server()){
+					cancel_joint();
+					_progression.setVisible(true);
+					_progression.settext("echec de création du serveur...");
+				}else{
+					_loader.setxy(50, 45);
+					_progression.settext("Serveur crée, en attente de connexion ...");
+					if(_se.wait_client()){
+						_progression.settext("client connecté");
+						_progression.setxy(50, 30);
+
+    			        _p_loader.setVisible(false);
+						
+						Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+						Joueur lui = new Joueur();
+						
+						_se.newMessage();
+						lui.setPseudo(_se._shared._data_hash.get(_se._shared._datatype).toString());
+						_se.newMessage();
+						String mot = _se._shared._data_hash.get(_se._shared._datatype).toString();
+
+						System.out.println("RAND = "+mot);
+						
+						Random rand = new Random();
+						int r = rand.nextInt(100);
+				        if(r > 50)
+				        	mot = _hashtag;
+				        	
+				        _progression.settext("Votre adveraire : "+lui.getPseudo());
+				       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+				        
+				    
+					  
+				
+			        	show_loadin_global_info(true);
+				        CtrlTweetEnOr cteo = null;
+						try {
+							cteo = new CtrlTweetEnOr(mot,_shared);
+						} catch (Exception e) {
+							if(e instanceof IllegalStateException){ //credentials missing{
+								_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+								_se.sendObject(DataType.NICKNAME, "laisse béton");
+    							_se.sendObject(DataType.KEYWORD, new KeyWord("Impossible de se connecter à Twitter", new ArrayList<TweetWord>()));
+								return;
+							}
+							e.printStackTrace();
+						}
+						_se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+						
+						if (cteo.getKeyWords().getListWords().size() == 0){
+							_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
+							_shared.txt_line1.auto_resize();
+							try {
+								cteo = new CtrlTweetEnOr(new KeyWord("Pas suffisament de tweets pour créer les données de jeux !", new ArrayList<TweetWord>()));
+							} catch (Exception e) {e.printStackTrace();}
+							_se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+							return;
+						}
+						_se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+						
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e1) {e1.printStackTrace();}
+						_se.newMessage();
+						try {
+							new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given);
+						} catch (IOException e) {e.printStackTrace();
+						}
+							
+						
+						
+
+					}else{
+						_progression.settext("connexion client en echec...");
+					}
+					
+				}
+			}
+		});
+		
+	    
+	    
+	    
+	    
+	    
+	    
 		
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
 		
@@ -303,11 +405,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		
 		show_windows();
+		
 	}
 	
 	void show_loadin_global_info(boolean show)
-	{
+	{        
         _loader.setVisible(show);
+        _shared.txt_line1.setxy(50, 64);
         _shared.txt_line1.setVisible(show);
         _shared._progressbar.setVisible(show);
 	}
@@ -321,7 +425,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	private void show_create_ihm(){
 		_p_joint.setVisible(false);
 		_p_create.setVisible(true);
-		
 	}
 	
 	/**
@@ -503,167 +606,180 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        	_b_joint.setSelected(false);
 	        	show_create_ihm();
 			}
-        }else if( e.getSource() == _b_wait_client ){
-        	if(_b_wait_client.isSelected())
-        	{
-        		if(control_creat()){
+        }else if(e.getSource() == _b_again){
+			new Config_IHM(_fenetre);
+        }
+        
+        
+		
+        else if( e.getSource() == _b_wait_client ){
+        	if(_b_wait_client.isSelected()){
+        		if(control_creat())
+        			
         			new Thread(new Runnable() {
+        				
         				@Override
         				public void run() {
         					
+        					_se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
         					
-        					Server se = new Server(Integer.parseInt(_tf_port_creat.getText()),_shared);
-        					if(!se.create_server()){
-	    						cancel_joint();
-	    						_progression.setVisible(true);
-	    						_progression.settext("echec de création du serveur...");
-	    					}else{
-	    						_loader.setxy(50, 45);
-	    						_progression.settext("Serveur crée, en attente de connexion ...");
-	    						if(se.wait_client()){
-	    							_progression.settext("client connecté");
-		    						_progression.setxy(50, 30);
+        					if(!_se.create_server()){
+        						cancel_joint();
+        						_progression.setVisible(true);
+        						_progression.settext("echec de création du serveur...");
+        					}else{
+        						_loader.setxy(50, 45);
+        						_progression.settext("Serveur crée, en attente de connexion ...");
+        						if(_se.wait_client()){
+        							_progression.settext("client connecté");
+        							_progression.setxy(50, 30);
 
-			    			        _p_loader.setVisible(false);
-	    							
-	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
-	    							Joueur lui = new Joueur();
-	    							
-	    							se.newMessage();
-	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
-	    							se.newMessage();
-	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
+        	    			        _p_loader.setVisible(false);
+        							
+        							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
+        							Joueur lui = new Joueur();
+        							
+        							_se.newMessage();
+        							lui.setPseudo(_se._shared._data_hash.get(_se._shared._datatype).toString());
+        							_se.newMessage();
+        							String mot = _se._shared._data_hash.get(_se._shared._datatype).toString();
 
-	    							System.out.println("RAND = "+mot);
-	    							
-	    							Random rand = new Random();
-	    							int r = rand.nextInt(100);
-	    					        if(r > 50)
-	    					        	mot = _hashtag;
-	    					        	
-	    					        _progression.settext("Votre adveraire : "+lui.getPseudo());
-	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
-	    					        
-    						    
-	    						  
-    						
-    					        	show_loadin_global_info(true);
-	    					        CtrlTweetEnOr cteo = null;
-	    							try {
-										cteo = new CtrlTweetEnOr(mot,_shared);
-	    							} catch (Exception e) {
-	    								if(e instanceof IllegalStateException){ //credentials missing{
-	    									_shared.txt_line1.setText("Impossible de se connecter à Twitter");
-	    									se.sendObject(DataType.NICKNAME, "laisse béton");
-			    							se.sendObject(DataType.KEYWORD, new KeyWord("vide", new ArrayList<TweetWord>()));
-	    									return;
-	    								}
-	    								e.printStackTrace();
-	    							}
-									se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
-									
-	    							se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+        							System.out.println("RAND = "+mot);
+        							
+        							Random rand = new Random();
+        							int r = rand.nextInt(100);
+        					        if(r > 50)
+        					        	mot = _hashtag;
+        					        	
+        					        _progression.settext("Votre adveraire : "+lui.getPseudo());
+        					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
+        					        
+        					    
+        						  
+        					
+        				        	show_loadin_global_info(true);
+        					        CtrlTweetEnOr cteo = null;
+        							try {
+        								cteo = new CtrlTweetEnOr(mot,_shared);
+        							} catch (Exception e) {
+        								if(e instanceof IllegalStateException){ //credentials missing{
+        									_shared.txt_line1.setText("Impossible de se connecter à Twitter");
+        									_se.sendObject(DataType.NICKNAME, "laisse béton");
+        	    							_se.sendObject(DataType.KEYWORD, new KeyWord("Impossible de se connecter à Twitter", new ArrayList<TweetWord>()));
+        									return;
+        								}
+        								e.printStackTrace();
+        							}
+        							_se.sendObject(DataType.NICKNAME, _tf_pseudo_creat.getText());
+        							
+        							if (cteo.getKeyWords().getListWords().size() == 0){
+        								_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
+        								_shared.txt_line1.auto_resize();
+        								try {
+        									cteo = new CtrlTweetEnOr(new KeyWord("Pas suffisament de tweets pour créer les données de jeux !", new ArrayList<TweetWord>()));
+        								} catch (Exception e) {e.printStackTrace();}
+        								_se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+        								return;
+        							}
+        							_se.sendObject(DataType.KEYWORD, cteo.getKeyWords());
+        							
+        							try {
+        								Thread.sleep(200);
+        							} catch (InterruptedException e1) {e1.printStackTrace();}
+        							_se.newMessage();
+        							try {
+        								new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given);
+        							} catch (IOException e) {e.printStackTrace();
+        							}
+        								
+        							
+        							
 
-	    							if (cteo.getKeyWords().getListWords().size() == 0){
-	    								_shared.txt_line1.setText("Pas suffisament de tweets pour créer les données de jeux !");
-	    								return;
-	    							}
-	    							
-	    							try {
-										Thread.sleep(200);
-									} catch (InterruptedException e1) {e1.printStackTrace();}
-	    							se.newMessage();
-									try {
-										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
-									} catch (IOException e) {e.printStackTrace();
-									}
-										
-									
-	    							
-	    
-	    						}else{
-	    							_progression.settext("connexion client en echec...");
-	    						}
-	    						
-	    					}
+        						}else{
+        							_progression.settext("connexion client en echec...");
+        						}
+        						
+        					}
         				}
         			}).start();
-        			
-        		}
         		
         	}else{
+        		_se.finalize();
         		cancel_create();
         	}
         }else if( e.getSource() == _b_connexion ){
-        	if(_b_connexion.isSelected())
-        	{
-        		
+        	if(_b_connexion.isSelected()){
         		if(join_control()){
         			
-	        		new Thread(new Runnable() {
-	    				@Override
-	    				public void run() {
-	    					_loader.setxy(50, 50);
-	    					_progression.settext("Connexion au serveur en cours ...");	    					
-	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
-	    					if(!cl.connect()){
-	    						cancel_joint();
-	    						_progression.settext("echec de connexion... aucun serveur en ecoute");
-	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
-	    					}else{
-	    						
-	    						_progression.settext("Connexion au serveur OK !");	   
-	    						_progression.setxy(50, 30);
-	    						_loader.setVisible(true);
-		    			        _shared.txt_line1.setVisible(true);
-		    			        
-		    			        _p_loader.setVisible(false);
-	    						
-	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
-	    						
+        			new Thread(new Runnable() {
+        				@Override
+        				public void run() {
+        					_loader.setxy(50, 50);
+        					_progression.settext("Connexion au serveur en cours ...");	    
+        					
+        					_cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared); 
+        					
+        					if(!_cl.connect()){
+        						cancel_joint();
+        						_progression.setVisible(true);
+        						_progression.settext("echec de connexion... aucun serveur en ecoute");
+        						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
+        					}else{
+        						
+        						_progression.settext("Connexion au serveur OK !");	   
+        						_progression.setxy(50, 30);
+        						_loader.setVisible(true);
+        				        _shared.txt_line1.setVisible(true);
+        				        
+        				        _p_loader.setVisible(false);
+        						
+        						_cl.initData(_tf_pseudo_joint.getText(), _hashtag);
+        						
 
-	    						Joueur moi = new Joueur(_tf_pseudo_joint.getText());
-    							Joueur lui = new Joueur();
-	    						cl.newMessage();
-    							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
-    							
-    							cl.newMessage();
-    							_progression.settext("votre adversaire : "+lui.getPseudo()+". le serveur charge les données de jeu");
-    							_progression.setGravity(GRAVITY.CENTER);
-    							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
+        						Joueur moi = new Joueur(_tf_pseudo_joint.getText());
+        						Joueur lui = new Joueur();
+        						_cl.newMessage();
+        						lui.setPseudo(""+_cl._shared._data_hash.get(DataType.NICKNAME).toString());
+        						
+        						_cl.newMessage();
+        						_progression.settext("votre adversaire : "+lui.getPseudo()+". le serveur charge les données de jeu");
+        						_progression.setGravity(GRAVITY.CENTER);
+        						KeyWord key = (KeyWord) _cl._shared._data_hash.get(DataType.KEYWORD);
 
 
-    							
-    							if(key.getListWords().size() > 0){
-		    						try {
-										CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
-										
-										
-										try {
-											Thread.sleep(400);
-										} catch (InterruptedException e1) {e1.printStackTrace();}
-										cl.sendObject(DataType.START, "");
-										
-										new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-    							}else{
-    								show_loadin_global_info(false);
-    								_progression.setVisible(true);
-    								_progression.settext("Erreur du serveur lors de la création des données de jeu !");
-    								return ;
-    							}
+        						
+        						if(key.getListWords().size() > 0){
+        							try {
+        								CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+        								
+        								
+        								try {
+        									Thread.sleep(400);
+        								} catch (InterruptedException e1) {e1.printStackTrace();}
+        								_cl.sendObject(DataType.START, "");
+        								
+        								new InGame_multi_IHM(cteo, moi, lui,_cl, _fram_given);
+        							} catch (Exception e) {
+        								e.printStackTrace();
+        							}
+        						}else{
+        							show_loadin_global_info(false);
+        							_progression.setVisible(true);
+        							_progression.settext("Erreur - Le serveur indique : "+key.getWord());
+        							_progression.setGravity(GRAVITY.CENTER);
+        							_progression.auto_resize();
+        							return ;
+        						}
 
-	    					}
-	    				}
-	    			}).start();
+        					}
+        				}
+        			}).start();
         		}
         	}else{
+        		_cl.finalize();
         		cancel_joint();
         	}
-        }else if(e.getSource() == _b_again){
-			new Config_IHM(_fenetre);
+        	
         }
         
 	}

@@ -1,12 +1,15 @@
+/**
+ * Created by Arié on 25/11/2015.
+ */
 package reseaux;
 
 import ihm.components.Shared_component;
 import java.io.IOException;
 import java.net.Socket;
-/**
- * Created by Ari� on 25/11/2015.
- */
 
+/**
+ * Class Abstrait sur User    (User pouvant etre un Client ou un Server)
+ */
 public abstract class AbstractUser implements User {
 
     public Thread           _th;
@@ -14,25 +17,26 @@ public abstract class AbstractUser implements User {
     public Shared_component _shared;
     public Socket _socket = null;
 
+    /**
+     * @param shr {Shared_component} Utilisé pour le partage des données entre IHM et la partie Reseaux
+     */
     public AbstractUser(Shared_component shr) {
         _socket = null;
         this._shared = shr;
-//        System.out.println("Initialisation de la connexion");
-//        try {
-//            _socket = new Socket(Server.url, Server.port);
-//            System.out.println("Connexion �tablie avec le serveur");
-//            _de = new DataExchange(_socket);
-//            _th = new Thread(_de);
-//            _th.start();
-//        } catch (IOException e) {
-//            System.err.println("Aucun serveur � l'�coute du port " + _socket.getLocalPort());
-//        }
     }
 
+    /**
+     * @return {DataExchange}
+     */
     public DataExchange getDataExchange() {
         return this._de;
     }
 
+    /**
+     * Fonction bloquante appelé par l'ihm et permet de savoir quand un message est recus
+     *
+     * @return {boolean} true if new message  // false if disconnection
+     */
     public boolean newMessage() {
         while (!this._shared._is_message) {
             WAIT(0.10);
@@ -71,11 +75,21 @@ public abstract class AbstractUser implements User {
         }
     }
 
+    /**
+     * Destructeur de AbstractUser
+     * (appel aussi le destructeur de DataExchange)
+     */
     public void finalize() {
         try {
-            this._socket.close();
-            this._de.finalize();
-            this._th.interrupt();
+        	if(this._socket != null)
+        		this._socket.close();
+        	
+        	if(this._de != null)
+        		this._de.finalize();
+        	
+        	if(this._th != null)
+        		this._th.interrupt();
+        	
         } catch (IOException e) {
             e.printStackTrace();
         }
