@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
+
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
 import ihm.components.Bt;
@@ -81,7 +82,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
 		_progression.setForeground(Color.BLACK);
 		_progression.setGravity(GRAVITY.CENTER);
-		_progression.setxy(75, 65);
+		_progression.setxy(75, 40);
 		_jp_principal.add(_progression);
 		_progression.setVisible(false);
 		
@@ -105,7 +106,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		};
 		_p_loader.setBackground(new Color(255, 255, 255, 255));
 		_p_loader.setSize(width,height);
-		_p_loader.setxy(75,50);
+		_p_loader.setxy(75,30);
 		_p_loader.setOpaque(false);  
 		
 		_p_loader.add(_loader);
@@ -253,7 +254,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		
 		
 		/*************** chargement et paramétrage du loader twitter  ***************/
-        _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
+        _loader = new Txt(new ImageIcon("./data/images/hourglass.gif"));
         _loader.setxy(50, 35);
         _loader.auto_resize();
         _loader.setOpaque(false);
@@ -517,10 +518,13 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.setVisible(true);
 	    						_progression.settext("echec de création du serveur...");
 	    					}else{
-	    						_progression.settext("Serveur créer, en attente de connexion ...");
+	    						_loader.setxy(50, 45);
+	    						_progression.settext("Serveur crée, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							_loader.setVisible(false);
+		    						_progression.setxy(50, 30);
+
+			    			        _p_loader.setVisible(false);
 	    							
 	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
 	    							Joueur lui = new Joueur();
@@ -599,7 +603,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	        		new Thread(new Runnable() {
 	    				@Override
 	    				public void run() {
-	    					
+	    					_loader.setxy(50, 50);
 	    					_progression.settext("Connexion au serveur en cours ...");	    					
 	    					Client cl = new Client(_tf_ip.getText(),Integer.parseInt(_tf_port_joint.getText()),_shared);    				
 	    					if(!cl.connect()){
@@ -608,9 +612,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_shared.txt_line1.settext("echec de connexion... aucun serveur en ecoute");
 	    					}else{
 	    						
-	    						_progression.settext("Connexion OK !");	     
+	    						_progression.settext("Connexion au serveur OK !");	   
+	    						_progression.setxy(50, 30);
 	    						_loader.setVisible(true);
 		    			        _shared.txt_line1.setVisible(true);
+		    			        
+		    			        _p_loader.setVisible(false);
 	    						
 	    						cl.initData(_tf_pseudo_joint.getText(), _hashtag);
 	    						
