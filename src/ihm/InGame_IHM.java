@@ -79,7 +79,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	protected Txt _nbColorCpt;
 
 
-	protected HashMap<String, String> wordAna;
+	protected HashMap<String, String> _wordAna;
 
 	protected JFrame _fram_given;
 
@@ -149,7 +149,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 
 		_coloredPan = new ArrayList<String>();
 		_VerifPan = new ArrayList<String>();
-
+		_wordAna = new HashMap<>();
+		
 		switch(_difficulte){ 
 		case EASY:
 			_nbAna = 3;
@@ -452,7 +453,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		/*************** Gestion de l'affichage des mots à trouver ***************/
 		List<Pa> words = new ArrayList<Pa>();
 		List<Pa> ALletters = new ArrayList<Pa>();
-		wordAna = new HashMap<>();
+		
 
 		float wline=0,hline=0,wline2=0,hline2=0, wline3=0,hline3=0, wline4=0,hline4=0;
 
@@ -481,10 +482,10 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			p.setBackground(new Color(29, 202, 255,255));
 
 			if(word.getWord().length()>4){
-				wordAna.put(word.getWord(), ""+shuffle(word.getWord()));
+				_wordAna.put(word.getWord(), ""+shuffle(word.getWord()));
 			}
 			else{
-				wordAna.put(word.getWord(), ""+word.getWord());
+				_wordAna.put(word.getWord(), ""+word.getWord());
 			}
 
 			Txt txt = new Txt(""+ word.getWord());
@@ -804,7 +805,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		int j = 0;
 		while(j < _listword_label.size()){
 			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
-				_listword_label.get(j).setText(wordAna.get(pan_name));
+				_listword_label.get(j).setText(_wordAna.get(pan_name));
 				_listword_label.get(j).setForeground(new Color(255, 255, 255, 255));
 			}
 			j++;
@@ -909,7 +910,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 				
 				if(!_AnaPan.contains(c)){
 
-				if(wordAna.get(c).compareTo(c) == 0){
+				if(_wordAna.get(c).compareTo(c) == 0){
 					_msg.setText("Mot trop court, choississez-en un autre");
 					_msg.auto_resize();
 					_msg.setVisible(true);
