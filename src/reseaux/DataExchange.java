@@ -13,6 +13,8 @@ public class DataExchange implements Runnable {
     private ObjectOutputStream out    = null;
     private Shared_component _shared;
 
+    private Thread th3;
+    private Thread th4;
     public DataExchange(Socket s, Shared_component shr) {
         socket = s;
         this._shared = shr;
@@ -30,9 +32,9 @@ public class DataExchange implements Runnable {
     public void run() {
         System.out.println("Demarrage de l'échange");
 
-        Thread th3 = new Thread(new Reception(in, this._shared));
+        th3 = new Thread(new Reception(in, this._shared));
         th3.start();
-        Thread th4 = new Thread(new Emission(out));
+        th4 = new Thread(new Emission(out));
         th4.start();
     }
 
@@ -49,6 +51,8 @@ public class DataExchange implements Runnable {
         try {
             this.in.close();
             this.out.close();
+            this.th3.interrupt();
+            this.th4.interrupt();
             this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();

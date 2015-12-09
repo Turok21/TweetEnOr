@@ -9,10 +9,10 @@ import java.net.Socket;
 
 public abstract class AbstractUser implements User {
 
-    public static Thread           _th;
-    public        DataExchange     _de;
-    public        Shared_component _shared;
-    public static Socket _socket = null;
+    public Thread           _th;
+    public DataExchange     _de;
+    public Shared_component _shared;
+    public Socket _socket = null;
 
     public AbstractUser(Shared_component shr) {
         _socket = null;

@@ -46,7 +46,6 @@ public class Server extends AbstractUser {
         } catch (IOException e) {
             return false;
         }
-    }
 
 //    public static void main(String[] args) {
 //        System.out.println("Creation Server");
