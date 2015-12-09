@@ -43,6 +43,8 @@ public class Reception implements Runnable {
 
             } catch (IOException e) {
                 System.out.println("Partner probably deconnected. Leaving");
+                this._shared._datatype = DataType.ERROR;
+                this._shared._is_message = true;
                 break;
             } catch (ClassNotFoundException e) {
                 System.out.println("Unable a understand the message");
