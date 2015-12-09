@@ -29,17 +29,18 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
     private static final long serialVersionUID = 1L;
 
-    private Txt _title_frame, _title_dif, _title_theme;
+    private Txt _title_frame, _title_dif, _title_theme, _msgNet;
     private Tbt _tbt_easy, _tbt_medium, _tbt_hard;
     private List<Tbt> _list_theme;
     private Bt        _b_play,_b_play_online, _b_help;
+    private boolean is_net;
 
     LEVEL    _difficulte;
     String _hastag_theme;
 
 
     private static List<String> proposedKeywords = new ArrayList<>(Arrays.asList(
-			"Ski", "Politique", "Russie", "GOT", "Syrie", "Migrants", "Mail", "Informatique", "Microsoft",
+			"Ski", "Politique", "Russie", "GOT", "Syrie", "Migrants", "Mail", "Regionales", "Microsoft",
 			"Apple", "Playstation", "Xbox", "Pollution", "AirCocaine", "Volkswagen", "France", "Fallout",
 			"Noel", "Chine", "COP21", "NASA", "DonDuSang", "birmanie", "bière", "NSA", "PRISM", "espace",
 			"JamesBond", "StarWars", "escalade"
@@ -58,7 +59,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         
-        boolean is_net = true;
+        is_net = true;
 		try {
 			URL url = new URL("https://twitter.com/");
 			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
@@ -177,7 +178,20 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _b_play_online.addActionListener(this);
         _b_play_online.setxy(60, 85);
         _jp_principal.add(_b_play_online);
-
+        
+        
+        /*************** Message no connection ***************/
+        _msgNet = new Txt("Vous n'êtes pas connecté à internet");
+        _msgNet.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
+        _msgNet.setSize(50, 15);
+        _msgNet.auto_resize();
+        _msgNet.setGravity(GRAVITY.CENTER);
+        _msgNet.setxy(50, 70);
+        
+        if(!is_net){
+        	_jp_principal.add(_msgNet);
+        }
+        	
 
 
         show_windows();
@@ -213,7 +227,11 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
                             lab2.setSelected(false);
                     }
                     _b_play.setEnabled(true);
-                    _b_play_online.setEnabled(true);
+                    if(!is_net){
+                    	_b_play_online.setEnabled(false);
+                    }else {
+                    	_b_play_online.setEnabled(true);
+                    }
                 }
             }
         }
