@@ -24,5 +24,4 @@ public class Data implements Serializable {
     public Object get_content() {
         return _content;
     }
-
 }

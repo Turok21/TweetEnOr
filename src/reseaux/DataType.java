@@ -23,5 +23,4 @@ public enum DataType {
     public int getvalue() {
         return value;
     }
-
-};
+}

@@ -15,6 +15,7 @@ public class Client extends AbstractUser {
     /**
      * Constructeur de client (appel aussi le constructeur parent)
      * ( != connect)
+     *
      * @param ip   {String}
      * @param port {int}
      * @param shr  {Shared_component}
@@ -44,6 +45,5 @@ public class Client extends AbstractUser {
             System.err.println("Aucun serveur à l'écoute du port " + _port);
             return false;
         }
-
     }
 }
