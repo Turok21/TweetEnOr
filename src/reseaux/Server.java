@@ -1,8 +1,8 @@
-package reseaux;
-
 /**
  * Created by Arié on 23/11/2015.
  */
+package reseaux;
+
 import ihm.components.Shared_component;
 import utils.KeyWord;
 import java.io.IOException;
@@ -11,28 +11,49 @@ import java.net.ServerSocket;
 public class Server extends AbstractUser {
 
     public ServerSocket ss = null;
-
     private int _port;
 
+    /**
+     * Constructeur du server (appel aussi le constructeur parent)
+     * ( != create_server & wait_client)
+     *
+     * @param port {int] Le port sur lequel ouvrir la connection
+     * @param shr  {Shared_component}
+     */
     public Server(int port, Shared_component shr) {
         super(shr);
         _port = port;
     }
 
-    public void server_sendKeyword(KeyWord _keyWord) {
-        sendObject(DataType.KEYWORD, _keyWord);
-    }
-
+    /**
+     * Permet de créer le serveur en initialisant ServerSocket
+     *
+     * @return {boolean} Réussite ou echec de a connection
+     */
     public boolean create_server() {
         try {
             ss = new ServerSocket(_port);
             return true;
         } catch (IOException e) {
-        	System.out.println(e.toString());
+            System.out.println(e.toString());
             return false;
         }
     }
 
+    /**
+     * Permet d'envoyer l'object Keyword au client une fois la génération du keyword terminée
+     *
+     * @param _keyWord {KeyWord} le key word à envoyer
+     */
+    public void server_sendKeyword(KeyWord _keyWord) {
+        sendObject(DataType.KEYWORD, _keyWord);
+    }
+
+    /**
+     * Start le thread et attend la connection d'un client et return true lors de sa connection
+     *
+     * @return {boolean} Connection d'un client ou echec lors du start
+     */
     public boolean wait_client() {
         try {
             _socket = ss.accept();
@@ -46,6 +67,9 @@ public class Server extends AbstractUser {
         }
     }
 
+    /**
+     * destructeur du serveur pour fermer la connection
+     */
     public void finalize() {
         try {
             this.ss.close();
@@ -53,39 +77,5 @@ public class Server extends AbstractUser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-//    public static void main(String[] args) {
-//        System.out.println("Creation Server");
-//        Shared_component shr = new Shared_component();
-//        Server srv = new Server(14500, shr);
-//        srv.connect();
-//
-//        srv.newMessage();
-//        System.out.println("new message getting in main server");
-//        srv.initData("SRVBOSS", "bière");
-//
-//        /** CALCUL DU SERVEUR  **/
-//        List<TweetWord> ll = new ArrayList<>();
-//        ll.add(new TweetWord("blonde", 10));
-//        ll.add(new TweetWord("blanche", 10));
-//        ll.add(new TweetWord("brune", 10));
-//        ll.add(new TweetWord("ambré", 10));
-//        ll.add(new TweetWord("ninkasi", 10));
-//        ll.add(new TweetWord("doua", 10));
-//        ll.add(new TweetWord("mousse", 10));
-//        ll.add(new TweetWord("jaune", 10));
-//        ll.add(new TweetWord("alcool", 10));
-//        ll.add(new TweetWord("jagu", 10));
-//        /**   FIN DES CALCULS  **/
-//
-//        WAIT(2);
-//        KeyWord key = new KeyWord("bière", ll);
-//        srv.server_sendKeyword(key);
-//
-//        WAIT(10);
-//        srv.updateStatus(2, 50);
-//        WAIT(7);
-//        srv.updateStatus(2, 50);
-   
 }
