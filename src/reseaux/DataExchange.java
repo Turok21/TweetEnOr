@@ -49,10 +49,10 @@ public class DataExchange implements Runnable {
 
     public void finalize() {
         try {
-            this.in.close();
-            this.out.close();
             this.th3.interrupt();
             this.th4.interrupt();
+            this.in.close();
+            this.out.close();
             this.socket.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,15 +5,12 @@ package reseaux;
  */
 import ihm.components.Shared_component;
 import utils.KeyWord;
-import utils.TweetWord;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Server extends AbstractUser {
 
-    public static ServerSocket ss  = null;
+    public ServerSocket ss = null;
 
     private int _port;
 
@@ -46,7 +43,17 @@ public class Server extends AbstractUser {
         } catch (IOException e) {
             return false;
         }
+    }
 
+    public void finalize() {
+        try {
+            this.ss.close();
+            super.finalize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 //    public static void main(String[] args) {
 //        System.out.println("Creation Server");
 //        Shared_component shr = new Shared_component();
