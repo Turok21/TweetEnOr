@@ -96,6 +96,9 @@ public class InGame_multi_IHM extends InGame_IHM{
 		
 		draw_multiplayer_screen();//affiche l'ecran de jeu
 		
+		
+		
+		
 		watch_connection();
 		start_timer();
 		
@@ -234,7 +237,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_go_timer = false;
 		_go_watcher = false;
 		try {
-			Thread.sleep(200);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {}
 		_au.finalize();
 		new End_IHM(_fenetre, _CTEO,_j_local,_j_distant);

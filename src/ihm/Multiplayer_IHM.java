@@ -76,7 +76,6 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_jp_principal = load_fenetre_and_panel_principale("Un Tweet en Or - Configutation multiplayer","fond_reseau.jpg",_fram_given,false);
 		
 		
-		
 		/*************Progression **************/
 		_progression = new Txt("Progression");
 		_progression.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,24));
@@ -521,7 +520,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    						_progression.settext("Serveur créer, en attente de connexion ...");
 	    						if(se.wait_client()){
 	    							_progression.settext("client connecté");
-	    							 
+	    							_loader.setVisible(false);
 	    							
 	    							Joueur moi = new Joueur(_tf_pseudo_creat.getText());
 	    							Joueur lui = new Joueur();
@@ -530,15 +529,15 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    							lui.setPseudo(se._shared._data_hash.get(se._shared._datatype).toString());
 	    							se.newMessage();
 	    							String mot = se._shared._data_hash.get(se._shared._datatype).toString();
-	    							
+
+	    							System.out.println("RAND = "+mot);
 	    							
 	    							Random rand = new Random();
 	    							int r = rand.nextInt(100);
-	    							System.out.println("RAND = "+r);
 	    					        if(r > 50)
 	    					        	mot = _hashtag;
 	    					        	
-	    					        _progression.settext(lui.getPseudo()+" récuperation des tweets");
+	    					        _progression.settext("Votre adveraire : "+lui.getPseudo());
 	    					       // se.sendObject(DataType.LINE_LOADER, "Créations des données de jeux");
 	    					        
     						    
@@ -566,6 +565,10 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	    								return;
 	    							}
 	    							
+	    							try {
+										Thread.sleep(200);
+									} catch (InterruptedException e1) {e1.printStackTrace();}
+	    							se.newMessage();
 									try {
 										new InGame_multi_IHM(cteo, moi, lui,se, _fram_given);
 									} catch (IOException e) {e.printStackTrace();
@@ -618,19 +621,21 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     							lui.setPseudo(""+cl._shared._data_hash.get(DataType.NICKNAME).toString());
     							
     							cl.newMessage();
-    							_progression.settext("votre adversaire : "+lui.getPseudo()+" le serveur charge les données de jeu");
+    							_progression.settext("votre adversaire : "+lui.getPseudo()+". le serveur charge les données de jeu");
     							_progression.setGravity(GRAVITY.CENTER);
     							KeyWord key = (KeyWord) cl._shared._data_hash.get(DataType.KEYWORD);
 
-    							
-    							/*c
-    								l.newMessage();
-    								_shared.txt_line1.settext(cl._shared._data_hash.get(DataType.LINE_LOADER).toString());
-    							*/
+
     							
     							if(key.getListWords().size() > 0){
 		    						try {
 										CtrlTweetEnOr cteo = new CtrlTweetEnOr(key);
+										
+										
+										try {
+											Thread.sleep(600);
+										} catch (InterruptedException e1) {e1.printStackTrace();}
+										cl.sendObject(DataType.START, "");
 										
 										new InGame_multi_IHM(cteo, moi, lui,cl, _fram_given);
 									} catch (Exception e) {
@@ -640,6 +645,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
     								show_loadin_global_info(false);
     								_progression.setVisible(true);
     								_progression.settext("Erreur du serveur lors de la création des données de jeu !");
+    								return ;
     							}
 
 	    					}
