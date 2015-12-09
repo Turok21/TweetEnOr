@@ -5,35 +5,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
-import javax.xml.soap.Text;
-
-import com.sun.org.apache.xpath.internal.compiler.Keywords;
-
 import Sounds.Player;
 import controllers.CtrlTweetEnOr;
-import ihm.IHM_Iterface.LEVEL;
 import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Shared_component;
@@ -47,7 +31,6 @@ import reseaux.Server;
 import utils.Joueur;
 import utils.KeyWord;
 import utils.TweetWord;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, KeyListener {
@@ -271,6 +254,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		/*************** chargement et paramétrage du loader twitter  ***************/
         _loader = new Txt(new ImageIcon("./data/images/Loader_twitter.gif"));
         _loader.setxy(50, 35);
+        _loader.auto_resize();
         _loader.setOpaque(false);
         _loader.setVisible(false);
 		_jp_principal.add(_loader); 
@@ -304,7 +288,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_b_again = new Bt();
 		_b_again.addActionListener(this);
 		_b_again.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,20));
-		_b_again.setText("Ecran de Configuration");
+		_b_again.setText("Retour au paramètrage");
 		_b_again.setGravity(GRAVITY.CENTER);
 		_b_again.setxy(10,90);
 		_jp_principal.add(_b_again);
