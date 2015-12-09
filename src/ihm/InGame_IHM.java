@@ -316,20 +316,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 		
 		
-		
-		 /*************** _tf_saisie ***************/
-	    _tf_saisie = new Tf(50);
-	    _tf_saisie.setVisible(true);
-	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
-	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
-	    _tf_saisie.addKeyListener(this);
-	    _tf_saisie.setxy(50,37);
-	    _tf_saisie.setFocusable(true);
-	    _jp_principal.add(_tf_saisie);
-
-	    
-	  
-	    /*************** _compteur_de_point ***************/
+		/*************** _compteur_de_point ***************/
 	    _compteur_de_point = new Txt("Points :"+_j_local.getPoint());	 
 	    _compteur_de_point.setFont(arista_light.deriveFont(32));
 	    _compteur_de_point.setGravity(GRAVITY.TOP_RIGHT);
@@ -349,6 +336,25 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	    	_jp_principal.add(tmp);
 	    }
 	    
+	    
+	    
+	    
+		
+		
+		
+		
+		
+		
+		 /*************** _tf_saisie ***************/
+	    _tf_saisie = new Tf(50);
+	    _tf_saisie.setVisible(true);
+	    _tf_saisie.setwh((float)(_screen.width * 0.5), (float)50);
+	    _tf_saisie.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,30));
+	    _tf_saisie.addKeyListener(this);
+	    _tf_saisie.setxy(50,37);
+	    _tf_saisie.setFocusable(true);
+	    _jp_principal.add(_tf_saisie);
+
 
 	    /*************** _t_hashtag ***************/
 	    _t_hashtag = new Txt("#"+_hashtag);
