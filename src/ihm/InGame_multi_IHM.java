@@ -115,9 +115,12 @@ public class InGame_multi_IHM extends InGame_IHM{
 							_go_watcher = false;
 							end_game();
 						}
-					}else{
-						_compteur_de_point_adversaire.settext("joueur déconnecté !");
-						_j_distant.setPoint(-1);
+					}else {
+						
+						if(_go_watcher){
+							_compteur_de_point_adversaire.settext("joueur déconnecté !");
+							_j_distant.setPoint(-1);
+						}
 						end_game();
 					}
 				}
