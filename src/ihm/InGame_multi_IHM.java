@@ -44,7 +44,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	protected Joueur _j_distant;
 	
 	protected boolean _timer_is_running;
-	boolean _go_watcher,_go_timer;
+	boolean _go_watcher,_go_timer,_game_adversaire_end;
 	Txt _timer;
 	
 	AbstractUser _au;
@@ -91,6 +91,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 		_j_distant = j_distant;
 
 
+		_game_adversaire_end = false;
 		_timer_is_running = false;
 		
 		
@@ -105,31 +106,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 
 	}
 	
-	private void watch_connection(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				_go_watcher = true;
-				while(_go_watcher){
-					if(_au.newMessage()){
-						_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
-						_compteur_de_point_adversaire.settext(_j_distant.getPseudo()+" : "+_j_distant.getPoint());
-						if(_j_distant.getPoint() >= 100){
-							_go_watcher = false;
-							end_game();
-						}
-					}else {
-						
-						if(_go_watcher){
-							_compteur_de_point_adversaire.settext("joueur déconnecté !");
-							_j_distant.setPoint(-1);
-						}
-						end_game();
-					}
-				}
-			}
-		}).start();		
-	}
+
 
 	@Override protected void loose_vie(){
 		 
@@ -224,6 +201,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 						} catch (InterruptedException e) {}
 					}
 					if(_go_timer == true){
+						_au.sendObject(DataType.START, "");
 						end_game();
 						_timer_is_running = false;
 					}
@@ -231,6 +209,36 @@ public class InGame_multi_IHM extends InGame_IHM{
 			}).start();
 		}
 		
+	}
+	
+	private void watch_connection(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				_go_watcher = true;
+				while(_go_watcher){
+					if(_au.newMessage()){
+						if(_au._shared._datatype == DataType.START){
+							_game_adversaire_end = true;
+						}else if(_au._shared._datatype == DataType.SCORE){
+							_j_distant.setPoint(Integer.parseInt(_au._shared._data_hash.get(_au._shared._datatype).toString()));
+							_compteur_de_point_adversaire.settext(_j_distant.getPseudo()+" : "+_j_distant.getPoint());
+							if(_j_distant.getPoint() >= 100){
+								_go_watcher = false;
+								end_game();
+							}
+						}
+					}else {
+						
+						if(_go_watcher && _timer_is_running && !_game_adversaire_end){
+							_compteur_de_point_adversaire.settext("joueur déconnecté !");
+							_j_distant.setPoint(-1);
+						}
+						end_game();
+					}
+				}
+			}
+		}).start();		
 	}
 	
 	public void end_game(){
