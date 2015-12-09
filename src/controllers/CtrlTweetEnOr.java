@@ -59,9 +59,11 @@ public class CtrlTweetEnOr {
     	else {
 			try {
 				this._keyWords = TweetParser.findWords(word,_shared);
-				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-				oos.writeObject(this._keyWords) ;
-				oos.close();
+				if(_keyWords.getListWords().size() > 0){
+					ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+					oos.writeObject(this._keyWords) ;
+					oos.close();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw e;

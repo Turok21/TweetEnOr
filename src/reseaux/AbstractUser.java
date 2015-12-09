@@ -81,9 +81,15 @@ public abstract class AbstractUser implements User {
      */
     public void finalize() {
         try {
-            this._socket.close();
-            this._de.finalize();
-            this._th.interrupt();
+        	if(this._socket != null)
+        		this._socket.close();
+        	
+        	if(this._de != null)
+        		this._de.finalize();
+        	
+        	if(this._th != null)
+        		this._th.interrupt();
+        	
         } catch (IOException e) {
             e.printStackTrace();
         }
