@@ -1,11 +1,5 @@
 package ihm;
 
-import java.awt.FontFormatException;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,23 +8,16 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-import org.w3c.dom.events.MouseEvent;
-
 import ihm.components.Bt;
 import ihm.components.Pa;
 import ihm.components.Tbt;
-import ihm.components.Tf;
 import ihm.components.Txt;
 import ihm.components.composent.GRAVITY;
 
@@ -111,7 +98,6 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _help_txte.auto_resize();
         _help_txte.setwh(402,502);
         _help_txte.setxy(0,0);
-        //_help_txte.setOpaque(false);
         
         _p_help_txte.add(_help_txte);
         
@@ -304,33 +290,20 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     }
 
 	@Override
-	public void mouseClicked(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseClicked(java.awt.event.MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(java.awt.event.MouseEvent e) {}
 
 	@Override
-	public void mouseExited(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(java.awt.event.MouseEvent e) {}
 
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent e) {
 		show_help(false);
-	
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(java.awt.event.MouseEvent e) {}
 }
 

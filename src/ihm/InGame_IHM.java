@@ -837,6 +837,7 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 			random.add(r);
 			nb--;
 		}
+		System.out.println(random);
 		int j = 0, r= 0;
 		while(j < _listword_label.size()){
 			if (_listword_label.get(j).getText().compareTo(pan_name) == 0){
@@ -885,7 +886,8 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		
-		_msg.setVisible(false);
+		if(_msg != null)
+			_msg.setVisible(false);
 
 		if( e.getSource() == _b_hintShuffle)
 			_b_hintColor.setSelected(false);
