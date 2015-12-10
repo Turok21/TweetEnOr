@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import Sounds.Player;
@@ -910,43 +911,46 @@ public class InGame_IHM extends IHM_Iterface implements ActionListener,KeyListen
 		
 /***********************************Anagramme****************************************/
 		if(_b_hintShuffle.isSelected() && !_b_hintColor.isSelected()){
-			Pa panel = (Pa)e.getSource();
-			String c = panel.getName();
+			JPanel panel = (JPanel)e.getSource();
+			String c =  panel.getName();
+			if(c == null)
+				c = "";
+			
 			if (!_coloredPan.contains(c) && !_VerifPan.contains(c) && _nbAna > 0 ) {
-				
+					
 				if(!_AnaPan.contains(c)){
-
-				if(_wordAna.get(c).compareTo(c) == 0){
-					_msg.setText("Mot trop court, choississez-en un autre");
-					_msg.auto_resize();
-					_msg.setVisible(true);
-
-				}
-				else{
-					_msg.setVisible(false);
-					mixWords(c);
-					_nbAna--;
-					_AnaPan.add(c);
-					if(_nbAna == 0){
-						_b_hintShuffle.setSelected(false);
-						_b_hintShuffle.setEnabled(false);
-						_nbAnaCpt.setText("0");
+	
+					if(_wordAna.get(c) != null && _wordAna.get(c).compareTo(c) == 0){
+						_msg.setText("Mot trop court, choississez-en un autre");
+						_msg.auto_resize();
+						_msg.setVisible(true);
+	
 					}
 					else{
-						_b_hintShuffle.setSelected(false);
-						_b_hintShuffle.setEnabled(true);
-						_nbAnaCpt.setText(_nbAna.toString());
+						_msg.setVisible(false);
+						mixWords(c);
+						_nbAna--;
+						_AnaPan.add(c);
+						if(_nbAna == 0){
+							_b_hintShuffle.setSelected(false);
+							_b_hintShuffle.setEnabled(false);
+							_nbAnaCpt.setText("0");
+						}
+						else{
+							_b_hintShuffle.setSelected(false);
+							_b_hintShuffle.setEnabled(true);
+							_nbAnaCpt.setText(_nbAna.toString());
+						}
 					}
+	
 				}
-
+				else{
+					_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
+					_msg.auto_resize();
+					_msg.setVisible(true);
+				}
+	
 			}
-			else{
-				_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
-				_msg.auto_resize();
-				_msg.setVisible(true);
-			}
-
-		}
 			else{
 				_msg.setText("Vous ne pouvez pas appliquer plusieurs indinces sur un même mot.");
 				_msg.auto_resize();
