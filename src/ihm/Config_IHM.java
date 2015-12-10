@@ -136,6 +136,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _tbt_easy = new Tbt("Facile");
         _tbt_easy.setFont(arista_btn);
         _tbt_easy.addActionListener(this);
+        _tbt_easy.addMouseListener(this);
         _tbt_easy.setGravity(GRAVITY.CENTER);
         _tbt_easy.auto_resize();
         _tbt_easy.setxy(40, 20);
@@ -145,6 +146,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _tbt_medium.setSelected(true);      // TODO : Preselection difficulté moyen
         _tbt_medium.setFont(arista_btn);
         _tbt_medium.addActionListener(this);
+        _tbt_medium.addMouseListener(this);
         _tbt_medium.setGravity(GRAVITY.CENTER);
         _tbt_medium.auto_resize();
         _tbt_medium.setxy(50, 20);
@@ -153,6 +155,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _tbt_hard = new Tbt("Difficile");
         _tbt_hard.setFont(arista_btn);
         _tbt_hard.addActionListener(this);
+        _tbt_hard.addMouseListener(this);
         _tbt_hard.setGravity(GRAVITY.CENTER);
         _tbt_hard.auto_resize();
         _tbt_hard.setxy(60, 20);
@@ -182,6 +185,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
             key.setSize(100, 30);
             key.setxy(x, y);
             key.addActionListener(this);
+            key.addMouseListener(this);
             key.auto_resize();
             _jp_principal.add(key);
             
@@ -202,6 +206,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _b_play.auto_resize();
         _b_play.setEnabled(false);
         _b_play.addActionListener(this);
+        _b_play.addMouseListener(this);
         _b_play.setxy(40, 85);
         _jp_principal.add(_b_play);
         
@@ -212,6 +217,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         _b_play_online.auto_resize();
         _b_play_online.setEnabled(false);
         _b_play_online.addActionListener(this);
+        _b_play_online.addMouseListener(this);
         _b_play_online.setxy(60, 85);
         _jp_principal.add(_b_play_online);
         
@@ -317,11 +323,8 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 
 	@Override
 	public void mousePressed(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource() == _help_txte)
-		{
-			show_help(false);
-		}
+		show_help(false);
+	
 	}
 
 	@Override
