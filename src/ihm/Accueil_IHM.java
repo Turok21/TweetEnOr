@@ -34,7 +34,7 @@ public class Accueil_IHM extends IHM_Iterface implements ActionListener, KeyList
         _b_next.setxy(50, 75);
 
         _jp_principal.add(_b_next);
-
+        
         show_windows();
     }
 

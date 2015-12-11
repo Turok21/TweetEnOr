@@ -57,7 +57,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         
         is_net = true;
-		try {
+		/*try {
 			URL url = new URL("https://twitter.com/");
 			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
 			urlConn.connect();
@@ -68,7 +68,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 			e.printStackTrace();
 			is_net = false;
 		}
-        
+*/
         /*************** TITLE ***************/
         _title_frame = new Txt("Paramétrages");
         _title_frame.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
