@@ -63,6 +63,8 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	private int _porNumber;
 	private Bt _b_again; 
 	
+	private LEVEL _level;
+	
 	private Thread _th_server,_th_client;
 
 	
@@ -70,11 +72,12 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 	Client _cl;
 	
 	public static void main(String[] args) {
-	     new Multiplayer_IHM("test",new JFrame("test"));
+	     new Multiplayer_IHM("test",new JFrame("test"),LEVEL.EASY);
 	}
 
-	public Multiplayer_IHM(String hastag_theme,JFrame fram) {
+	public Multiplayer_IHM(String hastag_theme,JFrame fram,LEVEL level) {
 		super();
+		_level = level;
 		_shared = new Shared_component();
 		_fram_given = fram;
 	    _hashtag = hastag_theme;
@@ -154,7 +157,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 						} catch (InterruptedException e1) {e1.printStackTrace();}
 						_se.newMessage();
 						try {
-							new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given);
+							new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given,_level);
 						} catch (IOException e) {e.printStackTrace();
 						}
 							
@@ -688,7 +691,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         							} catch (InterruptedException e1) {e1.printStackTrace();}
         							_se.newMessage();
         							try {
-        								new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given);
+        								new InGame_multi_IHM(cteo, moi, lui,_se, _fram_given,_level);
         							} catch (IOException e) {e.printStackTrace();
         							}
         								
@@ -758,7 +761,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
         								} catch (InterruptedException e1) {e1.printStackTrace();}
         								_cl.sendObject(DataType.START, "");
         								
-        								new InGame_multi_IHM(cteo, moi, lui,_cl, _fram_given);
+        								new InGame_multi_IHM(cteo, moi, lui,_cl, _fram_given,_level);
         							} catch (Exception e) {
         								e.printStackTrace();
         							}

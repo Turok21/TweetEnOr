@@ -57,7 +57,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
         load_fenetre_and_panel_principale("Un Tweet en Or - Config ", "fond_Tweet_en_or.jpg", fram,false);
         
         is_net = true;
-		/*try {
+		try {
 			URL url = new URL("https://twitter.com/");
 			HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
 			urlConn.connect();
@@ -68,7 +68,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
 			e.printStackTrace();
 			is_net = false;
 		}
-*/
+
         /*************** TITLE ***************/
         _title_frame = new Txt("Paramétrages");
         _title_frame.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 50));
@@ -260,11 +260,12 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
                             lab2.setSelected(false);
                     }
                     _b_play.setEnabled(true);
-                    if(!is_net){
+                    /*if(!is_net){
                     	_b_play_online.setEnabled(false);
                     }else {
                     	_b_play_online.setEnabled(true);
-                    }
+                    }*/
+                    _b_play_online.setEnabled(true);
                 }
             }
         }
@@ -286,7 +287,7 @@ public class Config_IHM extends IHM_Iterface implements ActionListener, KeyListe
     }
     
     private void lauche_online_game() {
-    	new Multiplayer_IHM(_hastag_theme, _fenetre);
+    	new Multiplayer_IHM(_hastag_theme, _fenetre,_difficulte);
     }
 
 	@Override

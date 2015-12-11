@@ -46,6 +46,7 @@ public class InGame_multi_IHM extends InGame_IHM{
 	protected boolean _timer_is_running;
 	boolean _go_watcher,_go_timer,_game_adversaire_end;
 	Txt _timer;
+
 	
 	AbstractUser _au;
 	
@@ -74,9 +75,10 @@ public class InGame_multi_IHM extends InGame_IHM{
 	 * @param j_distant
 	 * @throws IOException
 	 */
-	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,AbstractUser AU,JFrame fram) throws IOException {
+	public InGame_multi_IHM(CtrlTweetEnOr cteo,Joueur j_local,Joueur j_distant,AbstractUser AU,JFrame fram,LEVEL level) throws IOException {
 		/*************** initialisation des variables ***************/
-		super(LEVEL.EASY,cteo.getWord(),null);
+		super(level,cteo.getWord(),null);
+		
 		
 		_fram_given = fram;
 		
@@ -203,6 +205,8 @@ public class InGame_multi_IHM extends InGame_IHM{
 				@Override
 				public void run() {
 					long limit = 200;
+					if(_difficulte == LEVEL.HARD)
+						limit = 15;
 					long t0 = System.currentTimeMillis();
 					long old = 0;
 					_go_timer = true;
