@@ -187,7 +187,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord());
-			txt.setForeground(new Color(0, 0, 0 ,255));
+			txt.setForeground(new Color(87, 1, 8 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
@@ -362,7 +362,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord() );
-			txt.setForeground(new Color(0, 0, 0 ,255));
+			txt.setForeground(new Color(87, 1, 8 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
@@ -449,7 +449,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
     		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord() );
-			txt.setForeground(new Color(0, 0, 0 ,255));
+			txt.setForeground(new Color(87, 1, 8 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
