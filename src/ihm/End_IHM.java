@@ -187,7 +187,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord());
-			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setForeground(new Color(0, 0, 0 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
@@ -362,7 +362,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
 		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord() );
-			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setForeground(new Color(0, 0, 0 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
@@ -449,7 +449,7 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
     		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord() );
-			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setForeground(new Color(0, 0, 0 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
@@ -546,11 +546,11 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
         
 	    }else{
 	    	Txt pointAdversaire = new Txt(_pseudo_adversaire + ": abandon par déconnexion !");
-	    	pointAdversaire.setGravity(GRAVITY.CENTER_RIGHT);
+	    	pointAdversaire.setGravity(GRAVITY.CENTER);
 	        pointAdversaire.setFont(arista.deriveFont(Font.TRUETYPE_FONT,41));
 	        pointAdversaire.setForeground(new Color(255, 35, 10 ,255));
 	        pointAdversaire.auto_resize();
-	        pointAdversaire.setxy(95, 12);
+	        pointAdversaire.setxy(50, 22);
 	    
 	        _jp_principal.add(pointAdversaire);
 	    	
@@ -561,17 +561,17 @@ public class End_IHM extends IHM_Iterface implements ActionListener,KeyListener{
     		
 			// foreach word creating a new Txt and setting different properties
 			Txt txt = new Txt(""+word.getWord() );
-			txt.setForeground(new Color(87, 1, 8 ,255));
+			txt.setForeground(new Color(0, 0, 0 ,255));
 			txt.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT,35));
 			txt.setGravity(GRAVITY.CENTER);
 			txt.auto_resize();	        
 	        
 	        if(k1%2 == 0){
 	        	txt.setGravity(GRAVITY.CENTER_RIGHT);
-	        	txt.setxy(18, 22+(8*k1));
+	        	txt.setxy(14, 22+(8*k1));
 	        }else{
 	        	txt.setGravity(GRAVITY.CENTER_LEFT);
-	        	txt.setxy(82, 22+(8*(k1-1)));
+	        	txt.setxy(78, 22+(8*(k1-1)));
 	        }
 	        k1++;
 			_jp_principal.add(txt);
