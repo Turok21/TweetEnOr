@@ -106,6 +106,30 @@ public class InGame_multi_IHM extends InGame_IHM{
 
 	}
 	
+	protected void add_point(int nb_point,TweetWord mots){
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Player player = new Player();
+				player.playGoodAnswer();
+			}
+		}).start();
+
+		int i = 0;
+		for(Txt label : _listword_label){
+			if(label.getText().compareTo(mots.getWord()) == 0){
+				label.setForeground(new Color(255,255,255));
+				_listPts.get(i).setForeground(new Color(29, 202, 255,255));
+				_fenetre.repaint();
+				break;
+			}
+			i++;
+		}
+		_j_local.addPoint(nb_point);
+		_compteur_de_point.setText(_j_local.getPseudo()+": "+_j_local.getPoint());
+		_compteur_de_point.auto_resize();
+	}
 
 
 	@Override protected void loose_vie(){
