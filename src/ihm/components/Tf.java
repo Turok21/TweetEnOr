@@ -69,12 +69,12 @@ public class Tf extends JTextField implements composent{
 	public void auto_resize(){
 		FontMetrics metrics = getFontMetrics(getFont()); 
 		if(getText() != null){
-		    int width = metrics.stringWidth( getText().replaceAll("\\<[^>]*>","") );
+		    /*int width = metrics.stringWidth( getText().replaceAll("\\<[^>]*>","") );
 		    int height = metrics.getHeight();
 		    Dimension newDimension =  new Dimension(width+40,height+10);
 		    setPreferredSize(newDimension);
 		    setBounds(new Rectangle(getLocation(), getPreferredSize()));
-	    
+	    */
 		    apply_gravity();
 		}
 	}

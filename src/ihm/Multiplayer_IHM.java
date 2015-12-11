@@ -257,7 +257,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_pseudo_joint.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		_tf_pseudo_joint.setGravity(GRAVITY.CENTER_LEFT);
 		_tf_pseudo_joint.auto_resize();
-		_tf_pseudo_joint.setwh(100, 40);
+		_tf_pseudo_joint.setwh(150, 40);
 		_tf_pseudo_joint.setxyin(10,5,_p_joint);		
 		_p_joint.add(_tf_pseudo_joint);
 		Txt txt_pseudo_joint = new Txt("Pseudo : ");
@@ -320,7 +320,7 @@ public class Multiplayer_IHM extends IHM_Iterface implements ActionListener, Key
 		_tf_pseudo_creat.setGravity(GRAVITY.CENTER_LEFT);
 		_tf_pseudo_creat.setFont(arista_light.deriveFont(Font.TRUETYPE_FONT, 20));
 		_tf_pseudo_creat.auto_resize();
-		_tf_pseudo_creat.setwh(100, 40);
+		_tf_pseudo_creat.setwh(150, 40);
 		_tf_pseudo_creat.setxyin(10,5,_p_create);
 		_p_create.add(_tf_pseudo_creat);
 		
