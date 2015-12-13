@@ -14,13 +14,9 @@
 * Si vous êtes sous Linux: télécharger le fichier (http://amoki.fr/tree-tagger.tar.gz)
 * Si vous êtes sous Windows, téléchager le fichier (http://amoki.fr/TreeTaggerWindows.zip)
 * Si vous êtes sous MacOS, télécharger le fichier (http://amoki.fr/TreeTaggerMac.zip)
-* Décompressez le fichier où bon vous semble (Attention à ne pas le commit)
+* Décompressez le fichier et copier tout le contenu du dossier TreeTagger sous TweetEnOr/lib/TreeTagger
 * Installer le jar : http://mvnrepository.com/artifact/org.annolab.tt4j/org.annolab.tt4j/1.2.1
-* Définir le chemin du répertoire de tree-tagger via la variable d'environnement TREE_TAGGER_PATH  (ex: /usr/share/tree-tagger/ ou C:\workspace\TreeTagger)
-* Sous Eclipse, allez dans run > run configuration > [Selectionner le main] > Environment > New
 
 
-# Configuration des identifiants Twitter
-* Ils se trouvent sur le trello, dans la carte "credentials twitter"
-* Ils sont sous la forme CLE=VALEUR
-* Sous Eclipse, allez dans run > run configuration > [Selectionner le main] > Environment > New
+# Personnaliser les mots clés
+* Modifider la liste définie dans src/ihm/Config_IHM.java ligne 39
